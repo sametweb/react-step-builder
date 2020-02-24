@@ -1,12 +1,33 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import React from "react";
+import ReactDOM from "react-dom";
+import { Steps, Step } from "./lib";
 
-ReactDOM.render(<App />, document.getElementById('root'));
+const Step1 = () => <div>Step1</div>;
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+const Step2 = () => <div>Step2</div>;
+
+const Step3 = () => <div>Step3</div>;
+
+const Persistent = props => {
+  return (
+    <div>
+      <button onClick={() => props.prevStep()}>Previous Step</button>
+      <button onClick={() => props.nextStep()}>Next Step</button> Persistent
+    </div>
+  );
+};
+
+const App = () => {
+  return (
+    <div>
+      <Steps totalSteps={3}>
+        <Step order={1} component={Step1} />
+        <Step order={2} component={Step2} />
+        <Step order={3} component={Step3} />
+        <Step persist component={Persistent} />
+      </Steps>
+    </div>
+  );
+};
+
+ReactDOM.render(<App />, document.querySelector("#root"));

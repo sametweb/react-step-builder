@@ -1,68 +1,71 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## React Step Builder
 
-## Available Scripts
+_Unopinionated step-by-step-interface builder._
 
-In the project directory, you can run:
+## Installation
 
-### `npm start`
+Using [npm](https://www.npmjs.com/):
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+    $ npm install --save react-step-builder
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## Documentation
 
-### `npm test`
+## Overview
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+React Step Builder allows you to combine states of multiple _step_ components in a single main state and navigate between components without losing the local states of the _steps_.
 
-### `npm run build`
+## Basic Usage
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```js
+<Steps totalSteps={3}>
+  <Step order={1} component={Step1} />
+  <Step order={2} component={Step2} />
+  <Step order={3} component={Step3} />
+</Steps>
+```
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+- **Steps** is the wrapper component. You must define every `Step` under `Steps` component. It takes `totalSteps` as a prop which must match the number of `Step` components inside.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- **Step** is the component you create for each `step` in your application. It takes `order` prop for ordering the steps in the flow. `Step` that has `order={1}` prop renders default. The `component` prop takes the component that you would like to show in that step.
 
-### `npm run eject`
+- If you would like to show a component in every `Step`, you must remove the `order` prop and pass `persist` as a prop to a `Step` component. It is recommended to have that persistent step either in the beginning of the steps or at the end depending on where would you like to render that component (top or bottom).
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```js
+<Step persist component={PersistentComponent} />
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Composing Step Components
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+There are some props available to your components that you pass to the `Step` component.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+**`mainState`** _(object)_ => It gives you all the state pieces combined from your `Step` components. As your user move forward in steps, the forms they fill before all accumulate under this value. You can refer in any step component as `props.mainState`.
 
-## Learn More
+**`setMainState`** _(function)_ => _(Not recommended by default)_ By this function, you can manipulate your `mainState` in any of your state components. You may consider using it if the data you would like to save in your `mainState` object is not coming from a form element (technically, if the data is coming from a source without a synthetic event.) You can refer in any step component as `props.setMainState`
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+**`handleChange(event)`** _(function)_ => You may pass this function to any onChange event on any form element. One thing to always remember: Your form element must have name property, which eventually becomes its key in the `mainState` object. If your form element has `name="username"` then its value must be `{props.mainState.username}`.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+In order to get rid of `uncontrolled/controlled component` error, simply put your value like this: `value={props.mainState.<inputName> || ''}`. Another way is, creating the `step` with `persist` keyword before ordered `step` components and define all your form value names inside that persistent step component's useEffect hook. Like this:
 
-### Code Splitting
+```js
+export const PersistentStep = props => {
+  useEffect(() => {
+    props.setMainState({
+      name: props.mainState.name || "", //For Step 1
+      age: props.mainState.age || "", // For Step 2
+      email: props.mainState.email || "" // For Step 3
+    });
+  }, []);
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+  return (
+    ...
+  );
+};
+```
 
-### Analyzing the Bundle Size
+**`steps`** _(object)_ => This object has two values: `total` and `current`. You can refer as `props.steps.total` and `props.steps.current`. If you would like to build a navigation bar, previous/next buttons, % X completed bar etc. refer to this object.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+**`prevStep`** _(function)_ => This function moves to the previous step. Refer as `props.prevStep()`
 
-### Making a Progressive Web App
+**`nextStep`** _(function)_ => This function moves to the next step. Refer as `props.nextStep()`
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+**`jumpToStep(step)`** _(function)_ => This function moves to the specified step. Refer as `props.jumpToStep(stepNumber)`
