@@ -2,17 +2,15 @@
 
 _Unopinionated multi step interface builder._
 
+## Overview
+
+React Step Builder allows you to combine states of multiple _step_ components in a single main state and navigate between components without losing the local states of the _steps_.
+
 ## Installation
 
 Using [npm](https://www.npmjs.com/):
 
     $ npm install --save react-step-builder
-
-## Documentation
-
-## Overview
-
-React Step Builder allows you to combine states of multiple _step_ components in a single main state and navigate between components without losing the local states of the _steps_.
 
 ## Usage
 
@@ -70,9 +68,15 @@ export const PersistentStep = props => {
 
 **`jumpToStep(step)`** _(function)_ => This function moves to the specified step. Refer as `props.jumpToStep(stepNumber)`
 
+---
+
 ## UI Components
 
-**<Button>** component: It renders a button with either prev or next functionality.
+React Step Builder principally designed to minimally interfere with UI. However, creating the most basic next and previous buttons and navigation between steps might be time consuming for those who do not expect much from the design. Here are some components that comes in the box so that you can directly use in any **Step** component.
+
+### Button
+
+It renders a button with either prev or next functionality.
 
 Example usages:
 
@@ -81,22 +85,23 @@ Example usages:
 <Button prev text="Previous Step">
 ```
 
-| Properties         | ---                                                    |
-| ------------------ | ------------------------------------------------------ |
-| **text** _String_  | the text that will button render                       |
-| **prev** _Boolean_ | gives the button 'Go to Previous Step' functionality   |
-| **next** _Boolean_ | gives the button 'Go to Next Step' functionality       |
-| _any props_        | all the other props passed to the **Button** component |
-|                    | will bepassed any props to the button element          |
+| Properties         | ---                                                                                                   |
+| ------------------ | ----------------------------------------------------------------------------------------------------- |
+| **text** _String_  | the text that will button render                                                                      |
+| **prev** _Boolean_ | gives the button 'Go to Previous Step' functionality                                                  |
+| **next** _Boolean_ | gives the button 'Go to Next Step' functionality                                                      |
+| _any props_        | all the other props passed to the **Button** component will be passed any props to the button element |
 
-**<Navigation>** component: It renders a button for each step with the default text of Step number.
+### Navigation
+
+It renders a button for each step with the default text of Step number.
 
 Example usages:
 
 ```js
-<Navigation /> //if you have 3 steps, it renders 3 buttons, each has the text of [1, 2, 3] consecutively
-<Navigation text="*" /> //if you have 3 steps, it renders 3 buttons, each has the text of \* (asterix)
-<Navigation before="HEY " after=" HI" /> //if you have 3 steps, it renders 3 buttons, each step number has 'HEY' before and 'HI' after (HEY 1 HI, HEY 2 HI, HEY 3 HI)
+<Navigation /> // if you have 3 steps, it renders 3 buttons, each has the text of [1, 2, 3] consecutively
+<Navigation text="*" /> // if you have 3 steps, it renders 3 buttons, each has the text of * (asterix)
+<Navigation before="HEY " after=" HI" /> // if you have 3 steps, it renders 3 buttons, each step number has 'HEY' before and 'HI' after (HEY 1 HI, HEY 2 HI, HEY 3 HI)
 ```
 
 | Properties          | ---                                                     |
