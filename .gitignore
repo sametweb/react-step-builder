@@ -23,3 +23,5 @@ yarn-debug.log*
 yarn-error.log*
 dist
 .babelrc
+public
+style.css

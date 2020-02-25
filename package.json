@@ -2,7 +2,7 @@
   "name": "react-step-builder",
   "description": "Unopinionated step-by-step-interface builder.",
   "author": "Samet Mutevelli <mutevellisamet@gmail.com> (https://sametmutevelli.com)",
-  "version": "1.0.25",
+  "version": "1.0.26",
   "private": false,
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
