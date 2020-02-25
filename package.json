@@ -1,8 +1,8 @@
 {
   "name": "react-step-builder",
-  "description": "Unopinionated step-by-step-interface builder.",
+  "description": "Unopinionated multi step interface builder.",
   "author": "Samet Mutevelli <mutevellisamet@gmail.com> (https://sametmutevelli.com)",
-  "version": "1.0.26",
+  "version": "1.0.27",
   "private": false,
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
@@ -24,9 +24,10 @@
   "keywords": [
     "step-builder",
     "react-step-builder",
-    "react-step-creator",
     "create steps in react",
-    "step by step form"
+    "step by step form",
+    "multi step form",
+    "react multi step registration"
   ],
   "eslintConfig": {
     "extends": "react-app"

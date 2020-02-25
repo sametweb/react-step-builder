@@ -1,6 +1,6 @@
 ## React Step Builder
 
-_Unopinionated step-by-step-interface builder._
+_Unopinionated multi step interface builder._
 
 ## Installation
 
@@ -75,24 +75,31 @@ export const PersistentStep = props => {
 **<Button>** component: It renders a button with either prev or next functionality.
 
 Example usages:
-`<Button next text="Next Step">`
-`<Button prev text="Previous Step">`
 
-| \*\*Properties     | ---                                                                                                   |
-| ------------------ | ----------------------------------------------------------------------------------------------------- |
-| **text** _String_  | the text that will button render                                                                      |
-| **prev** _Boolean_ | gives the button 'Go to Previous Step' functionality                                                  |
-| **next** _Boolean_ | gives the button 'Go to Next Step' functionality                                                      |
-| _any props_        | all the other props passed to the **Button** component will be passed any props to the button element |
+```js
+<Button next text="Next Step">
+<Button prev text="Previous Step">
+```
+
+| Properties         | ---                                                    |
+| ------------------ | ------------------------------------------------------ |
+| **text** _String_  | the text that will button render                       |
+| **prev** _Boolean_ | gives the button 'Go to Previous Step' functionality   |
+| **next** _Boolean_ | gives the button 'Go to Next Step' functionality       |
+| _any props_        | all the other props passed to the **Button** component |
+|                    | will bepassed any props to the button element          |
 
 **<Navigation>** component: It renders a button for each step with the default text of Step number.
 
 Example usages:
-`<Navigation />` //if you have 3 steps, it renders 3 buttons, each has the text of [1, 2, 3] consecutively
-`<Navigation text="*" />` //if you have 3 steps, it renders 3 buttons, each has the text of \* (asterix)
-`<Navigation before="HEY " after=" HI" />` //if you have 3 steps, it renders 3 buttons, each step number has 'HEY' before and 'HI' after (HEY 1 HI, HEY 2 HI, HEY 3 HI)
 
-| \*\*Properties      | ---                                                     |
+```js
+<Navigation /> //if you have 3 steps, it renders 3 buttons, each has the text of [1, 2, 3] consecutively
+<Navigation text="*" /> //if you have 3 steps, it renders 3 buttons, each has the text of \* (asterix)
+<Navigation before="HEY " after=" HI" /> //if you have 3 steps, it renders 3 buttons, each step number has 'HEY' before and 'HI' after (HEY 1 HI, HEY 2 HI, HEY 3 HI)
+```
+
+| Properties          | ---                                                     |
 | ------------------- | ------------------------------------------------------- |
 | **text** _String_   | the text that each button will show                     |
 | **before** _String_ | the text that goes before the step number in the button |
