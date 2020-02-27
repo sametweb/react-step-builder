@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Steps, Step } from "./lib";
-import { Button, Navigation } from "./lib/Navigators";
+import { Steps, Step, Button, Navigation } from "./lib";
 
 import "./style.css";
 
@@ -70,7 +69,7 @@ const Step4 = props => {
   );
 };
 
-const Persistent = props => {
+const Persistent = () => {
   return (
     <div>
       <Button prev text="Prev" />
@@ -82,7 +81,7 @@ const Persistent = props => {
 
 const App = () => {
   return (
-    <div>
+    <div className="steps_wrapper">
       <Steps totalSteps={4}>
         <h1>React Step Builder</h1>
         <Step order={1} component={Step1} />
