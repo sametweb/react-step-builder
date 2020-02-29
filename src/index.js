@@ -5,16 +5,6 @@ import { Steps, Step, Button, Navigation } from "./lib";
 import "./style.css";
 
 const Step1 = props => {
-  const { firstname, lastname } = props.mainState;
-  console.log(props.locks);
-  useEffect(() => {
-    if (props.mainState.firstname && props.mainState.lastname) {
-      props.unlockNextStep();
-    } else {
-      props.lockNextStep();
-    }
-  }, [firstname, lastname]);
-
   return (
     <div>
       First Name:{" "}
@@ -34,16 +24,6 @@ const Step1 = props => {
 };
 
 const Step2 = props => {
-  const { email, password } = props.mainState;
-  console.log(props.locks);
-  useEffect(() => {
-    if (props.mainState.email && props.mainState.password) {
-      props.unlockNextStep();
-    } else {
-      props.lockNextStep();
-    }
-  }, [email, password]);
-
   return (
     <div>
       Email:{" "}
@@ -63,16 +43,6 @@ const Step2 = props => {
 };
 
 const Step3 = props => {
-  const { address, phone } = props.mainState;
-  console.log(props.locks);
-  useEffect(() => {
-    if (props.mainState.address && props.mainState.phone) {
-      props.unlockNextStep();
-    } else {
-      props.lockNextStep();
-    }
-  }, [address, phone]);
-
   return (
     <div>
       Address:{" "}
