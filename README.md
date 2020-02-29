@@ -114,7 +114,7 @@ This function moves to the specified step. Refer as `props.jumpToStep(stepNumber
 
 ## UI Components
 
-React Step Builder principally designed to minimally interfere with UI. However, creating the most basic next and previous buttons and navigation between steps might be time consuming for those who do not expect much from the design. Here are some components that comes in the box so that you can directly use in any **Step** component.
+React Step Builder is principally designed to minimally interfere with UI. However, creating the most basic next and previous buttons and navigation between steps might be time consuming for those who do not expect much from the design. Here are some components that comes in the box so that you can directly use in any **Step** component.
 
 <br />
 <br />
