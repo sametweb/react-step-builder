@@ -32,9 +32,9 @@ Using [npm](https://www.npmjs.com/):
 
 This is the wrapper component. You must define every step component under `<Steps />` component. It takes `total` as a prop which must match the number of `Step` components inside.
 
-#### `<Steps />` Properties
+#### Properties
 
-| `total` _integer_ - is the number of steps you want to create.
+- `total` _integer_ - is the number of steps you want to create.
 
 <br />
 
@@ -42,13 +42,13 @@ This is the wrapper component. You must define every step component under `<Step
 
 This is the component you create for each `step` in your application. It takes `order` prop for ordering the steps in the flow. `Step` that has `order={1}` prop renders default. The `component` prop takes the component that you would like to show in that step.
 
-- If you would like to create a persistent component that appears in every `Step`, you must remove the `order` prop and pass `persist` as a prop to a `Step` component. It is recommended to have that persistent step either in the beginning of the steps or at the end depending on where would you like to render that component (top or bottom).
+If you would like to create a persistent component that appears in every `Step`, you must remove the `order` prop and pass `persist` as a prop to a `Step` component. It is recommended to have that persistent step either in the beginning of the steps or at the end depending on where would you like to render that component (top or bottom).
 
 ```js
 <Step persist component={PersistentComponent} />
 ```
 
-#### `<Step />` Properties
+#### Properties
 
 - `order` _integer_ - defines the order of the `Step`. Order numbers must start with `1` and be consecutive.
 
@@ -106,7 +106,7 @@ Example usage:
 <Button prev text="Previous Step">
 ```
 
-#### `<Button />` Properties
+#### Properties
 
 - `text` _String_ - is the text that will button render.
 - `prev` _Boolean_ - gives the button 'Go to Previous Step' functionality. Disabled in the first step.
@@ -128,7 +128,7 @@ Example usages:
 <Navigation active="active-class-name" visited="visited-class-name" />
 ```
 
-#### `<Navigation />` Properties
+#### Properties
 
 - `text` _String_ - is the text that each button will show, disables `before` and `after` props.
 - `before` _String_ - is the text that goes before the step number in the button.
