@@ -4,12 +4,11 @@ import { StepContext } from "./Steps";
 export const Button = ({ next, prev, text, ...theRest }) => {
   const context = useContext(StepContext);
   const { prevStep, nextStep, steps } = context;
-
-  return (prev && steps.current === 1) ||
-    (next && steps.current === steps.total) ? null : (
+  const { current, total } = steps;
+  return (
     <button
       onClick={next ? nextStep : prev ? prevStep : null}
-      disabled={next && steps.current + 1 === steps.lock}
+      disabled={(prev && current === 1) || (next && current === total)}
       {...theRest}
     >
       {text}
@@ -17,20 +16,21 @@ export const Button = ({ next, prev, text, ...theRest }) => {
   );
 };
 
-export const Navigation = ({ text, before, after }) => {
+export const Navigation = ({ text, before, after, active, visited }) => {
   const context = useContext(StepContext);
   const { jumpToStep, steps } = context;
   const stepsArray = [...Array(steps.total).keys()].map(x => x + 1);
 
-  return stepsArray.map(step => {
-    return (
-      <button
-        key={step}
-        onClick={() => jumpToStep(step)}
-        disabled={step >= steps.lock} //steps.current === step ||
-      >
-        {text || `${before || ""}${step}${after || ""}`}
-      </button>
-    );
-  });
+  return stepsArray.map(step => (
+    <button
+      key={step}
+      onClick={() => jumpToStep(step)}
+      disabled={steps.current === step}
+      className={
+        step === steps.current ? active : step < steps.current ? visited : null
+      }
+    >
+      {text || `${before || ""}${step}${after || ""}`}
+    </button>
+  ));
 };

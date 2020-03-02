@@ -4,61 +4,39 @@ export const StepContext = React.createContext();
 
 const useMainState = INITIAL_VALUE => {
   const [state, setState] = React.useState(INITIAL_VALUE);
-
   const setMainState = newState => setState({ ...state, ...newState });
-
-  const handleChange = event =>
+  const handleChange = event => {
     setState({ ...state, [event.target.name]: event.target.value });
-
+  };
   return [state, setMainState, handleChange];
 };
 
-export const useStepNavigation = (totalSteps, lockMode) => {
-  const [currentStep, setCurrentStep] = React.useState(1);
-
-  const prevStep = () => setCurrentStep(currentStep > 2 ? currentStep - 1 : 1);
-  const nextStep = () =>
-    setCurrentStep(currentStep < totalSteps ? currentStep + 1 : totalSteps);
-  const jumpToStep = step => setCurrentStep(Number(step));
-
-  return [
-    { current: currentStep, total: totalSteps, lock: currentStep + 1 },
-    prevStep,
-    nextStep,
-    jumpToStep
-  ];
+export const useStepNavigation = total => {
+  const [current, setCurrent] = React.useState(1);
+  const prevStep = () => setCurrent(current > 2 ? current - 1 : 1);
+  const nextStep = () => setCurrent(current < total ? current + 1 : total);
+  const jumpToStep = step => setCurrent(Number(step));
+  return [{ current, total }, prevStep, nextStep, jumpToStep];
 };
 
-const Steps = ({ totalSteps, lockMode, children }) => {
+export const Step = ({ component: Component, order, persist }) => {
+  const context = React.useContext(StepContext);
+  const { current } = context.steps;
+  return order === current || persist ? <Component {...context} /> : false;
+};
+const Steps = ({ total, children }) => {
   const [mainState, setMainState, handleChange] = useMainState({});
-  const [steps, prevStep, nextStep, jumpToStep] = useStepNavigation(
-    totalSteps,
-    lockMode
-  );
-  console.log({
+  const [steps, prevStep, nextStep, jumpToStep] = useStepNavigation(total);
+  const value = {
     mainState,
     setMainState,
     handleChange,
-    steps: { total: steps.total, current: steps.current, lock: steps.lock },
+    steps,
     prevStep,
     nextStep,
     jumpToStep
-  });
-  return (
-    <StepContext.Provider
-      value={{
-        mainState,
-        setMainState,
-        handleChange,
-        steps: { total: steps.total, current: steps.current, lock: steps.lock },
-        prevStep,
-        nextStep,
-        jumpToStep
-      }}
-    >
-      {children}
-    </StepContext.Provider>
-  );
+  };
+  return <StepContext.Provider value={value}>{children}</StepContext.Provider>;
 };
 
 export default Steps;

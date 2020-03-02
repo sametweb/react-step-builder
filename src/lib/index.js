@@ -1,4 +1,3 @@
-import Steps from "./Steps";
-import Step from "./Step";
-import { Button, Navigation } from "./Navigators";
+import Steps, { Step } from "./Steps";
+import { Button, Navigation } from "./Components";
 export { Steps, Step, Button, Navigation };

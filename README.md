@@ -21,7 +21,7 @@ Using [npm](https://www.npmjs.com/):
 ## Usage
 
 ```js
-<Steps totalSteps={3}>
+<Steps total={3}>
   <Step order={1} component={Step1} />
   <Step order={2} component={Step2} />
   <Step order={3} component={Step3} />
@@ -33,11 +33,11 @@ Using [npm](https://www.npmjs.com/):
 
 ### `<Steps />`
 
-This is the wrapper component. You must define every step component under `<Steps />` component. It takes `totalSteps` as a prop which must match the number of `Step` components inside.
+This is the wrapper component. You must define every step component under `<Steps />` component. It takes `total` as a prop which must match the number of `Step` components inside.
 
-| Properties                 |                                             |
-| -------------------------- | ------------------------------------------- |
-| **`totalSteps`** _integer_ | Define how many steps you will be creating. |
+| Properties            |                                             |
+| --------------------- | ------------------------------------------- |
+| **`total`** _integer_ | Define how many steps you will be creating. |
 
 <br />
 <br />
@@ -133,8 +133,8 @@ Example usages:
 | Properties           | ---                                                                                                   |
 | -------------------- | ----------------------------------------------------------------------------------------------------- |
 | **`text`** _String_  | the text that will button render                                                                      |
-| **`prev`** _Boolean_ | gives the button 'Go to Previous Step' functionality. It doesn't show in the first step component.    |
-| **`next`** _Boolean_ | gives the button 'Go to Next Step' functionality. It doesn't show in the last step component.         |
+| **`prev`** _Boolean_ | gives the button 'Go to Previous Step' functionality. Disabled in the first step.                     |
+| **`next`** _Boolean_ | gives the button 'Go to Next Step' functionality. Disabled in the last step.                          |
 | _any props_          | all the other props passed to the **Button** component will be passed any props to the button element |
 
 <br />
@@ -152,8 +152,8 @@ Example usages:
 <Navigation before="HEY " after=" HI" /> // if you have 3 steps, it renders 3 buttons, each step number has 'HEY' before and 'HI' after (HEY 1 HI, HEY 2 HI, HEY 3 HI)
 ```
 
-| Properties            | ---                                                     |
-| --------------------- | ------------------------------------------------------- |
-| **`text`** _String_   | the text that each button will show                     |
-| **`before`** _String_ | the text that goes before the step number in the button |
-| **`after`** _String_  | the text that goes after the step number in the button  |
+| Properties            | ---                                                                       |
+| --------------------- | ------------------------------------------------------------------------- |
+| **`text`** _String_   | the text that each button will show, disables `before` and `after` props. |
+| **`before`** _String_ | the text that goes before the step number in the button.                  |
+| **`after`** _String_  | the text that goes after the step number in the button.                   |

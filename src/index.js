@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 import { Steps, Step, Button, Navigation } from "./lib";
 
@@ -6,7 +6,7 @@ import "./style.css";
 
 const Step1 = props => {
   return (
-    <div>
+    <div className="step">
       First Name:{" "}
       <input
         name="firstname"
@@ -25,7 +25,7 @@ const Step1 = props => {
 
 const Step2 = props => {
   return (
-    <div>
+    <div className="step">
       Email:{" "}
       <input
         name="email"
@@ -44,7 +44,7 @@ const Step2 = props => {
 
 const Step3 = props => {
   return (
-    <div>
+    <div className="step">
       Address:{" "}
       <input
         name="address"
@@ -63,14 +63,23 @@ const Step3 = props => {
 
 const Step4 = props => {
   return (
-    <div>
+    <div className="step">
       <p>
-        Name: {props.mainState.firstname} {props.mainState.lastname}
+        <strong>Name:</strong> {props.mainState.firstname}{" "}
+        {props.mainState.lastname}
       </p>
-      <p>Email: {props.mainState.email}</p>
-      <p>Password: {props.mainState.password}</p>
-      <p>Address: {props.mainState.address}</p>
-      <p>Phone: {props.mainState.phone}</p>
+      <p>
+        <strong>Email:</strong> {props.mainState.email}
+      </p>
+      <p>
+        <strong>Password:</strong> {props.mainState.password}
+      </p>
+      <p>
+        <strong>Address:</strong> {props.mainState.address}
+      </p>
+      <p>
+        <strong>Phone:</strong> {props.mainState.phone}
+      </p>
     </div>
   );
 };
@@ -78,9 +87,15 @@ const Step4 = props => {
 const Persistent = () => {
   return (
     <div>
-      <Button prev text="Prev" />
-      <Button next text="Next" />
-      <Navigation before="This is " after=". step" />
+      <div className="navigation">
+        <Button prev text="Prev" />
+        <Navigation
+          text="&#x25C9;"
+          active="active-button"
+          visited="visited-button"
+        />
+        <Button next text="Next" />
+      </div>
     </div>
   );
 };
@@ -88,8 +103,8 @@ const Persistent = () => {
 const App = () => {
   return (
     <div className="steps_wrapper">
-      <Steps totalSteps={4} lockMode>
-        <h1>React Step Builder</h1>
+      <Steps total={4}>
+        <h1>React Step Builder v1.1.0</h1>
         <Step order={1} component={Step1} />
         <Step order={2} component={Step2} />
         <Step order={3} component={Step3} />
