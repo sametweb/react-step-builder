@@ -4,9 +4,8 @@ _Unopinionated multi step interface builder._
 
 ## Overview
 
-React Step Builder allows you to combine states of multiple _step_ components in a single main state and navigate between components without losing the local states of the _steps_.
+React Step Builder allows you to combine states of multiple components in a single main state and navigate between components without losing the local states of individual step components.
 
-<br />
 <br />
 
 ## Installation
@@ -15,7 +14,6 @@ Using [npm](https://www.npmjs.com/):
 
     $ npm install --save react-step-builder
 
-<br />
 <br />
 
 ## Usage
@@ -29,17 +27,15 @@ Using [npm](https://www.npmjs.com/):
 ```
 
 <br />
-<br />
 
 ### `<Steps />`
 
 This is the wrapper component. You must define every step component under `<Steps />` component. It takes `total` as a prop which must match the number of `Step` components inside.
 
-| Properties            |                                             |
-| --------------------- | ------------------------------------------- |
-| **`total`** _integer_ | Define how many steps you will be creating. |
+#### `<Steps />` Properties
 
-<br />
+| `total` _integer_ - is the number of steps you want to create.
+
 <br />
 
 ### `<Step />`
@@ -52,92 +48,71 @@ This is the component you create for each `step` in your application. It takes `
 <Step persist component={PersistentComponent} />
 ```
 
-| Properties            |                                                                                                |
-| --------------------- | ---------------------------------------------------------------------------------------------- |
-| **`order`** _integer_ | Defines the order of the Step component. Order numbers must start with `1` and be consecutive. |
+#### `<Step />` Properties
 
-<br />
+- `order` _integer_ - defines the order of the `Step`. Order numbers must start with `1` and be consecutive.
+
 <br />
 
 ## Composing Step Components
 
-There are some props available to your components that you render in `Step` component.
+Following `props` available to your step components.
 
 ### `mainState` _(object)_
 
-It gives you all the state pieces combined from your `Step` components. As your user move forward in steps, the forms they fill before all accumulate under this value. You can refer in any step component as `props.mainState`.
+It gives you all the state pieces combined from your `Step` components. As your user move forward in steps, the forms they fill before all accumulate under this value.
 
 ### `setMainState` _(function)_
 
-_(Not recommended to be used by default)_ By this function, you can manipulate your `mainState` in any of your state components. You may consider using it if the data you would like to save in your `mainState` object is not coming from a form element (technically, if the data is coming from a source without a synthetic event.) You can refer in any step component as `props.setMainState`.
+_(Not recommended to be used by default)_ By this function, you can manipulate your `mainState` in any of your state components. You may consider using it if the data you would like to save in your `mainState` object is not coming from a form element (technically, if the data is coming from a source without a synthetic event.)
 
 ### `handleChange(event)` _(function)_
 
-You may pass this function to any onChange event on any form element. One thing to always remember: Your form element must have name property, which eventually becomes its key in the `mainState` object. If your form element has `name="username"` then its value must be `{props.mainState.username}`.
-
-In order to get rid of `uncontrolled/controlled component` error, simply put your value like this: `value={props.mainState.<inputName> || ''}`. Another way is, creating the `step` with `persist` keyword before ordered `step` components and define all your form value names inside that persistent step component's useEffect hook. Like this:
-
-```js
-export const PersistentStep = props => {
-  useEffect(() => {
-    props.setMainState({
-      name: props.mainState.name || "", //For Step 1
-      age: props.mainState.age || "", // For Step 2
-      email: props.mainState.email || "" // For Step 3
-    });
-  }, []);
-
-  return (
-    //Your component design
-  );
-};
-```
+You may pass this function to any onChange event on any form element. One thing to always remember: Your form element must have name property, which eventually becomes its key in the `mainState` object. If your form element has `name="username"` then its value would be `{props.mainState.username}`.
 
 ### `steps` _(object)_
 
-This object has two values: `total` and `current`. You can refer as `props.steps.total` and `props.steps.current`. If you would like to build a navigation bar, previous/next buttons, % X completed bar etc. refer to this object.
+- `total` - Number of total steps.
+- `current` - Current step that user is on.
 
 ### `prevStep` _(function)_
 
-This function moves to the previous step. Refer as `props.prevStep()`
+This function moves to the previous step.
 
 ### `nextStep` _(function)_
 
-This function moves to the next step. Refer as `props.nextStep()`
+This function moves to the next step.
 
 ### `jumpToStep(step)` _(function)_
 
-This function moves to the specified step. Refer as `props.jumpToStep(stepNumber)`
+This function moves to the specified step.
 
-<br />
 <br />
 
 ## UI Components
 
-React Step Builder is principally designed to minimally interfere with UI. However, creating the most basic next and previous buttons and navigation between steps might be time consuming for those who do not expect much from the design. Here are some components that comes in the box so that you can directly use in any **Step** component.
+React Step Builder is principally designed to minimally interfere with UI. However, creating the most basic next and previous buttons and navigation between steps might be time consuming for those who do not expect much from the design. Here are some components that comes in the box so that you can directly use in any **`Step`** component.
 
-<br />
 <br />
 
 ### `<Button />`
 
 It renders a button with either prev or next functionality.
 
-Example usages:
+Example usage:
 
 ```js
 <Button next text="Next Step">
 <Button prev text="Previous Step">
 ```
 
-| Properties           | ---                                                                                                   |
-| -------------------- | ----------------------------------------------------------------------------------------------------- |
-| **`text`** _String_  | the text that will button render                                                                      |
-| **`prev`** _Boolean_ | gives the button 'Go to Previous Step' functionality. Disabled in the first step.                     |
-| **`next`** _Boolean_ | gives the button 'Go to Next Step' functionality. Disabled in the last step.                          |
-| _any props_          | all the other props passed to the **Button** component will be passed any props to the button element |
+#### `<Button />` Properties
 
-<br />
+- `text` _String_ - is the text that will button render.
+- `prev` _Boolean_ - gives the button 'Go to Previous Step' functionality. Disabled in the first step.
+- `next` _Boolean_ - gives the button 'Go to Next Step' functionality. Disabled in the last step.
+- _any props_ - passed to the **Button** component will be passed to the button element on the DOM.
+
 <br />
 
 ### `<Navigation />`
@@ -147,13 +122,16 @@ It renders a button for each step with the default text of Step number. The butt
 Example usages:
 
 ```js
-<Navigation /> // if you have 3 steps, it renders 3 buttons, each has the text of [1, 2, 3] consecutively
-<Navigation text="*" /> // if you have 3 steps, it renders 3 buttons, each has the text of * (asterix)
-<Navigation before="HEY " after=" HI" /> // if you have 3 steps, it renders 3 buttons, each step number has 'HEY' before and 'HI' after (HEY 1 HI, HEY 2 HI, HEY 3 HI)
+<Navigation /> // if you have 3 steps, it renders 3 buttons, each of which has the text of [1, 2, 3] consecutively
+<Navigation text="*" /> // if you have 3 steps, it renders 3 buttons, each of which has the text of * (asterix)
+<Navigation before="HEY " after=" HI" /> // if you have 3 steps, it renders 3 buttons, each of which has 'HEY' before and 'HI' after the step number (HEY 1 HI, HEY 2 HI, HEY 3 HI)
+<Navigation active="active-class-name" visited="visited-class-name" />
 ```
 
-| Properties            | ---                                                                       |
-| --------------------- | ------------------------------------------------------------------------- |
-| **`text`** _String_   | the text that each button will show, disables `before` and `after` props. |
-| **`before`** _String_ | the text that goes before the step number in the button.                  |
-| **`after`** _String_  | the text that goes after the step number in the button.                   |
+#### `<Navigation />` Properties
+
+- `text` _String_ - is the text that each button will show, disables `before` and `after` props.
+- `before` _String_ - is the text that goes before the step number in the button.
+- `after` _String_ - is the text that goes after the step number in the button.
+- `active` _String_ - passes a class name to the navigation button element of the current step.
+- `visited` _String_ - passes a class name to the navigation button element of the steps that comes before the current step.
