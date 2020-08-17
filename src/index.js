@@ -1,10 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Steps, Step, Button, Navigation } from "./lib";
+import { Steps, Step } from "./lib";
 
 import "./style.css";
 
-const Step1 = props => {
+const Step1 = (props) => {
+  console.log({ props });
   return (
     <div className="step">
       First Name:{" "}
@@ -19,11 +20,13 @@ const Step1 = props => {
         value={props.mainState.lastname || ""}
         onChange={props.handleChange}
       />
+      <button onClick={props.nextStep}>Next</button>
     </div>
   );
 };
 
-const Step2 = props => {
+const Step2 = (props) => {
+  console.log({ props });
   return (
     <div className="step">
       Email:{" "}
@@ -42,7 +45,7 @@ const Step2 = props => {
   );
 };
 
-const Step3 = props => {
+const Step3 = (props) => {
   return (
     <div className="step">
       Address:{" "}
@@ -61,7 +64,7 @@ const Step3 = props => {
   );
 };
 
-const Step4 = props => {
+const Step4 = (props) => {
   return (
     <div className="step">
       <p>
@@ -84,32 +87,15 @@ const Step4 = props => {
   );
 };
 
-const Persistent = () => {
-  return (
-    <div>
-      <div className="navigation">
-        <Button prev text="Prev" />
-        <Navigation
-          text="&#x25C9;"
-          active="active-button"
-          visited="visited-button"
-        />
-        <Button next text="Next" />
-      </div>
-    </div>
-  );
-};
-
 const App = () => {
   return (
     <div className="steps_wrapper">
+      <h1>React Step Builder v1.1.0</h1>
       <Steps total={4}>
-        <h1>React Step Builder v1.1.0</h1>
-        <Step order={1} component={Step1} />
-        <Step order={2} component={Step2} />
-        <Step order={3} component={Step3} />
-        <Step order={4} component={Step4} />
-        <Step persist component={Persistent} />
+        <Step title="Personal Info" component={Step1} />
+        <Step title="Login Info" component={Step2} />
+        <Step title="Contact Info" component={Step3} />
+        <Step title="Overview" component={Step4} />
       </Steps>
     </div>
   );

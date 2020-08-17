@@ -15,22 +15,3 @@ export const Button = ({ next, prev, text, ...theRest }) => {
     </button>
   );
 };
-
-export const Navigation = ({ text, before, after, active, visited }) => {
-  const context = useContext(StepContext);
-  const { jumpToStep, steps } = context;
-  const stepsArray = [...Array(steps.total).keys()].map(x => x + 1);
-
-  return stepsArray.map(step => (
-    <button
-      key={step}
-      onClick={() => jumpToStep(step)}
-      disabled={steps.current === step}
-      className={
-        step === steps.current ? active : step < steps.current ? visited : null
-      }
-    >
-      {text || `${before || ""}${step}${after || ""}`}
-    </button>
-  ));
-};
