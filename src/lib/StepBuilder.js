@@ -6,8 +6,8 @@ export class StepBuilder {
 
   constructor(name) {
     this.name = name;
-    this.start = null;
-    this.current = null;
+    this.start = 1;
+    this.current = 1;
     this.size = null;
   }
   /**
@@ -16,32 +16,21 @@ export class StepBuilder {
    * @return {Array} Returns an array of connected steps
    */
   build(steps) {
-    var steps_list = [];
-    this.size = steps.reduce((total, step) => {
-      total += 1;
-      return total;
-    }, 0);
+    this.size = steps.length;
 
-    steps.forEach((step) => {
-      var new_step = new StepNode(step.title);
-      steps_list.push(new_step);
+    return steps.map((title, order) => {
+      var new_step = new StepNode(title);
+
+      new_step.order = order + 1;
+
+      var prev = order === 0 ? null : new_step.order - 1;
+      var next = order === this.size - 1 ? null : new_step.order + 1;
+
+      new_step.next_step = next;
+      new_step.prev_step = prev;
+
+      return new_step;
     });
-
-    steps_list.forEach((step, order) => {
-      step.order = order + 1;
-      if (order === 0) {
-        this.start = 1;
-        this.current = 1;
-      }
-
-      var prev = order === 0 ? null : step.order - 1;
-      var next = order === this.size - 1 ? null : step.order + 1;
-
-      step.next_step = next;
-      step.prev_step = prev;
-    });
-
-    return steps_list;
   }
 
   next() {
@@ -55,12 +44,8 @@ export class StepBuilder {
   }
 
   jump(step_id) {
-    var my_current = { ...this.current };
-    while (my_current.id !== step_id) {
-      my_current = my_current.slice();
-    }
-    if (my_current.id === step_id) {
-      this.current = my_current;
+    if (step_id > 0 && step_id < this.size) {
+      this.current = step_id;
     }
     return this.current;
   }

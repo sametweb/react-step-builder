@@ -2,19 +2,19 @@
   "name": "react-step-builder",
   "description": "Unopinionated multi step interface builder.",
   "author": "Samet Mutevelli <mutevellisamet@gmail.com> (https://sametmutevelli.com)",
-  "version": "1.1.0",
+  "version": "1.1.3",
   "private": false,
-  "dependencies": {
+  "devDependencies": {
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-scripts": "3.4.0",
     "@babel/cli": "^7.8.4",
-    "@babel/core": "^7.8.4",
+    "@babel/core": "^7.11.1",
     "@babel/runtime": "^7.8.4"
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "NODE_ENV=production babel src/lib --out-dir dist --copy-files --ignore __tests__,spec.js,test.js,__snapshots__"
+    "build": "SET NODE_ENV=production&babel src/lib --out-dir dist --copy-files --ignore __tests__,spec.js,test.js,__snapshots__"
   },
   "keywords": [
     "step-builder",

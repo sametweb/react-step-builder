@@ -1,60 +1,70 @@
-import React from "react";
+import React, { useState } from "react";
 import { StepBuilder, StepNode } from "./StepBuilder";
 
 export const StepContext = React.createContext();
 
-const useMainState = (INITIAL_VALUE) => {
-  const [state, setState] = React.useState(INITIAL_VALUE);
-  const setMainState = (newState) => setState({ ...state, ...newState });
-  const handleChange = (event) => {
+const useStepState = (INITIAL_VALUE) => {
+  const [state, setState] = useState(INITIAL_VALUE);
+
+  function setStepState(key, value) {
+    setState({ ...state, [key]: value });
+  }
+
+  function handleChange(event) {
     setState({ ...state, [event.target.name]: event.target.value });
-  };
-  return [state, setMainState, handleChange];
-};
-export const useStepNavigation = (RegistrationSteps) => {
-  const [current, setCurrent] = React.useState(1);
-  const prevStep = () => setCurrent(RegistrationSteps.prev());
-  const nextStep = () => setCurrent(RegistrationSteps.next());
-  const jumpToStep = (step) => setCurrent(RegistrationSteps.jump(step));
-  return [{ current }, prevStep, nextStep, jumpToStep];
+  }
+
+  return [state, setStepState, handleChange];
 };
 
-export const Step = ({ component: Component, ...theRest }) => {
+export function Step({ component: Component, ...theRest }) {
   const context = React.useContext(StepContext);
-  const { current } = context.steps;
-  return current === theRest.order && <Component {...context} />;
-};
-const Steps = ({ children }) => {
-  const RegistrationSteps = new StepBuilder("registration");
+  const { current, step } = theRest;
 
-  var stepNodes = children.map((step) => {
-    var new_step = new StepNode(step.props.title, Boolean(step.props.persist));
-    return new_step;
+  return current === step.order && <Component {...context} {...theRest} />;
+}
+
+export function Steps({ children, name }) {
+  const [steps, setSteps] = useState(new StepBuilder(name));
+  const [stepState, setStepState, handleChange] = useStepState({});
+  const [current, setCurrent] = useState(1);
+
+  var step_titles = children.map((step, order) => {
+    return step.props.title || `Step ${order + 1}`;
   });
 
-  stepNodes = RegistrationSteps.build(stepNodes);
+  var stepNodes = steps.build(step_titles);
+
+  function next() {
+    var next_step = steps.next();
+    setSteps(steps);
+    setCurrent(next_step);
+  }
+
+  function prev() {
+    var prev_step = steps.prev();
+    setSteps(steps);
+    setCurrent(prev_step);
+  }
 
   children = children.map((child, id) => {
-    return { ...child, props: { ...child.props, ...stepNodes[id] } };
+    return {
+      ...child,
+      props: {
+        ...child.props,
+        step: stepNodes[id],
+        current,
+      },
+    };
   });
 
-  console.log({ RegistrationSteps });
-
-  const [mainState, setMainState, handleChange] = useMainState({});
-  const [steps, prevStep, nextStep, jumpToStep] = useStepNavigation(
-    RegistrationSteps
-  );
   const value = {
-    mainState,
-    setMainState,
+    state: stepState,
+    setState: setStepState,
     handleChange,
-    steps,
-    prevStep,
-    nextStep,
-    jumpToStep,
+    next,
+    prev,
   };
 
   return <StepContext.Provider value={value}>{children}</StepContext.Provider>;
-};
-
-export default Steps;
+}
