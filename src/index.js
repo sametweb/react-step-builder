@@ -8,61 +8,94 @@ const Step1 = (props) => {
   console.log(props);
   return (
     <div className="step">
-      First Name: <input name="firstname" onChange={props.handleChange} />
-      Last Name: <input name="lastname" onChange={props.handleChange} />
+      First Name:{" "}
+      <input
+        name="firstname"
+        value={props.getState("firstname")}
+        onChange={props.handleChange}
+      />
+      Last Name:{" "}
+      <input
+        name="lastname"
+        value={props.getState("lastname")}
+        onChange={props.handleChange}
+      />
       <span>
-        <a onClick={() => props.setState("color", "green")}>Green</a> -{" "}
-        <a onClick={() => props.setState("color", "blue")}>Blue</a>
+        <button onClick={() => props.setState("color", "green")}>Green</button>
+        <button onClick={() => props.setState("color", "blue")}>Blue</button>
       </span>
-      <button onClick={props.prev} disabled={!props.prev_step}>
-        Previous
-      </button>
-      <button onClick={props.next}>Next</button>
+      {props.step.hasPrev() && <button onClick={props.prev}>Previous</button>}
+      {props.step.hasNext() && <button onClick={props.next}>Next</button>}
     </div>
   );
 };
 
 const Step2 = (props) => {
-  console.log(props);
   return (
     <div className="step">
-      Email: <input name="email" onChange={props.handleChange} />
-      Password: <input name="password" onChange={props.handleChange} />
-      <button onClick={props.next}>Next</button>
+      Email:{" "}
+      <input
+        name="email"
+        value={props.getState("email")}
+        onChange={props.handleChange}
+      />
+      Password:{" "}
+      <input
+        name="password"
+        value={props.getState("password")}
+        onChange={props.handleChange}
+      />
+      {props.step.hasPrev() && <button onClick={props.prev}>Previous</button>}
+      {props.step.hasNext() && <button onClick={props.next}>Next</button>}
     </div>
   );
 };
 
 const Step3 = (props) => {
-  console.log(props);
   return (
     <div className="step">
-      Address: <input name="address" onChange={props.handleChange} />
-      Phone: <input name="phone" onChange={props.handleChange} />
-      <button onClick={props.next}>Next</button>
+      Address:{" "}
+      <input
+        name="address"
+        value={props.getState("address")}
+        onChange={props.handleChange}
+      />
+      Phone:{" "}
+      <input
+        name="phone"
+        value={props.getState("phone")}
+        onChange={props.handleChange}
+      />
+      {props.step.hasPrev() && <button onClick={props.prev}>Previous</button>}
+      {props.step.hasNext() && <button onClick={props.next}>Next</button>}
     </div>
   );
 };
 
 const Step4 = (props) => {
-  console.log(props);
   return (
     <div className="step">
       <p>
-        <strong>Name:</strong>
+        <strong>Name:</strong> {props.getState("firstname")}{" "}
+        {props.getState("lastname")}
       </p>
       <p>
-        <strong>Email:</strong>
+        <strong>Email:</strong> {props.getState("email")}
       </p>
       <p>
-        <strong>Password:</strong>
+        <strong>Password:</strong> {props.getState("password")}
       </p>
       <p>
-        <strong>Address:</strong>
+        <strong>Address:</strong> {props.getState("address")}
       </p>
       <p>
-        <strong>Phone:</strong>
+        <strong>Phone:</strong> {props.getState("phone")}
       </p>
+      <p>
+        <strong>Color Choice:</strong> {props.getState("color")}
+      </p>
+      {props.step.hasPrev() && <button onClick={props.prev}>Previous</button>}
+      {props.step.hasNext() && <button onClick={props.next}>Next</button>}
     </div>
   );
 };
@@ -71,7 +104,7 @@ const App = () => {
   return (
     <div className="steps_wrapper">
       <h1>React Step Builder v1.1.0</h1>
-      <Steps name="This is the registration step">
+      <Steps>
         <Step title="" component={Step1} />
         <Step title="Login Info" component={Step2} />
         <Step title="Contact Info" component={Step3} />
