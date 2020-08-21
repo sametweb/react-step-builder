@@ -115,7 +115,7 @@ If your form element has `name="username"`, then it is stored in state as `{prop
 
 ### <strong>`props.step`</strong>
 
-`object`
+`object <StepNode>`
 
 This object provides information about current step and methods to move between steps. Available properties and methods:
 
