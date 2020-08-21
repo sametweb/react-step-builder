@@ -101,6 +101,16 @@ export function Steps({ children }) {
     setCurrent(prevStep);
   }
 
+  /**
+   * Moves to the step with provided step order
+   * @param {number} stepOrder - Step order number to jump
+   */
+  function jump(stepOrder) {
+    var jumpedStep = steps.jump(stepOrder);
+    setSteps(steps);
+    setCurrent(jumpedStep);
+  }
+
   children = children.map((child, id) => {
     return {
       ...child,
@@ -119,6 +129,7 @@ export function Steps({ children }) {
     handleChange,
     next,
     prev,
+    jump,
   };
 
   return <StepContext.Provider value={value}>{children}</StepContext.Provider>;

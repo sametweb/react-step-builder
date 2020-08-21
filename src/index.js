@@ -26,6 +26,7 @@ const Step1 = (props) => {
       </span>
       {props.step.hasPrev() && <button onClick={props.prev}>Previous</button>}
       {props.step.hasNext() && <button onClick={props.next}>Next</button>}
+      <button onClick={() => props.jump(3)}>Jump to 3. Step</button>
     </div>
   );
 };
