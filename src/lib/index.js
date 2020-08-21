@@ -49,6 +49,7 @@ const useStepState = (INITIAL_VALUE) => {
  * - `handleChange: ƒ(<event>)`
  * - `next: ƒ()`
  * - `prev: ƒ()`
+ * - `jump: ƒ(<step>)`
  * - `setState: ƒ(<key, value>)`
  * - `state: <object>`
  * - `step: { order: <number>, nextStep: <number>, prevStep: <number>, title: <string> }`
@@ -105,8 +106,8 @@ export function Steps({ children }) {
    * Moves to the step with provided step order
    * @param {number} stepOrder - Step order number to jump
    */
-  function jump(stepOrder) {
-    var jumpedStep = steps.jump(stepOrder);
+  function jump(step) {
+    var jumpedStep = steps.jump(step);
     setSteps(steps);
     setCurrent(jumpedStep);
   }
