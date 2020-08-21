@@ -5,7 +5,7 @@
 ## Overview
 
 React Step Builder allows you to combine states of multiple components in one place
-and navigate between components without losing the state from other step components.
+and navigate between step components without losing the state from other step components.
 
 It only provides wrapper components and methods to be able to render your step components
 without being forced to use certain UI features in your step structure.
