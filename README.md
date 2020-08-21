@@ -1,13 +1,14 @@
 # React Step Builder
 
-### React Step Builder is an UI-agnostic multi step interface builder.
-
-<br />
-It only provides wrapper components and methods to be able to render your step components without forcing you to use certain navigation structures. You build your own navigators as you like!
+### React Step Builder is a UI-agnostic multi step interface builder.
 
 ## Overview
 
-React Step Builder allows you to combine states of multiple components in a single main state and navigate between components without losing the local states of individual step components.
+It only provides wrapper components and methods to be able to render your step components
+without being forced to use certain UI features in your step structure.
+
+It allows you to combine states of multiple components in one place
+and navigate between components without losing the state from other step components.
 
 <br />
 
@@ -56,7 +57,7 @@ The current step's order number
 
 `function()`
 
-Moves to the next step if there is any.
+Moves to the next step if it exists.
 
 <hr />
 
@@ -64,7 +65,15 @@ Moves to the next step if there is any.
 
 `function()`
 
-Moves to the previous step if there is any.
+Moves to the previous step if it exists.
+
+<hr />
+
+### <strong>`props.jump`</strong>
+
+`function(<order>)`
+
+Jumps to the step with the provided step order if it exists.
 
 <hr />
 
