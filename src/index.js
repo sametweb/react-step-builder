@@ -5,7 +5,7 @@ import { Steps, Step } from "./lib";
 import "./style.css";
 
 export const Step1 = (props) => {
-  // Test Change 3
+  // Test Change 4
   console.log(props);
   return (
     <div className="step">
