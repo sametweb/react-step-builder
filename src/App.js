@@ -3,29 +3,48 @@ import { Steps, Step } from "./lib";
 
 const Step1 = (props) => {
   // Test Change 4
-  console.log(props);
   return (
     <div className="step">
       First Name:{" "}
       <input
         name="firstname"
+        data-testid="firstname"
         value={props.getState("firstname")}
         onChange={props.handleChange}
       />
       Last Name:{" "}
       <input
         name="lastname"
+        data-testid="lastname"
         value={props.getState("lastname")}
         onChange={props.handleChange}
       />
       <span>
-        <button onClick={() => props.setState("color", "green")}>Green</button>
-        <button onClick={() => props.setState("color", "blue")}>Blue</button>
+        <button
+          data-testid="green"
+          onClick={() => props.setState("color", "green")}
+        >
+          Green
+        </button>
+        <button
+          data-testid="blue"
+          onClick={() => props.setState("color", "blue")}
+        >
+          Blue
+        </button>
       </span>
-      {props.step.hasPrev() && <button onClick={props.prev}>Previous</button>}
+      {
+        <button disabled={props.step.isFirst()} onClick={props.prev}>
+          Previous
+        </button>
+      }
       {props.step.hasNext() && <button onClick={props.next}>Next</button>}
-      <button onClick={() => props.jump(3)}>Jump to 3. Step</button>
-      <button onClick={() => props.jump(5)}>Jump to 5. Step</button>
+      <button data-testid="jump3" onClick={() => props.jump(3)}>
+        Jump to 3. Step
+      </button>
+      <button data-testid="jump5" onClick={() => props.jump(5)}>
+        Jump to 5. Step
+      </button>
     </div>
   );
 };
@@ -36,12 +55,14 @@ const Step2 = (props) => {
       Email:{" "}
       <input
         name="email"
+        data-testid="email"
         value={props.getState("email")}
         onChange={props.handleChange}
       />
       Password:{" "}
       <input
         name="password"
+        data-testid="password"
         value={props.getState("password")}
         onChange={props.handleChange}
       />
@@ -57,12 +78,14 @@ const Step3 = (props) => {
       Address:{" "}
       <input
         name="address"
+        data-testid="address"
         value={props.getState("address")}
         onChange={props.handleChange}
       />
       Phone:{" "}
       <input
         name="phone"
+        data-testid="phone"
         value={props.getState("phone")}
         onChange={props.handleChange}
       />
@@ -76,26 +99,41 @@ const Step4 = (props) => {
   return (
     <div className="step">
       <p>
-        <strong>Name:</strong> {props.getState("firstname")}{" "}
-        {props.getState("lastname")}
+        <strong>Name:</strong>
+        <span data-testid="final_name">
+          {props.getState("firstname")} {props.getState("lastname")}
+        </span>
       </p>
       <p>
-        <strong>Email:</strong> {props.getState("email")}
+        <strong>Email:</strong>
+        <span data-testid="final_email">{props.getState("email")}</span>
       </p>
       <p>
-        <strong>Password:</strong> {props.getState("password")}
+        <strong>Password:</strong>
+        <span data-testid="final_pass">{props.getState("password")}</span>
       </p>
       <p>
-        <strong>Address:</strong> {props.getState("address")}
+        <strong>Address:</strong>
+        <span data-testid="final_address">{props.getState("address")}</span>
       </p>
       <p>
-        <strong>Phone:</strong> {props.getState("phone")}
+        <strong>Phone:</strong>
+        <span data-testid="final_phone">{props.getState("phone")}</span>
       </p>
       <p>
-        <strong>Color Choice:</strong> {props.getState("color")}
+        <strong>Color Choice:</strong>
+        <span data-testid="final_color">{props.getState("color")}</span>
       </p>
       {props.step.hasPrev() && <button onClick={props.prev}>Previous</button>}
-      {props.step.hasNext() && <button onClick={props.next}>Next</button>}
+      {
+        <button
+          data-testid="last-next"
+          onClick={props.next}
+          disabled={props.step.isLast()}
+        >
+          Next
+        </button>
+      }
     </div>
   );
 };
