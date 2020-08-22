@@ -2,6 +2,8 @@
 
 ### React Step Builder is a UI-agnostic multi step interface builder.
 
+[![Maintainability](https://api.codeclimate.com/v1/badges/a99a88d28ad37a79dbf6/maintainability)](https://codeclimate.com/github/codeclimate/codeclimate/maintainability)
+
 ## Overview
 
 React Step Builder allows you to combine states of multiple components in one place
