@@ -3,7 +3,7 @@ import { StepBuilder } from "./StepBuilder";
 
 const StepContext = React.createContext();
 
-const useStepState = (INITIAL_VALUE) => {
+export const useStepState = (INITIAL_VALUE) => {
   const [state, setState] = useState(INITIAL_VALUE);
 
   /**
@@ -58,7 +58,6 @@ export function Step({ component: Component, current, step }) {
   const context = React.useContext(StepContext);
 
   if (current === step.order) {
-    console.log({ ...context, current, step });
     return <Component {...context} current={current} step={step} />;
   }
   return false;

@@ -4,7 +4,7 @@ import { Steps, Step } from "./lib";
 
 import "./style.css";
 
-const Step1 = (props) => {
+export const Step1 = (props) => {
   console.log(props);
   return (
     <div className="step">
@@ -32,7 +32,7 @@ const Step1 = (props) => {
   );
 };
 
-const Step2 = (props) => {
+export const Step2 = (props) => {
   return (
     <div className="step">
       Email:{" "}
@@ -53,7 +53,7 @@ const Step2 = (props) => {
   );
 };
 
-const Step3 = (props) => {
+export const Step3 = (props) => {
   return (
     <div className="step">
       Address:{" "}
@@ -74,7 +74,7 @@ const Step3 = (props) => {
   );
 };
 
-const Step4 = (props) => {
+export const Step4 = (props) => {
   return (
     <div className="step">
       <p>

@@ -55,7 +55,7 @@ export class StepBuilder {
    * @return {number} Order of the jumped step
    */
   jump(stepId) {
-    if (stepId > 0 && stepId < this.size) {
+    if (stepId > 0 && stepId <= this.size) {
       this.current = stepId;
     }
     return this.current;
