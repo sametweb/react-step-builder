@@ -1,36 +1,13 @@
 name: build
 on:
-  push:
-    branches:
-      - master
-    tags:
-      - "!*" # Do not execute on tags
-    paths:
-      - src/*
-      - test/*
-      - "*.json"
-      - yarn.lock
   pull_request:
     paths:
       - "!*.MD"
+  push:
+    branches:
+      - master
 jobs:
-  test:
-    strategy:
-      matrix:
-        platform: [ubuntu-latest, macOS-latest]
-        node: ["12", "10"]
-    name: test/node ${{ matrix.node }}/${{ matrix.platform }}
-    runs-on: ${{ matrix.platform }}
-    steps:
-      - uses: actions/checkout@master
-      - uses: actions/setup-node@master
-        with:
-          node-version: ${{ matrix.node }}
-      - run: npm install
-      - run: npm run build
-      - run: npm test
   coverage:
-    needs: [test]
     name: Test and publish test coverage
     runs-on: ubuntu-latest
     steps:
@@ -39,8 +16,7 @@ jobs:
         with:
           node-version: "12"
       - run: npm install
-      - run: npm run build
-      - uses: paambaati/codeclimate-action@v2.2.4
+      - uses: paambaati/codeclimate-action@v2.4.0
         env:
           CC_TEST_REPORTER_ID: f899ad7dc1ec1b66478740033ff9b529d8359754424f3e433f4f6f0ddd296dbc
         with:
