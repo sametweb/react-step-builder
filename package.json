@@ -18,6 +18,8 @@
   },
   "collectCoverageFrom": [
     "**/*.{js,jsx}",
+    "!**/src/*.{js,jsx}",
+    "**/src/lib/*.{js,jsx}",
     "!**/node_modules/**",
     "!**/tests/**",
     "!**/*.test.{js,jsx}",
