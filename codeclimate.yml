@@ -12,7 +12,9 @@ checks:
       threshold: 50
 exclude_patterns:
   - "tests/"
-  - "spec/"
+  - "src/App.js"
+  - "src/index.js"
+  - "src/style.css"
   - "**/*.spec.js"
   - "**/*.spec.jsx"
   - "**/*.spec.ts"
