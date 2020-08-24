@@ -1,8 +1,11 @@
 # React Step Builder
 
+[![Build Status](https://travis-ci.com/sametweb/react-step-builder.svg?branch=master)](https://travis-ci.com/sametweb/react-step-builder) [![Maintainability](https://api.codeclimate.com/v1/badges/a99a88d28ad37a79dbf6/maintainability)](https://codeclimate.com/github/codeclimate/codeclimate/maintainability)
+<br/><br/>
+
 ### React Step Builder is a UI-agnostic multi step interface builder.
 
-[![Maintainability](https://api.codeclimate.com/v1/badges/a99a88d28ad37a79dbf6/maintainability)](https://codeclimate.com/github/codeclimate/codeclimate/maintainability)
+<br/>
 
 ## Overview
 
