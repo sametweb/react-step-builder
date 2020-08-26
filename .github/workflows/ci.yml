@@ -23,7 +23,6 @@ jobs:
           coverageCommand: npm run coverage
           coverageLocations: "./coverage/clover.xml:clover"
           debug: true
-
         - run: npm test
         - uses: coverallsapp/github-action@master
           with:
