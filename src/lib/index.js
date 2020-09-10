@@ -33,20 +33,12 @@ export function useStepState(INITIAL_VALUE) {
     /* 
       1. Deep copy of state is required
          JSON.parse and JSON.stringify does that
-      2. User types in letter by letter
-         Before first letter, state is undefined
-         After first letter, there is a previous state
-         Because of JS's type conversion feature
-         Each case must be handled separately
+
     */
-    var key = event.target.name;
-    var value;
-    var new_state = JSON.parse(JSON.stringify(state));
-    if (new_state[key]) {
-      value = new_state[key] + event.target.value;
-    } else {
+    var key = event.target.name,
       value = event.target.value;
-    }
+
+    var new_state = JSON.parse(JSON.stringify(state));
     new_state[key] = value;
     setState(new_state);
   }
