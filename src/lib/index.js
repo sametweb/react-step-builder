@@ -1,18 +1,20 @@
 import React, { useState } from "react";
 import { StepBuilder } from "./StepBuilder";
 
-const StepContext = React.createContext();
+var StepContext = React.createContext();
 
-export const useStepState = (INITIAL_VALUE) => {
-  const [state, setState] = useState(INITIAL_VALUE);
-
+export function useStepState(INITIAL_VALUE) {
+  var myState = useState(INITIAL_VALUE);
+  var state = myState[0];
+  var setState = myState[1];
   /**
    * Stores data in state with the provided key.
    * @param {string} key - Key value for data to be stored. Must be unique accross entire state of all steps.
    * @param {string} value - Data to be stored.
    */
   function setStepState(key, value) {
-    setState({ ...state, [key]: value });
+    state[key] = value;
+    setState(state);
   }
 
   /**
@@ -28,14 +30,33 @@ export const useStepState = (INITIAL_VALUE) => {
    * Handler method for syntetic React events. Can be provided as a callback function to 'onChange' property of form elements.
    */
   function handleChange(event) {
-    setState({ ...state, [event.target.name]: event.target.value });
+    /* 
+      1. Deep copy of state is required
+         JSON.parse and JSON.stringify does that
+      2. User types in letter by letter
+         Before first letter, state is undefined
+         After first letter, there is a previous state
+         Because of JS's type conversion feature
+         Each case must be handled separately
+    */
+    var key = event.target.name;
+    var value;
+    var new_state = JSON.parse(JSON.stringify(state));
+    if (new_state[key]) {
+      value = new_state[key] + event.target.value;
+    } else {
+      value = event.target.value;
+    }
+    new_state[key] = value;
+    setState(new_state);
   }
 
   return [state, setStepState, getStepState, handleChange];
-};
+}
 
 /**
- * This is a higher order component that returns your step component with global state of the steps and helper methods.
+ * This is a higher order component that returns your step component
+ * with global state of the steps and helper methods.
  *
  *  @param {string} title - Title for step component. Not required. Default: "Step {order}"
  *  @param {React.Component} component - Step component to render.
@@ -54,8 +75,12 @@ export const useStepState = (INITIAL_VALUE) => {
  * - `state: <object>`
  * - `step: { order: <number>, nextStep: <number>, prevStep: <number>, title: <string> }`
  */
-export function Step({ component: Component, current, step }) {
-  const context = React.useContext(StepContext);
+export function Step(props) {
+  var Component = props.component,
+    current = props.current,
+    step = props.step;
+
+  var context = React.useContext(StepContext);
 
   if (current === step.order) {
     return <Component {...context} current={current} step={step} />;
@@ -72,13 +97,26 @@ export function Step({ component: Component, current, step }) {
  *     <Step title="My second step" component={Step2} />
  *   </Steps>
  */
-export function Steps({ children }) {
-  const [steps, setSteps] = useState(new StepBuilder());
-  const [state, set, get, handleChange] = useStepState({});
-  const [current, setCurrent] = useState(1);
+export function Steps(props) {
+  var children = props.children;
 
-  var stepTitles = children.map((step, order) => {
-    return step.props.title || `Step ${order + 1}`;
+  var mySteps = useState(StepBuilder()),
+    steps = mySteps[0],
+    setSteps = mySteps[1];
+
+  // [state, set, get, handleChange]
+  var myStepState = useStepState({}),
+    state = myStepState[0],
+    set = myStepState[1],
+    get = myStepState[2],
+    handleChange = myStepState[3];
+
+  var myCurrent = useState(1),
+    current = myCurrent[0],
+    setCurrent = myCurrent[1];
+
+  var stepTitles = children.map(function (step, order) {
+    return step.props.title || "Step ".concat(order + 1);
   });
 
   var stepNodes = steps.build(stepTitles);
@@ -111,18 +149,23 @@ export function Steps({ children }) {
     setCurrent(jumpedStep);
   }
 
-  children = children.map((child, id) => {
-    return {
-      ...child,
-      props: {
-        ...child.props,
-        step: stepNodes[id],
-        current,
-      },
-    };
+  children = children.map(function (child, id) {
+    var new_child = Object.assign({}, child);
+    new_child.props = Object.assign({}, child.props);
+    new_child.props.step = stepNodes[id];
+    new_child.props.current = current;
+    return new_child;
+    // return {
+    //   ...child,
+    //   props: {
+    //     ...child.props,
+    //     step: stepNodes[id],
+    //     current,
+    //   },
+    // };
   });
 
-  const value = {
+  var value = {
     state: state,
     setState: set,
     getState: get,

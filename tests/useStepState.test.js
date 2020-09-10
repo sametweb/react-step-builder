@@ -38,12 +38,20 @@ describe("test useStepState", () => {
   it("handleChange method", () => {
     const { result } = renderHook(() => useStepState({}));
 
-    const event = {
+    expect(result.current[0]).toEqual(expect.objectContaining({}));
+
+    let event = {
       target: {
         name: "firstname",
-        value: "John",
+        value: "Joh",
       },
     };
+
+    act(() => {
+      result.current[3](event);
+    });
+
+    event.target.value = "John";
 
     act(() => {
       result.current[3](event);

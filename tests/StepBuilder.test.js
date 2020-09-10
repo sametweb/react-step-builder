@@ -3,7 +3,7 @@ const { StepBuilder, StepNode } = require("../src/lib/StepBuilder");
 const test_steps = ["Step1", "Step2", "Step3"];
 describe("StepBuilder", () => {
   describe("constructor()", () => {
-    const steps = new StepBuilder();
+    const steps = StepBuilder();
     it("creates the object with start=1, current=1, size=null properties", () => {
       expect(steps.start).toBe(1);
       expect(steps.current).toBe(1);
@@ -12,7 +12,7 @@ describe("StepBuilder", () => {
   });
 
   describe(".build()", () => {
-    const steps = new StepBuilder();
+    const steps = StepBuilder();
     const built = steps.build(test_steps);
 
     it("sets steps.size to the step count", () => {
@@ -56,7 +56,7 @@ describe("StepBuilder", () => {
   });
 
   describe(".next()", () => {
-    const steps = new StepBuilder();
+    const steps = StepBuilder();
     steps.build(test_steps);
     it("sets this.current to +1", () => {
       expect(steps.current).toBe(1);
@@ -72,7 +72,7 @@ describe("StepBuilder", () => {
   });
 
   describe(".prev()", () => {
-    const steps = new StepBuilder();
+    const steps = StepBuilder();
     steps.build(test_steps);
     it("sets this.current to -1", () => {
       steps.next(); // 2
@@ -89,7 +89,7 @@ describe("StepBuilder", () => {
   });
 
   describe(".jump(step_id)", () => {
-    const steps = new StepBuilder();
+    const steps = StepBuilder();
     steps.build(test_steps);
     it("sets this.current to step_id", () => {
       steps.jump(3);

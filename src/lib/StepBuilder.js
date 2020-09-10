@@ -1,24 +1,22 @@
 // prettier-ignore
-export class StepBuilder {
+export const StepBuilder = () => ({
   /**
-   * Main class for building the Step structure
+   * Main function for building the Step structure
    */
 
-  constructor () {
-    this.start = 1;
-    this.current = 1;
-    this.size = null;
-  }
+    start: 1,
+    current: 1,
+    size: null,
   /**
    * Builds the steps by connecting each step to each other in an order
    * @param {Array} steps - Array of step titles
    * @return {Array} Returns an array of connected steps
    */
-  build (steps) {
+  build: function (steps) {
     this.size = steps.length;
 
     return steps.map((title, order) => {
-      let newStep = new StepNode(title);
+      let newStep = StepNode(title);
 
       newStep.order = order + 1;
 
@@ -30,7 +28,7 @@ export class StepBuilder {
 
       return newStep;
     });
-  }
+  },
 
   /**
    * Moves to the next step if there is any available, and returns
@@ -38,10 +36,10 @@ export class StepBuilder {
    * the current step.
    * @return {number} Order of the next available step
    */
-  next () {
+  next: function () {
     this.current = this.current === this.size ? this.current : this.current + 1;
     return this.current;
-  }
+  },
 
   /**
    * Moves to the previous step if there is any available, and returns
@@ -49,10 +47,10 @@ export class StepBuilder {
    * the current step.
    * @return {number} Order of the previous available step
    */
-  prev () {
+  prev: function () {
     this.current = this.current === 1 ? 1 : this.current - 1;
     return this.current;
-  }
+  },
 
   /**
    * Jumps to the provided step and returns the order number. If the step
@@ -60,52 +58,53 @@ export class StepBuilder {
    * @param {number} step_order The order of the step to jump to.
    * @return {number} Order of the jumped step
    */
-  jump (stepId) {
+  jump: function (stepId) {
     if (stepId > 0 && stepId <= this.size) {
       this.current = stepId;
     }
     return this.current;
   }
-}
+})
 
 // prettier-ignore
-class StepNode {
-  constructor (title) {
-    this.order = null;
-    this.title = title;
-    this.nextStep = null;
-    this.prevStep = null;
-  }
+export const StepNode = (title) => {
 
-  /**
-   * Checks if the step is the first one in the steps list
-   * @return {boolean}
-   */
-  isFirst () {
-    return !this.prevStep;
-  }
+  return {
 
-  /**
-   * Checks if the step is the last one in the steps list
-   * @return {boolean}
-   */
-  isLast () {
-    return !this.nextStep;
-  }
+    order: null,
+    title: title,
+    nextStep: null,
+    prevStep: null,
+    /**
+     * Checks if the step is the first one in the steps list
+     * @return {boolean}
+     */
+    isFirst: function () {
+      return !this.prevStep;
+    },
 
-  /**
-   * Checks if the current step has a previous step
-   * @return {boolean}
-   */
-  hasPrev () {
-    return Boolean(this.prevStep);
-  }
+    /**
+     * Checks if the step is the last one in the steps list
+     * @return {boolean}
+     */
+    isLast: function () {
+      return !this.nextStep;
+    },
 
-  /**
-   * Checks if the current step has a next step
-   * @return {boolean}
-   */
-  hasNext () {
-    return Boolean(this.nextStep);
+    /**
+     * Checks if the current step has a previous step
+     * @return {boolean}
+     */
+    hasPrev: function () {
+      return Boolean(this.prevStep);
+    },
+
+    /**
+     * Checks if the current step has a next step
+     * @return {boolean}
+     */
+    hasNext: function () {
+      return Boolean(this.nextStep);
+    }
   }
 }
