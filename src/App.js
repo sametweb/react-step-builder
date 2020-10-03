@@ -19,6 +19,13 @@ const Step1 = (props) => {
         value={props.getState("lastname")}
         onChange={props.handleChange}
       />
+      Over 18?{" "}
+      <input
+        type="checkbox"
+        name="over18"
+        checked={props.getState("over18")}
+        onChange={props.handleChange}
+      />
       <span>
         <button
           data-testid="green"

@@ -13,8 +13,9 @@ export function useStepState(INITIAL_VALUE) {
    * @param {string} value - Data to be stored.
    */
   function setStepState(key, value) {
-    state[key] = value;
-    setState(state);
+    var new_state = JSON.parse(JSON.stringify(state));
+    new_state[key] = value;
+    setState(new_state);
   }
 
   /**
@@ -36,7 +37,10 @@ export function useStepState(INITIAL_VALUE) {
 
     */
     var key = event.target.name,
-      value = event.target.value;
+      value =
+        event.target.type === "checkbox"
+          ? event.target.checked
+          : event.target.value;
 
     var new_state = JSON.parse(JSON.stringify(state));
     new_state[key] = value;
