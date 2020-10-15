@@ -1,70 +1,69 @@
-// prettier-ignore
 export const StepBuilder = () => ({
-  /**
-   * Main function for building the Step structure
-   */
+	/**
+	 * Main function for building the Step structure
+	 */
 
-    start: 1,
-    current: 1,
-    size: null,
-  /**
-   * Builds the steps by connecting each step to each other in an order
-   * @param {Array} steps - Array of step titles
-   * @return {Array} Returns an array of connected steps
-   */
-  build: function (steps) {
-    this.size = steps.length;
+	start: 1,
+	current: 1,
+	size: null,
+	/**
+	 * Builds the steps by connecting each step to each other in an order
+	 * @param {Array} steps - Array of step titles
+	 * @return {Array} Returns an array of connected steps
+	 */
+	build: function (steps) {
+		this.size = steps.length;
 
-    return steps.map((title, order) => {
-      let newStep = StepNode(title);
+		return steps.map((title, order) => {
+			let newStep = StepNode(title);
 
-      newStep.order = order + 1;
+			newStep.order = order + 1;
 
-      let prev = order === 0 ? null : newStep.order - 1;
-      let next = order === this.size - 1 ? null : newStep.order + 1;
+			let prev = order === 0 ? null : newStep.order - 1;
+			let next = order === this.size - 1 ? null : newStep.order + 1;
 
-      newStep.nextStep = next;
-      newStep.prevStep = prev;
+			newStep.nextStep = next;
+			newStep.prevStep = prev;
 
-      return newStep;
-    });
-  },
+			return newStep;
+		});
+	},
 
-  /**
-   * Moves to the next step if there is any available, and returns
-   * the order number. If the current step is the last one, it returns
-   * the current step.
-   * @return {number} Order of the next available step
-   */
-  next: function () {
-    this.current = this.current === this.size ? this.current : this.current + 1;
-    return this.current;
-  },
+	/**
+	 * Moves to the next step if there is any available, and returns
+	 * the order number. If the current step is the last one, it returns
+	 * the current step.
+	 * @return {number} Order of the next available step
+	 */
+	next: function () {
+		this.current = this.current === this.size ? this.current : this.current + 1;
+		return this.current;
+	},
 
-  /**
-   * Moves to the previous step if there is any available, and returns
-   * the order number. If the current step is the first one, it returns
-   * the current step.
-   * @return {number} Order of the previous available step
-   */
-  prev: function () {
-    this.current = this.current === 1 ? 1 : this.current - 1;
-    return this.current;
-  },
+	/**
+	 * Moves to the previous step if there is any available, and returns
+	 * the order number. If the current step is the first one, it returns
+	 * the current step.
+	 * @return {number} Order of the previous available step
+	 */
+	prev: function () {
+		this.current = this.current === 1 ? 1 : this.current - 1;
+		return this.current;
+	},
 
-  /**
-   * Jumps to the provided step and returns the order number. If the step
-   * is not available, returns the current step number.
-   * @param {number} step_order The order of the step to jump to.
-   * @return {number} Order of the jumped step
-   */
-  jump: function (stepId) {
-    if (stepId > 0 && stepId <= this.size) {
-      this.current = stepId;
-    }
-    return this.current;
-  }
-})
+	/**
+	 * Jumps to the provided step and returns the order number. If the step
+	 * is not available, returns the current step number.
+	 * @param {number} step_order The order of the step to jump to.
+	 * @return {number} Order of the jumped step
+	 */
+	jump: function (stepId) {
+		if (stepId > 0 && stepId <= this.size) {
+			this.current = stepId;
+		}
+		return this.current;
+	},
+});
 
 // prettier-ignore
 export const StepNode = (title) => {

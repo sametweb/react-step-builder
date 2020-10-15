@@ -4,50 +4,54 @@ import { StepBuilder } from "./StepBuilder";
 var StepContext = React.createContext();
 
 export function useStepState(INITIAL_VALUE) {
-  var myState = useState(INITIAL_VALUE);
-  var state = myState[0];
-  var setState = myState[1];
-  /**
-   * Stores data in state with the provided key.
-   * @param {string} key - Key value for data to be stored. Must be unique accross entire state of all steps.
-   * @param {string} value - Data to be stored.
-   */
-  function setStepState(key, value) {
-    var new_state = JSON.parse(JSON.stringify(state));
-    new_state[key] = value;
-    setState(new_state);
-  }
+	var myState = useState(INITIAL_VALUE);
+	var state = myState[0];
+	var setState = myState[1];
 
-  /**
-   * Returns the data from state for the provided key.
-   * @param {string} key - Key value for data to be retrieved.
-   * @return {string} Data to be retrieved from state.
-   */
-  function getStepState(key) {
-    return state[key] || "";
-  }
+	/**
+	 * Stores data in state with the provided key.
+	 * @param {string} key - Key value for data to be stored. Must be unique accross entire state of all steps.
+	 * @param {string} value - Data to be stored.
+	 */
+	function setStepState(key, value) {
+		var new_state = JSON.parse(JSON.stringify(state));
+		new_state[key] = value;
+		setState(new_state);
+	}
 
-  /**
-   * Handler method for syntetic React events. Can be provided as a callback function to 'onChange' property of form elements.
-   */
-  function handleChange(event) {
-    /* 
+	/**
+	 * Returns the data from state for the provided key.
+	 * @param {string} key - Key value for data to be retrieved.
+	 * @return {string} Data to be retrieved from state.
+	 */
+	function getStepState(key) {
+		if (!state[key]) {
+			state[key] = "";
+		}
+		return state[key];
+	}
+
+	/**
+	 * Handler method for syntetic React events. Can be provided as a callback function to 'onChange' property of form elements.
+	 */
+	function handleChange(event) {
+		/* 
       1. Deep copy of state is required
          JSON.parse and JSON.stringify does that
 
     */
-    var key = event.target.name,
-      value =
-        event.target.type === "checkbox"
-          ? event.target.checked
-          : event.target.value;
+		var key = event.target.name,
+			value =
+				event.target.type === "checkbox"
+					? event.target.checked
+					: event.target.value;
 
-    var new_state = JSON.parse(JSON.stringify(state));
-    new_state[key] = value;
-    setState(new_state);
-  }
+		var new_state = JSON.parse(JSON.stringify(state));
+		new_state[key] = value;
+		setState(new_state);
+	}
 
-  return [state, setStepState, getStepState, handleChange];
+	return [state, setStepState, getStepState, handleChange];
 }
 
 /**
@@ -70,18 +74,19 @@ export function useStepState(INITIAL_VALUE) {
  * - `setState: ƒ(<key, value>)`
  * - `state: <object>`
  * - `step: { order: <number>, nextStep: <number>, prevStep: <number>, title: <string> }`
+ * - `allSteps: ƒ()`
  */
 export function Step(props) {
-  var Component = props.component,
-    current = props.current,
-    step = props.step;
+	var Component = props.component,
+		current = props.current,
+		step = props.step;
 
-  var context = React.useContext(StepContext);
+	var context = React.useContext(StepContext);
 
-  if (current === step.order) {
-    return <Component {...context} current={current} step={step} />;
-  }
-  return false;
+	if (current === step.order) {
+		return <Component {...context} current={current} step={step} />;
+	}
+	return false;
 }
 
 /**
@@ -94,82 +99,82 @@ export function Step(props) {
  *   </Steps>
  */
 export function Steps(props) {
-  var children = props.children;
+	var children = props.children;
 
-  var mySteps = useState(StepBuilder()),
-    steps = mySteps[0],
-    setSteps = mySteps[1];
+	var mySteps = useState(StepBuilder()),
+		steps = mySteps[0],
+		setSteps = mySteps[1];
 
-  // [state, set, get, handleChange]
-  var myStepState = useStepState({}),
-    state = myStepState[0],
-    set = myStepState[1],
-    get = myStepState[2],
-    handleChange = myStepState[3];
+	var myStepState = useStepState({}),
+		state = myStepState[0],
+		set = myStepState[1],
+		get = myStepState[2],
+		handleChange = myStepState[3];
 
-  var myCurrent = useState(1),
-    current = myCurrent[0],
-    setCurrent = myCurrent[1];
+	var myCurrent = useState(1),
+		current = myCurrent[0],
+		setCurrent = myCurrent[1];
 
-  var stepTitles = children.map(function (step, order) {
-    return step.props.title || "Step ".concat(order + 1);
-  });
+	var stepTitles = children.map(function (step, order) {
+		return step.props.title || "Step ".concat(order + 1);
+	});
 
-  var stepNodes = steps.build(stepTitles);
+	var stepNodes = steps.build(stepTitles);
 
-  /**
-   * Moves to the next step
-   */
-  function next() {
-    var nextStep = steps.next();
-    setSteps(steps);
-    setCurrent(nextStep);
-  }
+	/**
+	 * Moves to the next step
+	 */
+	function next() {
+		var nextStep = steps.next();
+		setSteps(steps);
+		setCurrent(nextStep);
+	}
 
-  /**
-   * Moves to the previous step
-   */
-  function prev() {
-    var prevStep = steps.prev();
-    setSteps(steps);
-    setCurrent(prevStep);
-  }
+	/**
+	 * Moves to the previous step
+	 */
+	function prev() {
+		var prevStep = steps.prev();
+		setSteps(steps);
+		setCurrent(prevStep);
+	}
 
-  /**
-   * Moves to the step with provided step order
-   * @param {number} stepOrder - Step order number to jump
-   */
-  function jump(step) {
-    var jumpedStep = steps.jump(step);
-    setSteps(steps);
-    setCurrent(jumpedStep);
-  }
+	/**
+	 * Moves to the step with provided step order
+	 * @param {number} stepOrder - Step order number to jump
+	 */
+	function jump(step) {
+		var jumpedStep = steps.jump(step);
+		setSteps(steps);
+		setCurrent(jumpedStep);
+	}
 
-  children = children.map(function (child, id) {
-    var new_child = Object.assign({}, child);
-    new_child.props = Object.assign({}, child.props);
-    new_child.props.step = stepNodes[id];
-    new_child.props.current = current;
-    return new_child;
-    // return {
-    //   ...child,
-    //   props: {
-    //     ...child.props,
-    //     step: stepNodes[id],
-    //     current,
-    //   },
-    // };
-  });
+	/**
+	 * Returns an array of all steps with order and title property
+	 */
+	function allSteps() {
+		return stepNodes.map(({ order, title }) => ({ order, title }));
+	}
 
-  var value = {
-    state: state,
-    setState: set,
-    getState: get,
-    handleChange,
-    next,
-    prev,
-    jump,
-  };
+	children = children.map(function (child, id) {
+		var new_child = Object.assign({}, child);
+		new_child.props = Object.assign({}, child.props);
+		new_child.props.step = stepNodes[id];
+		new_child.props.current = current;
+		new_child.props.step.progress = current / children.length;
+		return new_child;
+	});
 
-  return <StepContext.Provider value={value}>{children}</StepContext.Provider>;
+	var value = {
+		state: state,
+		setState: set,
+		getState: get,
+		handleChange,
+		next,
+		prev,
+		jump,
+		allSteps,
+	};
+
+	return <StepContext.Provider value={value}>{children}</StepContext.Provider>;
 }
