@@ -1,70 +1,70 @@
 {
-  "name": "react-step-builder",
-  "description": "Unopinionated multi step interface builder.",
-  "author": "Samet Mutevelli <mutevellisamet@gmail.com> (https://sametmutevelli.com)",
-  "version": "1.1.12",
-  "private": false,
-  "devDependencies": {
-    "@babel/cli": "^7.8.4",
-    "@babel/core": "^7.11.1",
-    "@babel/runtime": "^7.8.4",
-    "@testing-library/jest-dom": "^5.11.3",
-    "@testing-library/react": "^10.4.9",
-    "@testing-library/react-hooks": "^3.4.1",
-    "coveralls": "^3.1.0",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
-    "react-scripts": "3.4.0",
-    "react-test-renderer": "^16.13.1"
-  },
-  "collectCoverageFrom": [
-    "**/*.{js,jsx}",
-    "!**/src/*.{js,jsx}",
-    "**/src/lib/*.{js,jsx}",
-    "!**/node_modules/**",
-    "!**/tests/**",
-    "!**/*.test.{js,jsx}",
-    "!**/coverage/**"
-  ],
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "SET NODE_ENV=production&babel src/lib --out-dir dist --copy-files --ignore __tests__,spec.js,test.js,__snapshots__",
-    "test": "jest --collect-coverage",
-    "coverage": "jest --coverage --detectOpenHandles --forceExit || true",
-    "coveralls": "jest --coverage && cat ./coverage/lcov.info | coveralls"
-  },
-  "keywords": [
-    "step-builder",
-    "react-step-builder",
-    "create steps in react",
-    "step by step form",
-    "multi step form",
-    "react multi step registration"
-  ],
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "main": "dist/index",
-  "typings": "dist/index",
-  "module": "dist/index.js",
-  "files": [
-    "dist",
-    "README.md"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/sametweb/react-step-builder"
-  }
+	"name": "react-step-builder",
+	"description": "Unopinionated multi step interface builder.",
+	"author": "Samet Mutevelli <mutevellisamet@gmail.com> (https://sametmutevelli.com)",
+	"version": "1.1.13",
+	"private": false,
+	"devDependencies": {
+		"@babel/cli": "^7.8.4",
+		"@babel/core": "^7.11.1",
+		"@babel/runtime": "^7.8.4",
+		"@testing-library/jest-dom": "^5.11.3",
+		"@testing-library/react": "^10.4.9",
+		"@testing-library/react-hooks": "^3.4.1",
+		"coveralls": "^3.1.0",
+		"react": "^16.12.0",
+		"react-dom": "^16.12.0",
+		"react-scripts": "3.4.0",
+		"react-test-renderer": "^16.13.1"
+	},
+	"collectCoverageFrom": [
+		"**/*.{js,jsx}",
+		"!**/src/*.{js,jsx}",
+		"**/src/lib/*.{js,jsx}",
+		"!**/node_modules/**",
+		"!**/tests/**",
+		"!**/*.test.{js,jsx}",
+		"!**/coverage/**"
+	],
+	"scripts": {
+		"start": "react-scripts start",
+		"build": "SET NODE_ENV=production&babel src/lib --out-dir dist --copy-files --ignore __tests__,spec.js,test.js,__snapshots__",
+		"test": "jest --collect-coverage",
+		"coverage": "jest --coverage --detectOpenHandles --forceExit || true",
+		"coveralls": "jest --coverage && cat ./coverage/lcov.info | coveralls"
+	},
+	"keywords": [
+		"step-builder",
+		"react-step-builder",
+		"create steps in react",
+		"step by step form",
+		"multi step form",
+		"react multi step registration"
+	],
+	"eslintConfig": {
+		"extends": "react-app"
+	},
+	"browserslist": {
+		"production": [
+			">0.2%",
+			"not dead",
+			"not op_mini all"
+		],
+		"development": [
+			"last 1 chrome version",
+			"last 1 firefox version",
+			"last 1 safari version"
+		]
+	},
+	"main": "dist/index",
+	"typings": "dist/index",
+	"module": "dist/index.js",
+	"files": [
+		"dist",
+		"README.md"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/sametweb/react-step-builder"
+	}
 }
