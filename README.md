@@ -29,9 +29,9 @@ Using [npm](https://www.npmjs.com/):
 
 ```js
 <Steps>
-  <Step title="My First Step" component={Step1} />
-  <Step title="My Second Step" component={Step2} />
-  <Step title="My Third Step" component={Step3} />
+	<Step title="My First Step" component={Step1} />
+	<Step title="My Second Step" component={Step2} />
+	<Step title="My Third Step" component={Step3} />
 </Steps>
 ```
 
@@ -124,12 +124,19 @@ If your form element has `name="username"`, then it is stored in state as `{prop
 
 This object provides information about current step and methods to move between steps. Available properties and methods:
 
+### <strong>`props.allSteps`</strong>
+
+`function()`
+
+This function returns an array of each step's order number and title, can be used to create a progress bar above each step.
+
 ### Properties
 
 - `props.step.order` - Order number of the props.step.
 - `props.step.title` - Title of the step (you provided when creating `<Step />` component)
 - `props.step.nextStep` - Order number of the next step, `null` if it's not available
 - `props.step.prevStep` - Order number of the previous step, `null` if it's not available
+- `props.step.progress` - A number from 0 to 1 that represents current step's progress (current order divided by total number of steps)
 
 ### Methods
 
