@@ -22,6 +22,7 @@ const Step1 = (props) => {
 			<input
 				type="checkbox"
 				name="over18"
+				data-testid="checkbox"
 				checked={props.getState("over18")}
 				onChange={props.handleChange}
 			/>
@@ -140,6 +141,14 @@ const Step4 = (props) => {
 					Next
 				</button>
 			}
+			<div>
+				{props.allSteps().map(({ order, title }) => (
+					<p key={order}>
+						<span data-testid={`order ${order}`}>{order}</span>{" "}
+						<span data-testid={`title ${order}`}>{title}</span>
+					</p>
+				))}
+			</div>
 		</div>
 	);
 };
