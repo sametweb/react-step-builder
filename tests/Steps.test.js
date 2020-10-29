@@ -2,6 +2,26 @@ import React from "react";
 import { render, fireEvent, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import App from "../src/App";
+import Step1 from "../src/stepComponents/Step1";
+import { Step, Steps } from "../src/lib";
+import Step2 from "../src/stepComponents/Step2";
+
+const beforeStepChange = jest.fn(() => console.log("beforeStepChange"));
+
+test("beforeStepChange is called before step change", () => {
+	render(
+		<Steps>
+			<Step component={Step1} beforeStepChange={beforeStepChange} />
+			<Step component={Step2} />
+		</Steps>,
+	);
+
+	let next_button = screen.getByText(/next/i);
+
+	fireEvent.click(next_button);
+
+	expect(beforeStepChange).toHaveBeenCalled();
+});
 
 test("Rendered components: Steps, Step", () => {
 	render(<App />);

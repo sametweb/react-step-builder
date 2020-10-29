@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StepBuilder } from "./StepBuilder";
 
 var StepContext = React.createContext();
@@ -79,9 +79,16 @@ export function useStepState(INITIAL_VALUE) {
 export function Step(props) {
 	var Component = props.component,
 		current = props.current,
-		step = props.step;
+		step = props.step,
+		beforeStepChange = props.beforeStepChange;
 
 	var context = React.useContext(StepContext);
+
+	useEffect(() => {
+		return () => {
+			if (current === step.order && beforeStepChange) beforeStepChange();
+		};
+	}, [current, step.order, beforeStepChange]);
 
 	if (current === step.order) {
 		return <Component {...context} current={current} step={step} />;

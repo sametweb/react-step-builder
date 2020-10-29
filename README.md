@@ -39,10 +39,10 @@ Using [npm](https://www.npmjs.com/):
 
 ## Documentation
 
-| Component   | Description                                                                                                                                                                                                                                                    |
-| ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `<Steps />` | Wrapper component for Step components. Step components must be wrapped in `<Steps />` component.                                                                                                                                                               |
-| `<Step />`  | This is the component you create for each `step` in your application. The `title` prop takes a title for the step, which is provided back in `props` in the step component. The `component` prop takes the component that you would like to show in that step. |
+| Component   | Description                                                                                                                                                                                                                                                                                                                                                                         |
+| ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `<Steps />` | Wrapper component for Step components. Step components must be wrapped in `<Steps />` component.                                                                                                                                                                                                                                                                                    |
+| `<Step />`  | This is the component you create for each `step` in your application. <br />`title` prop takes a title for the step, which is provided back in `props` in the step component. <br />`component` prop takes the component that you would like to show in that step. <br />`beforeStepChange` prop takes a callback function to run right before the current step is about to change. |
 
 <br />
 
