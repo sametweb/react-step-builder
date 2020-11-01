@@ -1,109 +1,87 @@
-export const StepBuilder = () => ({
-	/**
-	 * Main function for building the Step structure
-	 */
-
-	start: 1,
-	current: 1,
-	size: null,
-	/**
-	 * Builds the steps by connecting each step to each other in an order
-	 * @param {Array} steps - Array of step titles
-	 * @return {Array} Returns an array of connected steps
-	 */
-	build: function (steps) {
-		this.size = steps.length;
-
-		return steps.map((title, order) => {
-			let newStep = StepNode(title);
-
-			newStep.order = order + 1;
-
-			let prev = order === 0 ? null : newStep.order - 1;
-			let next = order === this.size - 1 ? null : newStep.order + 1;
-
-			newStep.nextStep = next;
-			newStep.prevStep = prev;
-
-			return newStep;
-		});
-	},
-
-	/**
-	 * Moves to the next step if there is any available, and returns
-	 * the order number. If the current step is the last one, it returns
-	 * the current step.
-	 * @return {number} Order of the next available step
-	 */
-	next: function () {
-		this.current = this.current === this.size ? this.current : this.current + 1;
-		return this.current;
-	},
-
-	/**
-	 * Moves to the previous step if there is any available, and returns
-	 * the order number. If the current step is the first one, it returns
-	 * the current step.
-	 * @return {number} Order of the previous available step
-	 */
-	prev: function () {
-		this.current = this.current === 1 ? 1 : this.current - 1;
-		return this.current;
-	},
-
-	/**
-	 * Jumps to the provided step and returns the order number. If the step
-	 * is not available, returns the current step number.
-	 * @param {number} step_order The order of the step to jump to.
-	 * @return {number} Order of the jumped step
-	 */
-	jump: function (stepId) {
-		if (stepId > 0 && stepId <= this.size) {
-			this.current = stepId;
-		}
-		return this.current;
-	},
-});
-
-// prettier-ignore
-export const StepNode = (title) => {
-
-  return {
-
-    order: null,
-    title: title,
-    nextStep: null,
-    prevStep: null,
+export var StepBuilder = function () { return ({
     /**
-     * Checks if the step is the first one in the steps list
-     * @return {boolean}
+     * Main function for building the Step structure
      */
-    isFirst: function () {
-      return !this.prevStep;
+    start: 1,
+    current: 1,
+    size: 0,
+    /**
+     * Builds the steps by connecting each step to each other in an order
+     */
+    build: function (steps) {
+        var _this = this;
+        this.size = steps.length;
+        return steps.map(function (title, order) {
+            var newStep = StepNode(title);
+            newStep.order = order + 1;
+            var prev = order === 0 ? 0 : newStep.order - 1;
+            var next = order === _this.size - 1 ? 0 : newStep.order + 1;
+            newStep.nextStep = next;
+            newStep.prevStep = prev;
+            newStep.progress = newStep.order / steps.length;
+            return newStep;
+        });
     },
-
     /**
-     * Checks if the step is the last one in the steps list
-     * @return {boolean}
+     * Moves to the next step if there is any available, and returns
+     * the order number. If the current step is the last one, it returns
+     * the current step.
      */
-    isLast: function () {
-      return !this.nextStep;
+    next: function () {
+        this.current = this.current === this.size ? this.current : this.current + 1;
+        return this.current;
     },
-
     /**
-     * Checks if the current step has a previous step
-     * @return {boolean}
+     * Moves to the previous step if there is any available, and returns
+     * the order number. If the current step is the first one, it returns
+     * the current step.
      */
-    hasPrev: function () {
-      return Boolean(this.prevStep);
+    prev: function () {
+        this.current = this.current === 1 ? 1 : this.current - 1;
+        return this.current;
     },
-
     /**
-     * Checks if the current step has a next step
-     * @return {boolean}
+     * Jumps to the provided step and returns the order number. If the step
+     * is not available, returns the current step number.
      */
-    hasNext: function () {
-      return Boolean(this.nextStep);
-    }
-  }
-}
+    jump: function (stepId) {
+        if (stepId > 0 && stepId <= this.size) {
+            this.current = stepId;
+        }
+        return this.current;
+    },
+}); };
+export var StepNode = function (title) {
+    return {
+        order: 0,
+        title: title,
+        nextStep: 0,
+        prevStep: 0,
+        progress: 0,
+        /**
+         * Checks if the step is the first one in the steps list
+         */
+        isFirst: function () {
+            return !this.prevStep;
+        },
+        /**
+         * Checks if the step is the last one in the steps list
+         */
+        isLast: function () {
+            return !this.nextStep;
+        },
+        /**
+         * Checks if the current step has a previous step
+         */
+        hasPrev: function () {
+            return Boolean(this.prevStep);
+        },
+        /**
+         * Checks if the current step has a next step
+         */
+        hasNext: function () {
+            return Boolean(this.nextStep);
+        },
+    };
+};
+//# sourceMappingURL=StepBuilder.js.map
