@@ -33,12 +33,14 @@
 	},
 	"collectCoverageFrom": [
 		"**/*.{js,jsx}",
+		"!**/*.{ts,tsx}",
 		"!**/src/*.{js,jsx}",
 		"**/src/lib/*.{js,jsx}",
 		"!**/node_modules/**",
 		"!**/tests/**",
 		"!**/*.test.{js,jsx}",
-		"!**/coverage/**"
+		"!**/coverage/**",
+		"!*/src/dist/**"
 	],
 	"scripts": {
 		"start": "react-scripts start",

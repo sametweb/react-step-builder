@@ -1,4 +1,4 @@
-const { StepBuilder, StepNode } = require("../src/lib/StepBuilder");
+const { StepBuilder } = require("../src/dist/StepBuilder");
 
 const test_steps = ["Step1", "Step2", "Step3"];
 describe("StepBuilder", () => {

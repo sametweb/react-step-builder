@@ -30,18 +30,18 @@ export default (props) => {
 				<strong>Color Choice:</strong>
 				<span data-testid="final_color">{props.getState("color")}</span>
 			</p>
-			{props.step.hasPrev() && <button onClick={props.prev}>Previous</button>}
+			{props.hasPrev() && <button onClick={props.prev}>Previous</button>}
 			{
 				<button
 					data-testid="last-next"
 					onClick={props.next}
-					disabled={props.step.isLast()}
+					disabled={props.isLast()}
 				>
 					Next
 				</button>
 			}
 			<div>
-				{props.allSteps().map(({ order, title }) => (
+				{props.allSteps.map(({ order, title }) => (
 					<p key={order}>
 						<span data-testid={`order ${order}`}>{order}</span>{" "}
 						<span data-testid={`title ${order}`}>{title}</span>

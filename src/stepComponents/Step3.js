@@ -18,8 +18,8 @@ export default (props) => {
 				value={props.getState("phone")}
 				onChange={props.handleChange}
 			/>
-			{props.step.hasPrev() && <button onClick={props.prev}>Previous</button>}
-			{props.step.hasNext() && <button onClick={props.next}>Next</button>}
+			{props.hasPrev() && <button onClick={props.prev}>Previous</button>}
+			{props.hasNext() && <button onClick={props.next}>Next</button>}
 		</div>
 	);
 };

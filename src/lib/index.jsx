@@ -1,146 +1,137 @@
-import * as React from "react";
-import { StepBuilder } from "./StepBuilder";
-var defaultContext = {
+import React, { useContext, useEffect, useState } from "react";
+var StepsContext = React.createContext({
+    size: 0,
+    current: 1,
+    progress: 0,
+    allSteps: [],
     state: {},
-    title: "",
-    beforeStepChange: function () { },
-    setState: function () { },
-    getState: function () { },
-    handleChange: function () { },
+    handleChange: function (event) { },
+    setState: function (key, value) { },
+    getState: function (key) { return ""; },
     next: function () { },
     prev: function () { },
-    jump: function () { },
-    allSteps: function () { return []; },
-    current: 0,
-    step: {
-        order: 0,
-        title: "",
-        nextStep: 0,
-        prevStep: 0,
-        progress: 0,
-        hasPrev: function () { return false; },
-        hasNext: function () { return false; },
-        isFirst: function () { return false; },
-        isLast: function () { return false; },
-    },
-};
-var StepContext = React.createContext(defaultContext);
-function useStepState(INITIAL_VALUE) {
-    var myState = React.useState(INITIAL_VALUE);
-    var state = myState[0];
-    var setState = myState[1];
-    /**
-     * Stores data in state with the provided key.
-     */
-    var setStepState = function (key, value) {
-        var new_state = JSON.parse(JSON.stringify(state));
-        new_state[key] = value;
-        setState(new_state);
-    };
-    /**
-     * Returns the data from state for the provided key.
-     */
-    var getStepState = function (key) {
-        if (!state[key]) {
-            state[key] = "";
-        }
-        return state[key];
-    };
-    /**
-     * Handler method for syntetic React events. Can be provided as a callback function to 'onChange' property of form elements.
-     */
-    var handleChange = function (event) {
-        var key = event.target.name, value = event.target.type === "checkbox"
-            ? event.target.checked
-            : event.target.value;
-        var new_state = JSON.parse(JSON.stringify(state));
-        new_state[key] = value;
-        setState(new_state);
-    };
-    return [state, setStepState, getStepState, handleChange];
-}
+    jump: function (id) { },
+});
+var StepContext = React.createContext({ order: 0 });
 /**
- * This is a higher order component that returns your step component
- * with global state of the steps and helper methods.
+ * Wrapper component for `Step` components.
  */
-export function Step(props) {
-    var Component = props.component, title = props.title, beforeStepChange = props.beforeStepChange;
-    var context = React.useContext(StepContext);
-    context.title = title;
-    context.beforeStepChange = beforeStepChange;
-    React.useEffect(function () {
-        return function () {
-            if (context.current === context.step.order && beforeStepChange)
-                beforeStepChange();
-        };
-    }, [context.current, context.step.order, beforeStepChange]);
-    if (context.current === context.step.order) {
-        return (<Component {...context} current={context.current} step={context.step}/>);
-    }
-    return null;
-}
 export function Steps(_a) {
     var children = _a.children;
-    var mySteps = React.useState(StepBuilder()), steps = mySteps[0], setSteps = mySteps[1];
-    var myStepState = useStepState({}), state = myStepState[0], set = myStepState[1], get = myStepState[2], handleChange = myStepState[3];
-    var myCurrent = React.useState(1), current = myCurrent[0], setCurrent = myCurrent[1];
-    var stepTitles = children.map(function (step, order) {
-        return step.props.title;
+    var childSteps = React.Children.toArray(children);
+    var allSteps = childSteps.map(function (child, order) {
+        return {
+            title: child.title || "Step " + (order + 1),
+            order: order + 1,
+        };
     });
-    var stepDataCollection = steps.build(stepTitles);
+    var size = childSteps.length;
+    var _b = useState(1), current = _b[0], setCurrent = _b[1];
+    var _c = useState({}), stepState = _c[0], setStepState = _c[1];
+    var _d = useState(current / size), progress = _d[0], setProgress = _d[1];
+    useEffect(function () {
+        setProgress(current / size);
+    }, [current]);
     /**
-     * Moves to the next step
+     * Moves to the next step.
      */
-    function next() {
-        var nextStep = steps.next();
-        setSteps(steps);
-        setCurrent(nextStep);
-    }
+    var next = function () {
+        if (current < size) {
+            setCurrent(current + 1);
+        }
+    };
     /**
-     * Moves to the previous step
+     * Moves to the previous step.
      */
-    function prev() {
-        var prevStep = steps.prev();
-        setSteps(steps);
-        setCurrent(prevStep);
-    }
+    var prev = function () {
+        if (current > 1) {
+            setCurrent(current - 1);
+        }
+    };
     /**
-     * Moves to the step with provided step order
+     * Moves to the specified step.
      */
-    function jump(step) {
-        var jumpedStep = steps.jump(step);
-        setSteps(steps);
-        setCurrent(jumpedStep);
-    }
-    function allSteps() {
-        return stepDataCollection.map(function (_a) {
-            var order = _a.order, title = _a.title;
-            return ({
-                order: order,
-                title: title,
-            });
-        });
-    }
-    children = children.map(function (child, id) {
-        var new_child = Object.assign({}, child);
-        new_child.props = Object.assign({}, child.props);
-        new_child.props.step = stepDataCollection[id];
-        new_child.props.current = current;
-        new_child.props.step.progress = current / children.length;
-        return new_child;
-    });
-    var value = {
+    var jump = function (step) {
+        if (step >= 1 && step <= size) {
+            setCurrent(step);
+        }
+    };
+    /**
+     * Fetches the state value of given key from state object. Returns empty string if it is not available.
+     */
+    var getState = function (key) {
+        if (!stepState[key])
+            stepState[key] = "";
+        return stepState[key];
+    };
+    /**
+     * Updates the value of a given key in state object.
+     */
+    var setState = function (key, value) {
+        var newState = Object.assign({}, stepState);
+        newState[key] = value;
+        setStepState(newState);
+    };
+    var handleChange = function (event) {
+        var key = event.currentTarget.name;
+        var value = event.currentTarget.type === "checkbox"
+            ? event.currentTarget.checked
+            : event.currentTarget.value;
+        var newState = Object.assign({}, stepState);
+        newState[key] = value;
+        setStepState(newState);
+    };
+    var context = {
+        size: size,
         current: current,
-        state: state,
-        setState: set,
-        getState: get,
+        progress: progress,
+        allSteps: allSteps,
+        state: stepState,
         handleChange: handleChange,
+        setState: setState,
+        getState: getState,
         next: next,
         prev: prev,
         jump: jump,
-        allSteps: allSteps,
-        step: stepDataCollection[current - 1],
     };
-    return <StepContext.Provider value={value}>{children}</StepContext.Provider>;
+    return (<StepsContext.Provider value={context}>
+			{React.Children.map(children, function (child, order) { return (<StepContext.Provider value={{ order: order + 1 }}>
+					{child}
+				</StepContext.Provider>); })}
+		</StepsContext.Provider>);
+}
+/**
+ * Wrapper component for each individual step.
+ */
+export function Step(_a, theRest) {
+    var title = _a.title, Component = _a.component, beforeStepChange = _a.beforeStepChange;
+    var StepsContextValue = useContext(StepsContext);
+    var order = useContext(StepContext).order;
+    var size = StepsContextValue.size, current = StepsContextValue.current;
+    /**
+     * Checks if the component is the first step.
+     */
+    var isFirst = function () { return order === 1; };
+    /**
+     * Checks if the component is the last step.
+     */
+    var isLast = function () { return order === size; };
+    /**
+     * Checks if the component has a next step.
+     */
+    var hasNext = function () { return order < size; };
+    /**
+     * Checks if the component has a previous step.
+     */
+    var hasPrev = function () { return order > 1; };
+    useEffect(function () {
+        return function () {
+            current === order && beforeStepChange && beforeStepChange();
+        };
+    }, []);
+    if (order === current) {
+        return (<Component {...theRest} {...StepsContextValue} title={title} order={order} hasPrev={hasPrev} hasNext={hasNext} isFirst={isFirst} isLast={isLast}/>);
+    }
+    return null;
 }
 //# sourceMappingURL=index.jsx.map

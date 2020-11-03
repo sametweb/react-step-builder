@@ -41,11 +41,11 @@ export default (props) => {
 				</button>
 			</span>
 			{
-				<button disabled={props.step.isFirst()} onClick={props.prev}>
+				<button disabled={props.isFirst()} onClick={props.prev}>
 					Previous
 				</button>
 			}
-			{props.step.hasNext() && <button onClick={props.next}>Next</button>}
+			{props.hasNext() && <button onClick={props.next}>Next</button>}
 			<button data-testid="jump3" onClick={() => props.jump(3)}>
 				Jump to 3. Step
 			</button>

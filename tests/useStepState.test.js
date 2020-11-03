@@ -1,5 +1,5 @@
 import { renderHook, act } from "@testing-library/react-hooks";
-import { useStepState } from "../src/lib/index.js";
+import { useStepState } from "../src/dist/index.js";
 
 describe("test useStepState", () => {
 	// result.current[0] == state

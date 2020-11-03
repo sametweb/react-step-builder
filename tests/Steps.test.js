@@ -3,7 +3,7 @@ import { render, fireEvent, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import App from "../src/App";
 import Step1 from "../src/stepComponents/Step1";
-import { Step, Steps } from "../src/lib";
+import { Step, Steps } from "../src/dist";
 import Step2 from "../src/stepComponents/Step2";
 
 const beforeStepChange = jest.fn(() => console.log("beforeStepChange"));

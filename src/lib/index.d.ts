@@ -1,59 +1,50 @@
-import * as React from "react";
-declare type state = {
-    [key: string]: any;
+import React, { ComponentType } from "react";
+declare type StateValue = string | number | boolean | bigint | symbol;
+declare type State = {
+    [key: string]: StateValue;
 };
-declare type SetStepState = (key: keyof state, value: any) => void;
-declare type GetStepState = (key: keyof state) => state[keyof state];
-declare type HandleChange = (event: React.ChangeEvent<HTMLInputElement>) => void;
-declare type StepData = {
+declare type StepsProps = {
+    children: (StepProps[] | StepProps) & (JSX.Element[] | JSX.Element);
+};
+interface StepProps {
+    title?: string;
+    component: ComponentType<StepComponentProps>;
+    beforeStepChange?: (data?: any) => any;
+}
+declare type AllSteps = {
     order: number;
-    title: string;
-    nextStep: number;
-    prevStep: number;
-    hasNext: () => boolean;
-    hasPrev: () => boolean;
-    isFirst: () => boolean;
-    isLast: () => boolean;
-};
-export declare type StepProps = {
     title?: string;
-    beforeStepChange?: () => any;
-    state: state;
-    step: StepData;
-    current: number;
-    next: () => void;
-    prev: () => void;
-    jump: (step: number) => void;
-    getState: GetStepState;
-    setState: SetStepState;
-    handleChange: HandleChange;
-    allSteps: () => Array<{
-        order: number;
-        title: String;
-    }>;
-};
-interface StepParams {
+}[];
+declare type OrderCheckFn = () => boolean;
+declare type MoveFn = () => void;
+declare type JumpFn = (step: number) => void;
+declare type GetState = (key: keyof State) => State[keyof State];
+declare type SetState = (key: keyof State, value: StateValue) => void;
+declare type HandleChange = (event: React.ChangeEvent<HTMLInputElement>) => void;
+interface StepComponentProps {
+    order: number;
     title?: string;
-    component: React.FunctionComponent<StepProps>;
-    beforeStepChange?: () => any;
+    progress?: number;
+    next?: MoveFn;
+    prev?: MoveFn;
+    jump?: JumpFn;
+    isFirst?: OrderCheckFn;
+    isLast?: OrderCheckFn;
+    hasPrev?: OrderCheckFn;
+    hasNext?: OrderCheckFn;
+    allSteps?: AllSteps;
+    state?: State;
+    setState?: SetState;
+    getState?: GetState;
+    handleChange?: HandleChange;
 }
 /**
- * This is a higher order component that returns your step component
- * with global state of the steps and helper methods.
+ * Wrapper component for `Step` components.
  */
-export declare function Step(props: StepParams): JSX.Element | null;
-/**
- * Wrapper component for Step components.
- * @summary Step components must be wrapped in `<Steps />` component
- * @example
- *   <Steps>
- *     <Step title="My first step" component={Step1} />
- *     <Step title="My second step" component={Step2} />
- *   </Steps>
- */
-interface StepsProps {
-    children: JSX.Element[];
-}
 export declare function Steps({ children }: StepsProps): JSX.Element;
+/**
+ * Wrapper component for each individual step.
+ */
+export declare function Step<P extends StepProps>({ title, component: Component, beforeStepChange }: StepProps, theRest: P): JSX.Element | null;
 export {};
 //# sourceMappingURL=index.d.ts.map
