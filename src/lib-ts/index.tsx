@@ -3,6 +3,7 @@ import React, {
 	ComponentType,
 	DetailedHTMLProps,
 	InputHTMLAttributes,
+	ReactElement,
 	useContext,
 	useEffect,
 	useState,
@@ -23,16 +24,17 @@ interface State {
 }
 
 type StepsProps = {
-	children: (StepProps[] | StepProps) & (JSX.Element[] | JSX.Element);
+	children: ReactElement<StepProps> | ReactElement<StepProps>[];
 };
 
+type BeforeStepChange = (...data: any[]) => any;
+
 interface StepProps {
-	/** Title value for step component. Available as `props.title` in step component */
 	title?: string;
 	/** Component to be rendered as a step */
 	component: ComponentType<StepComponentProps>;
 	/** A callback function to run before step change occurs */
-	beforeStepChange?: (data?: any) => any;
+	beforeStepChange?: BeforeStepChange;
 }
 
 type EventType = React.ChangeEvent<HTMLInputElement> &
@@ -50,33 +52,33 @@ export interface StepComponentProps {
 	/** Order number of current step component */
 	order: number;
 	/** Title of current step component */
-	title?: string;
+	title: string;
 	/** Progress of current component, value between 0 and 1 */
-	progress?: number;
+	progress: number;
 	/** Function to move to the next step */
-	next?: MoveFn;
+	next: MoveFn;
 	/** Function to move to the previous step */
-	prev?: MoveFn;
+	prev: MoveFn;
 	/** Function to jump to the given step */
-	jump?: JumpFn;
+	jump: JumpFn;
 	/** Function to check if the step is the first */
-	isFirst?: OrderCheckFn;
+	isFirst: OrderCheckFn;
 	/** Function to check if the step is the last */
-	isLast?: OrderCheckFn;
+	isLast: OrderCheckFn;
 	/** Function to check if the step has any previous step*/
-	hasPrev?: OrderCheckFn;
+	hasPrev: OrderCheckFn;
 	/** Function to check if the step has any next step*/
-	hasNext?: OrderCheckFn;
+	hasNext: OrderCheckFn;
 	/** Array of all available steps' title and order number*/
-	allSteps?: AllSteps;
+	allSteps: AllSteps;
 	/** Combined state value of all steps */
-	state?: State;
+	state: State;
 	/** Function to set/update state by key */
-	setState?: SetState;
+	setState: SetState;
 	/** Function to retrieve a state value by key */
-	getState?: GetState;
+	getState: GetState;
 	/** `onChange` event handler for form elements */
-	handleChange?: HandleChange;
+	handleChange: HandleChange;
 }
 
 interface StepsContext {
@@ -133,10 +135,12 @@ export function Steps({ children }: StepsProps) {
 
 	const [current, setCurrent] = useState<number>(1);
 	const [stepState, setStepState] = useState<State>({});
-	const [progress, setProgress] = useState<number>(current / size);
+	const [progress, setProgress] = useState<number>(0);
 
 	useEffect(() => {
-		setProgress(current / size);
+		if (current === 1) setProgress(0);
+		else if (current === size) setProgress(1);
+		else setProgress((current - 1) / (size - 1));
 	}, [current]);
 
 	const next: MoveFn = () => {
@@ -225,9 +229,9 @@ export function Step<T extends StepProps>(props: T) {
 
 	useEffect(() => {
 		return () => {
-			current === order && beforeStepChange && beforeStepChange();
+			if (current === order && beforeStepChange) beforeStepChange();
 		};
-	}, []);
+	}, [current, order, beforeStepChange]);
 
 	if (order === current) {
 		const newProps: Partial<StepProps> = Object.assign({}, props);
@@ -237,7 +241,7 @@ export function Step<T extends StepProps>(props: T) {
 			<Component
 				{...newProps}
 				{...stepsContextValue}
-				title={title}
+				title={title as Required<string>}
 				order={order}
 				hasPrev={hasPrev}
 				hasNext={hasNext}
