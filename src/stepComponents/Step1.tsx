@@ -1,6 +1,7 @@
 import React from "react";
+import { StepComponentProps } from "../dist";
 
-export default (props) => {
+export default (props: StepComponentProps) => {
 	console.log(props);
 	return (
 		<div className="step">
@@ -8,14 +9,20 @@ export default (props) => {
 			<input
 				name="firstname"
 				data-testid="firstname"
-				value={props.getState("firstname")}
+				value={props.getState("firstname", "")}
 				onChange={props.handleChange}
 			/>
 			Last Name:{" "}
 			<input
 				name="lastname"
 				data-testid="lastname"
-				value={props.getState("lastname")}
+				value={props.getState("lastname", "")}
+				onChange={props.handleChange}
+			/>
+			Personal Statement{" "}
+			<textarea
+				name="statement"
+				value={props.getState("statement", "")}
 				onChange={props.handleChange}
 			/>
 			Over 18?{" "}
@@ -23,7 +30,7 @@ export default (props) => {
 				type="checkbox"
 				name="over18"
 				data-testid="checkbox"
-				checked={props.getState("over18")}
+				checked={props.getState("over18", false)}
 				onChange={props.handleChange}
 			/>
 			<span>

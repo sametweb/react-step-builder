@@ -2,7 +2,7 @@
 	"compilerOptions": {
 		"target": "es5",
 		"module": "esnext",
-		"jsx": "preserve",
+		"jsx": "react",
 		"declaration": true,
 		"declarationMap": true,
 		"sourceMap": true,

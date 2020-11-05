@@ -1,45 +1,81 @@
-import React, { ComponentType, useContext, useEffect, useState } from "react";
+/* eslint-disable import/first */
+import React, {
+	ComponentType,
+	DetailedHTMLProps,
+	InputHTMLAttributes,
+	useContext,
+	useEffect,
+	useState,
+} from "react";
 
-type StateValue = string | number | boolean | bigint | symbol;
+type InputValue = DetailedHTMLProps<
+	InputHTMLAttributes<HTMLInputElement>,
+	HTMLInputElement
+>["value"];
 
-type State = {
-	[key: string]: StateValue;
-};
+type CheckboxValue = DetailedHTMLProps<
+	InputHTMLAttributes<HTMLInputElement>,
+	HTMLInputElement
+>["checked"];
+
+interface State {
+	[key: string]: InputValue | CheckboxValue;
+}
 
 type StepsProps = {
 	children: (StepProps[] | StepProps) & (JSX.Element[] | JSX.Element);
 };
 
 interface StepProps {
+	/** Title value for step component. Available as `props.title` in step component */
 	title?: string;
+	/** Component to be rendered as a step */
 	component: ComponentType<StepComponentProps>;
-
+	/** A callback function to run before step change occurs */
 	beforeStepChange?: (data?: any) => any;
 }
+
+type EventType = React.ChangeEvent<HTMLInputElement> &
+	React.ChangeEvent<HTMLTextAreaElement>;
 
 type AllSteps = { order: number; title?: string }[];
 type OrderCheckFn = () => boolean;
 type MoveFn = () => void;
 type JumpFn = (step: number) => void;
-type GetState = (key: keyof State) => State[keyof State];
-type SetState = (key: keyof State, value: StateValue) => void;
-type HandleChange = (event: React.ChangeEvent<HTMLInputElement>) => void;
+type GetState = (key: keyof State, defaultValue: State[keyof State]) => any;
+type SetState = (key: keyof State, value: State[keyof State]) => void;
+type HandleChange = (event: EventType) => void;
 
-interface StepComponentProps {
+export interface StepComponentProps {
+	/** Order number of current step component */
 	order: number;
+	/** Title of current step component */
 	title?: string;
+	/** Progress of current component, value between 0 and 1 */
 	progress?: number;
+	/** Function to move to the next step */
 	next?: MoveFn;
+	/** Function to move to the previous step */
 	prev?: MoveFn;
+	/** Function to jump to the given step */
 	jump?: JumpFn;
+	/** Function to check if the step is the first */
 	isFirst?: OrderCheckFn;
+	/** Function to check if the step is the last */
 	isLast?: OrderCheckFn;
+	/** Function to check if the step has any previous step*/
 	hasPrev?: OrderCheckFn;
+	/** Function to check if the step has any next step*/
 	hasNext?: OrderCheckFn;
+	/** Array of all available steps' title and order number*/
 	allSteps?: AllSteps;
+	/** Combined state value of all steps */
 	state?: State;
+	/** Function to set/update state by key */
 	setState?: SetState;
+	/** Function to retrieve a state value by key */
 	getState?: GetState;
+	/** `onChange` event handler for form elements */
 	handleChange?: HandleChange;
 }
 
@@ -62,6 +98,8 @@ interface StepContext {
 }
 
 const StepsContext = React.createContext<StepsContext>({
+	// Dummy values for satisfying the type checker
+	// Gets updated before being passed down
 	size: 0,
 	current: 1,
 	progress: 0,
@@ -69,11 +107,12 @@ const StepsContext = React.createContext<StepsContext>({
 	state: {},
 	handleChange: (event) => {},
 	setState: (key, value) => {},
-	getState: (key) => "",
+	getState: (key, defaultValue) => "",
 	next: () => {},
 	prev: () => {},
 	jump: (id) => {},
 });
+
 const StepContext = React.createContext<StepContext>({ order: 0 });
 
 /**
@@ -84,7 +123,8 @@ export function Steps({ children }: StepsProps) {
 
 	const allSteps: AllSteps = childSteps.map((child, order) => {
 		return {
-			title: (child as StepProps).title || "Step " + (order + 1),
+			title:
+				(child as { props: StepProps }).props.title || "Step " + (order + 1),
 			order: order + 1,
 		};
 	});
@@ -99,43 +139,31 @@ export function Steps({ children }: StepsProps) {
 		setProgress(current / size);
 	}, [current]);
 
-	/**
-	 * Moves to the next step.
-	 */
 	const next: MoveFn = () => {
 		if (current < size) {
 			setCurrent(current + 1);
 		}
 	};
 
-	/**
-	 * Moves to the previous step.
-	 */
 	const prev: MoveFn = () => {
 		if (current > 1) {
 			setCurrent(current - 1);
 		}
 	};
 
-	/**
-	 * Moves to the specified step.
-	 */
 	const jump: JumpFn = (step) => {
 		if (step >= 1 && step <= size) {
 			setCurrent(step);
 		}
 	};
 
-	/**
-	 * Fetches the state value of given key from state object. Returns empty string if it is not available.
-	 */
-	const getState: GetState = (key) => {
-		if (!stepState[key]) stepState[key] = "";
-		return stepState[key];
+	const getState: GetState = (key, defaultValue) => {
+		if (key in stepState) {
+			return stepState[key];
+		}
+		return defaultValue;
 	};
-	/**
-	 * Updates the value of a given key in state object.
-	 */
+
 	const setState: SetState = (key, value) => {
 		const newState = Object.assign({}, stepState);
 		newState[key] = value;
@@ -144,13 +172,14 @@ export function Steps({ children }: StepsProps) {
 
 	const handleChange: HandleChange = (event) => {
 		const key = event.currentTarget.name;
+		const inputType = event.currentTarget.type;
 		const value =
-			event.currentTarget.type === "checkbox"
+			inputType === "checkbox"
 				? event.currentTarget.checked
 				: event.currentTarget.value;
 
 		const newState = Object.assign({}, stepState);
-		newState[key] = value;
+		newState[key] = value as InputValue & CheckboxValue;
 		setStepState(newState);
 	};
 
@@ -182,29 +211,16 @@ export function Steps({ children }: StepsProps) {
 /**
  * Wrapper component for each individual step.
  */
-export function Step<P extends StepProps>(
-	{ title, component: Component, beforeStepChange }: StepProps,
-	theRest: P,
-) {
-	const StepsContextValue: StepsContext = useContext(StepsContext);
+export function Step<T extends StepProps>(props: T) {
+	const { title, component: Component, beforeStepChange } = props;
+	const stepsContextValue: StepsContext = useContext(StepsContext);
 	const { order }: StepContext = useContext(StepContext);
 
-	const { size, current } = StepsContextValue;
-	/**
-	 * Checks if the component is the first step.
-	 */
+	const { size, current } = stepsContextValue;
+
 	const isFirst: OrderCheckFn = () => order === 1;
-	/**
-	 * Checks if the component is the last step.
-	 */
 	const isLast: OrderCheckFn = () => order === size;
-	/**
-	 * Checks if the component has a next step.
-	 */
 	const hasNext: OrderCheckFn = () => order < size;
-	/**
-	 * Checks if the component has a previous step.
-	 */
 	const hasPrev: OrderCheckFn = () => order > 1;
 
 	useEffect(() => {
@@ -214,10 +230,13 @@ export function Step<P extends StepProps>(
 	}, []);
 
 	if (order === current) {
+		const newProps: Partial<StepProps> = Object.assign({}, props);
+		delete newProps.component;
+
 		return (
 			<Component
-				{...theRest}
-				{...StepsContextValue}
+				{...newProps}
+				{...stepsContextValue}
 				title={title}
 				order={order}
 				hasPrev={hasPrev}
