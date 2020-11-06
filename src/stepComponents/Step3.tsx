@@ -1,21 +1,21 @@
 import React from "react";
+import { StepComponentProps } from "../lib";
 
-export default (props) => {
-	console.log(props);
+const Step3 = (props: StepComponentProps) => {
 	return (
 		<div className="step">
-			Email:{" "}
+			Address:{" "}
 			<input
-				name="email"
-				data-testid="email"
-				value={props.getState("email")}
+				name="address"
+				data-testid="address"
+				value={props.getState("address", "")}
 				onChange={props.handleChange}
 			/>
-			Password:{" "}
+			Phone:{" "}
 			<input
-				name="password"
-				data-testid="password"
-				value={props.getState("password")}
+				name="phone"
+				data-testid="phone"
+				value={props.getState("phone", "")}
 				onChange={props.handleChange}
 			/>
 			{props.hasPrev() && <button onClick={props.prev}>Previous</button>}
@@ -23,3 +23,5 @@ export default (props) => {
 		</div>
 	);
 };
+
+export default Step3;

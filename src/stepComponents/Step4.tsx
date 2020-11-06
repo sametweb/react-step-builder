@@ -1,34 +1,35 @@
 import React from "react";
+import { StepComponentProps } from "../lib";
+import Step3 from "./Step3";
 
-export default (props) => {
-	console.log(props);
+const Step4 = (props: StepComponentProps) => {
 	return (
 		<div className="step">
 			<p>
 				<strong>Name:</strong>
 				<span data-testid="final_name">
-					{props.getState("firstname")} {props.getState("lastname")}
+					{props.getState("firstname", "")} {props.getState("lastname", "")}
 				</span>
 			</p>
 			<p>
 				<strong>Email:</strong>
-				<span data-testid="final_email">{props.getState("email")}</span>
+				<span data-testid="final_email">{props.getState("email", "")}</span>
 			</p>
 			<p>
 				<strong>Password:</strong>
-				<span data-testid="final_pass">{props.getState("password")}</span>
+				<span data-testid="final_pass">{props.getState("password", "")}</span>
 			</p>
 			<p>
 				<strong>Address:</strong>
-				<span data-testid="final_address">{props.getState("address")}</span>
+				<span data-testid="final_address">{props.getState("address", "")}</span>
 			</p>
 			<p>
 				<strong>Phone:</strong>
-				<span data-testid="final_phone">{props.getState("phone")}</span>
+				<span data-testid="final_phone">{props.getState("phone", "")}</span>
 			</p>
 			<p>
 				<strong>Color Choice:</strong>
-				<span data-testid="final_color">{props.getState("color")}</span>
+				<span data-testid="final_color">{props.getState("color", "")}</span>
 			</p>
 			{props.hasPrev() && <button onClick={props.prev}>Previous</button>}
 			{
@@ -51,3 +52,5 @@ export default (props) => {
 		</div>
 	);
 };
+
+export default Step4;

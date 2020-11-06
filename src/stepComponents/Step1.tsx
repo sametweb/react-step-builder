@@ -1,8 +1,7 @@
 import React from "react";
 import { StepComponentProps } from "../dist";
 
-export default (props: StepComponentProps) => {
-	console.log(props);
+const Step1 = (props: StepComponentProps) => {
 	return (
 		<div className="step">
 			First Name:{" "}
@@ -62,3 +61,5 @@ export default (props: StepComponentProps) => {
 		</div>
 	);
 };
+
+export default Step1;

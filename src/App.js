@@ -1,5 +1,5 @@
 import React from "react";
-import { Steps, Step } from "./dist/index";
+import { Steps, Step } from "./lib/index";
 import Step1 from "./stepComponents/Step1.tsx";
 import Step2 from "./stepComponents/Step2";
 import Step3 from "./stepComponents/Step3";
