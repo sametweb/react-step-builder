@@ -96,8 +96,18 @@ import { StepComponentProps } from "react-step-builder";
 
 const Step1 = (props: StepComponentProps) => {
 	return (
-		<input name="fname" value={props.getState("fname", "")} onChange={props.handleChange} />
-		<input name="lname" value={props.getState("lname", "")} onChange={props.handleChange} />
+		<div>
+			<input
+				name="fname"
+				value={props.getState("fname", "")}
+				onChange={props.handleChange}
+			/>
+			<input
+				name="lname"
+				value={props.getState("lname", "")}
+				onChange={props.handleChange}
+			/>
+		</div>
 	);
 };
 
