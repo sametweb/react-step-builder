@@ -21,6 +21,6 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-src/dist
+/src/dist
 .babelrc
-src/lib
+/src/lib
