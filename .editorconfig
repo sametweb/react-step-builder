@@ -1,0 +1,4 @@
+[*]
+indent_style = space
+[*.{js,jsx,ts,tsx,json,yml,css}]
+indent_size = 4

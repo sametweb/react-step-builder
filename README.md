@@ -94,21 +94,22 @@ Example:
 import React from "react";
 import { StepComponentProps } from "react-step-builder";
 
+//prettier-ignore
 const Step1 = (props: StepComponentProps) => {
-	return (
-		<div>
-			<input
-				name="fname"
-				value={props.getState("fname", "")}
-				onChange={props.handleChange}
-			/>
-			<input
-				name="lname"
-				value={props.getState("lname", "")}
-				onChange={props.handleChange}
-			/>
-		</div>
-	);
+  return (
+    <div>
+      <input
+        name="fname"
+        value={props.getState("fname", "")}
+        onChange={props.handleChange}
+      />
+      <input
+        name="lname"
+        value={props.getState("lname", "")}
+		onChange={props.handleChange}
+      />
+    </div>
+  );
 };
 
 export default Step1;
