@@ -3,31 +3,35 @@
 [![Build Status](https://travis-ci.com/sametweb/react-step-builder.svg?branch=master)](https://travis-ci.com/sametweb/react-step-builder) [![Coverage Status](https://coveralls.io/repos/github/sametweb/react-step-builder/badge.svg?branch=master)](https://coveralls.io/github/sametweb/react-step-builder?branch=master) [![Test Coverage](https://api.codeclimate.com/v1/badges/f0c62e4a8e4826eec6c9/test_coverage)](https://codeclimate.com/github/sametweb/react-step-builder/test_coverage) [![Maintainability](https://api.codeclimate.com/v1/badges/f0c62e4a8e4826eec6c9/maintainability)](https://codeclimate.com/github/sametweb/react-step-builder/maintainability) [![Total NPM Download](https://img.shields.io/npm/dt/react-step-builder.svg)](https://www.npmjs.com/package/react-step-builder)
 <br/><br/>
 
-### React Step Builder is a UI-agnostic multi step interface builder.
+## React Step Builder is a UI-agnostic multi step interface builder.
 
 <br/>
 
-## Overview
+# Overview
 
-React Step Builder allows you to combine states of multiple components in one place
-and navigate between step components without losing the state from other step components.
+React Step Builder provides;
 
-It only provides wrapper components and methods to be able to render your step components
-without being forced to use certain UI features in your step structure.
+- React / TypeScript support and type definitions
+- A combined global state collected from- and persistent across each individual step component
+- UI-agnostic functionality for navigating between step components
+- Ready-to-use form handling methods for handling React form elements
+- Easy to use API
 
 <br />
 
-## Installation
+# Installation
 
 Using [npm](https://www.npmjs.com/):
 
-    $ npm install --save react-step-builder
+    $ npm install react-step-builder
 
 <br />
 
-## Usage
+# Usage
 
-```js
+Example:
+
+```javascript
 <Steps>
 	<Step title="My First Step" component={Step1} />
 	<Step title="My Second Step" component={Step2} />
@@ -37,110 +41,64 @@ Using [npm](https://www.npmjs.com/):
 
 <br />
 
-## Documentation
+# Documentation
 
-| Component   | Description                                                                                                                                                                                                                                                                                                                                                                         |
-| ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `<Steps />` | Wrapper component for Step components. Step components must be wrapped in `<Steps />` component.                                                                                                                                                                                                                                                                                    |
-| `<Step />`  | This is the component you create for each `step` in your application. <br />`title` prop takes a title for the step, which is provided back in `props` in the step component. <br />`component` prop takes the component that you would like to show in that step. <br />`beforeStepChange` prop takes a callback function to run right before the current step is about to change. |
+## Wrapper Components
+
+`Steps` and `Step` are the only two wrapper components for creating your multi-step component.
+
+| Component   | Description                                                                                                                                                                                                                                                                                |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `<Steps />` | Wrapper component for Step components.                                                                                                                                                                                                                                                     |
+| `<Step />`  | `title`: takes a title for the step, which can be accessed in `props` object of the step component. <br />`component`: takes a React component that you would like to show in that step. <br />`beforeStepChange`: takes a callback function to run right before the current step changes. |
 
 <br />
-
-### Following `props` are available to your step components.
-
 <hr />
+<br />
 
-### <strong>`props.current`</strong>
+## Step Component `props`
 
-`number`
+The React component that is passed to each `Step` wrapper component will be injected with the following props:
 
-The current step's order number
+| Property             | Type                          | Description                                          |
+| -------------------- | ----------------------------- | ---------------------------------------------------- |
+| `props.order`        | `number`                      | Order number of the current step component           |
+| `props.title`        | `string`                      | Title of the current step component                  |
+| `props.progress`     | `number`                      | Progress of the current step, value between 0 and 1  |
+| `props.next`         | `function`                    | Function to move to the next step                    |
+| `props.prev`         | `function`                    | Function to move to the previous step                |
+| `props.jump`         | `function<step>`              | Function to jump to the given step                   |
+| `props.isFirst`      | `function`                    | Function to check if the step is the first           |
+| `props.isLast`       | `function`                    | Function to check if the step is the last            |
+| `props.hasPrev`      | `function`                    | Function to check if the step has any previous step  |
+| `props.hasNext`      | `function`                    | Function to check if the step has any next step      |
+| `props.allSteps`     | `Array<{order, title}>`       | Array of all available steps' title and order number |
+| `props.state`        | `object`                      | Combined state value of all steps                    |
+| `props.setState`     | `function<key, value>`        | Function to set/update state by key                  |
+| `props.getState`     | `function<key, defaultValue>` | Function to retrieve a state value by key            |
+| `props.handleChange` | `function<event>`             | `onChange` event handler for form elements           |
 
+<br />
 <hr />
+<br />
 
-### <strong>`props.next`</strong>
+## Prop types of the step components for React / TypeScript
 
-`function()`
+When developing your step components, you can utilize `StepComponentProps` type definition for your step component props.
 
-Moves to the next step if it exists.
+<br/>
 
-<hr />
+Example:
 
-### <strong>`props.prev`</strong>
+```javascript
+import React from "react";
+import { StepComponentProps } from "react-step-builder";
 
-`function()`
+const Step1 = (props: StepComponentProps) => {
+	return {
+		// Your step component, form elements, etc.
+	};
+};
 
-Moves to the previous step if it exists.
-
-<hr />
-
-### <strong>`props.jump`</strong>
-
-`function(<order>)`
-
-Jumps to the step with the provided step order if it exists.
-
-<hr />
-
-### <strong>`props.state`</strong>
-
-`object`
-
-Contains all the state pieces combined from your `Step` components.
-The user data that was entered accross the steps accumulate under this value.
-
-<hr />
-
-### <strong>`props.getState`</strong>
-
-`function(<key>)`
-
-Returns the state value for the provided `key`. If the key does not exist, returns empty string.
-
-<hr />
-
-### <strong>`props.setState`</strong>
-
-`function(<key, value>)`
-
-Manipulates your `state` directly. You must provide `key` and `value` to be stored in your state.<br />
-_<strong>NOTE</strong>: If your data is coming from a synthetic React event (via `onChange`), use `props.handleChange` instead._
-
-<hr />
-
-### <strong>`props.handleChange`</strong>
-
-`function(<event>)`
-
-You may pass this function to `onChange` events in your form elements.
-Your form element must have a `name` property, which eventually becomes its key in the `state` object.
-If your form element has `name="username"`, then it is stored in state as `{props.state.username}`.
-
-<hr />
-
-### <strong>`props.step`</strong>
-
-`object <StepNode>`
-
-This object provides information about current step and methods to move between steps. Available properties and methods:
-
-### <strong>`props.allSteps`</strong>
-
-`function()`
-
-This function returns an array of each step's order number and title, can be used to create a progress bar above each step.
-
-### Properties
-
-- `props.step.order` - Order number of the props.step.
-- `props.step.title` - Title of the step (you provided when creating `<Step />` component)
-- `props.step.nextStep` - Order number of the next step, `null` if it's not available
-- `props.step.prevStep` - Order number of the previous step, `null` if it's not available
-- `props.step.progress` - A number from 0 to 1 that represents current step's progress (current order divided by total number of steps)
-
-### Methods
-
-- `props.step.isFirst()` - Returns `true` if it's the first step, otherwise `false`
-- `props.step.isLast()` - Returns `true` if it's the last step, otherwise `false`
-- `props.step.hasNext()` - Returns `true` if there is a next step available, otherwise `false`
-- `props.step.hasPrev()` - Returns `true` if there is a previous step available, otherwise `false`
+export default Step1;
+```

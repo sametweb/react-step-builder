@@ -49,9 +49,9 @@ type SetState = (key: keyof State, value: State[keyof State]) => void;
 type HandleChange = (event: EventType) => void;
 
 export interface StepComponentProps {
-	/** Order number of current step component */
+	/** Order number of the current step component */
 	order: number;
-	/** Title of current step component */
+	/** Title of the current step component */
 	title: string;
 	/** Progress of current component, value between 0 and 1 */
 	progress: number;
