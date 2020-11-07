@@ -5,7 +5,12 @@ const Step2 = (props: StepComponentProps) => {
 	return (
 		<div className="step">
 			Email:{" "}
-			<input name="email" data-testid="email" value={props.getState("email", "")} onChange={props.handleChange} />
+			<input
+				name="email"
+				data-testid="email"
+				value={props.getState("email", "")}
+				onChange={props.handleChange}
+			/>
 			Password:{" "}
 			<input
 				name="password"

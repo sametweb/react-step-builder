@@ -11,7 +11,7 @@ const App = () => {
 			<h1>React Step Builder v1.1.0</h1>
 			<Steps>
 				<Step title="Hello" component={Step1} deneme={"deneme"} />
-				<Step title="Login Info" component={Step2} />
+				<Step component={Step2} />
 				<Step title="Contact Info" component={Step3} />
 				<Step title="Overview" component={Step4} />
 			</Steps>

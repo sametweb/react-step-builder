@@ -224,9 +224,9 @@ export function Steps({ children }: StepsProps) {
  * Wrapper component for each individual step.
  */
 export function Step<T extends StepProps>(props: T) {
+	const { order }: StepContext = useContext(StepContext);
 	const { title, component: Component, beforeStepChange } = props;
 	const stepsContextValue: StepsContext = useContext(StepsContext);
-	const { order }: StepContext = useContext(StepContext);
 
 	const { size, current } = stepsContextValue;
 
@@ -245,11 +245,13 @@ export function Step<T extends StepProps>(props: T) {
 		const newProps: Partial<StepProps> = Object.assign({}, props);
 		delete newProps.component;
 
+		const defaultTitle = "Step " + order;
+
 		return (
 			<Component
 				{...newProps}
 				{...stepsContextValue}
-				title={title as Required<string>}
+				title={title || defaultTitle}
 				order={order}
 				hasPrev={hasPrev}
 				hasNext={hasNext}

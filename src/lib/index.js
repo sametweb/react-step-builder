@@ -100,9 +100,9 @@ export function Steps({ children }) {
  * Wrapper component for each individual step.
  */
 export function Step(props) {
+    const { order } = useContext(StepContext);
     const { title, component: Component, beforeStepChange } = props;
     const stepsContextValue = useContext(StepsContext);
-    const { order } = useContext(StepContext);
     const { size, current } = stepsContextValue;
     const isFirst = () => order === 1;
     const isLast = () => order === size;
@@ -117,7 +117,8 @@ export function Step(props) {
     if (order === current) {
         const newProps = Object.assign({}, props);
         delete newProps.component;
-        return (React.createElement(Component, Object.assign({}, newProps, stepsContextValue, { title: title, order: order, hasPrev: hasPrev, hasNext: hasNext, isFirst: isFirst, isLast: isLast })));
+        const defaultTitle = "Step " + order;
+        return (React.createElement(Component, Object.assign({}, newProps, stepsContextValue, { title: title || defaultTitle, order: order, hasPrev: hasPrev, hasNext: hasNext, isFirst: isFirst, isLast: isLast })));
     }
     return null;
 }
