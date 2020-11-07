@@ -39,7 +39,9 @@
 		"!**/tests/**",
 		"!**/*.test.{js,jsx}",
 		"!**/coverage/**",
-		"!*/src/dist/**"
+		"!*/src/dist/**",
+		"!*/src/lib-ts/**",
+		"!*/src/stepComponents/**"
 	],
 	"scripts": {
 		"start": "react-scripts start",

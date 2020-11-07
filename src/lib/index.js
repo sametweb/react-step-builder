@@ -49,16 +49,10 @@ export function Steps({ children }) {
         if (current < size) {
             setCurrent(current + 1);
         }
-        else {
-            setCurrent(current);
-        }
     };
     const prev = () => {
         if (current > 1) {
             setCurrent(current - 1);
-        }
-        else {
-            setCurrent(current);
         }
     };
     const jump = (step) => {

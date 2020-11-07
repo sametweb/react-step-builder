@@ -7,7 +7,7 @@ import Step2 from "../stepComponents/Step2";
 import Step3 from "../stepComponents/Step3";
 import Step4 from "../stepComponents/Step4";
 
-const beforeStepChange = jest.fn(() => console.log("beforeStepChange"));
+const beforeStepChange = jest.fn(() => "");
 
 test("beforeStepChange is called before step change", () => {
 	render(

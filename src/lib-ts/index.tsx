@@ -154,16 +154,12 @@ export function Steps({ children }: StepsProps) {
 	const next: MoveFn = () => {
 		if (current < size) {
 			setCurrent(current + 1);
-		} else {
-			setCurrent(current);
 		}
 	};
 
 	const prev: MoveFn = () => {
 		if (current > 1) {
 			setCurrent(current - 1);
-		} else {
-			setCurrent(current);
 		}
 	};
 
