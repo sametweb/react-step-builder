@@ -18,12 +18,6 @@ const Step1 = (props: StepComponentProps) => {
 				value={props.getState("lastname", "")}
 				onChange={props.handleChange}
 			/>
-			Personal Statement{" "}
-			<textarea
-				name="statement"
-				value={props.getState("statement", "")}
-				onChange={props.handleChange}
-			/>
 			Over 18?{" "}
 			<input
 				type="checkbox"
