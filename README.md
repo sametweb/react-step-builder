@@ -95,9 +95,10 @@ import React from "react";
 import { StepComponentProps } from "react-step-builder";
 
 const Step1 = (props: StepComponentProps) => {
-	return {
-		// Your step component, form elements, etc.
-	};
+	return (
+		<input name="fname" value={props.getState("fname", "")} onChange={props.handleChange} />
+		<input name="lname" value={props.getState("lname", "")} onChange={props.handleChange} />
+	);
 };
 
 export default Step1;
