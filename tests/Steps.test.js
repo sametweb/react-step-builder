@@ -32,6 +32,17 @@ test("Rendered components: Steps, Step", () => {
 		</Steps>,
 	);
 
+	// Get enabled previous button on the first screen
+	let first_visible_prev = screen.getByText(/visible prev/i);
+
+	// Make sure it's not disabled
+	expect(first_visible_prev).not.toBeDisabled();
+
+	fireEvent.click(first_visible_prev);
+
+	// Prev button does not do anything on the first step
+	expect(screen.getByTestId("first-visible-prev")).toBeVisible();
+
 	// Get the "Next" and "Previous" buttons
 	let next_button = screen.getByText(/next/i);
 	let prev_button = screen.getByText(/previous/i);
@@ -153,8 +164,19 @@ test("Rendered components: Steps, Step", () => {
 	expect(screen.queryByText("555-555-5555")).not.toBeNull();
 	expect(screen.queryByText("blue")).not.toBeNull();
 
-	// Make sure next button is not rendered on the last step
+	// Make sure next button is disabled on the last step
 	expect(screen.getByTestId("last-next")).toBeDisabled();
+
+	// Get another next button on the last screen
+	let last_visible_next = screen.getByText(/visible next/i);
+
+	// Make sure it's not disabled
+	expect(last_visible_next).not.toBeDisabled();
+
+	fireEvent.click(last_visible_next);
+
+	// Next button does not do anything on the last step
+	expect(screen.getByTestId("last-visible-next")).toBeVisible();
 
 	expect(screen.getByTestId("order 1")).toBeVisible();
 	expect(screen.getByTestId("title 1")).toBeVisible();

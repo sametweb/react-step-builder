@@ -1,5 +1,5 @@
 import React from "react";
-import { StepComponentProps } from "../lib";
+import { StepComponentProps } from "../dist";
 
 const Step3 = (props: StepComponentProps) => {
 	return (

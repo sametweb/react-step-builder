@@ -1,6 +1,5 @@
 import React from "react";
-import { StepComponentProps } from "../lib";
-import Step3 from "./Step3";
+import { StepComponentProps } from "../dist";
 
 const Step4 = (props: StepComponentProps) => {
 	return (
@@ -33,13 +32,18 @@ const Step4 = (props: StepComponentProps) => {
 			</p>
 			{props.hasPrev() && <button onClick={props.prev}>Previous</button>}
 			{
-				<button
-					data-testid="last-next"
-					onClick={props.next}
-					disabled={props.isLast()}
-				>
-					Next
-				</button>
+				<>
+					<button
+						data-testid="last-next"
+						onClick={props.next}
+						disabled={props.isLast()}
+					>
+						Next
+					</button>
+					<button data-testid="last-visible-next" onClick={props.next}>
+						Visible Next
+					</button>
+				</>
 			}
 			<div>
 				{props.allSteps.map(({ order, title }) => (

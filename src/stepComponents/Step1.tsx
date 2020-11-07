@@ -41,9 +41,14 @@ const Step1 = (props: StepComponentProps) => {
 				</button>
 			</span>
 			{
-				<button disabled={props.isFirst()} onClick={props.prev}>
-					Previous
-				</button>
+				<>
+					<button disabled={props.isFirst()} onClick={props.prev}>
+						Previous
+					</button>
+					<button onClick={props.prev} data-testid="first-visible-prev">
+						Visible Prev
+					</button>
+				</>
 			}
 			{props.hasNext() && <button onClick={props.next}>Next</button>}
 			<button data-testid="jump3" onClick={() => props.jump(3)}>

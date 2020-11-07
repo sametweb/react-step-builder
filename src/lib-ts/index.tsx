@@ -109,7 +109,7 @@ const StepsContext = React.createContext<StepsContext>({
 	state: {},
 	handleChange: (event) => {},
 	setState: (key, value) => {},
-	getState: (key, defaultValue) => "",
+	getState: (key, defaultValue) => {},
 	next: () => {},
 	prev: () => {},
 	jump: (id) => {},
@@ -133,25 +133,37 @@ export function Steps({ children }: StepsProps) {
 
 	const size = childSteps.length;
 
-	const [current, setCurrent] = useState<number>(1);
-	const [stepState, setStepState] = useState<State>({});
-	const [progress, setProgress] = useState<number>(0);
+	const _current = useState<number>(1);
+	const current = _current[0];
+	const setCurrent = _current[1];
+
+	const _stepState = useState<State>({});
+	const stepState = _stepState[0];
+	const setStepState = _stepState[1];
+
+	const _progress = useState<number>(0);
+	const progress = _progress[0];
+	const setProgress = _progress[1];
 
 	useEffect(() => {
 		if (current === 1) setProgress(0);
 		else if (current === size) setProgress(1);
 		else setProgress((current - 1) / (size - 1));
-	}, [current]);
+	}, [current, setProgress, size]);
 
 	const next: MoveFn = () => {
 		if (current < size) {
 			setCurrent(current + 1);
+		} else {
+			setCurrent(current);
 		}
 	};
 
 	const prev: MoveFn = () => {
 		if (current > 1) {
 			setCurrent(current - 1);
+		} else {
+			setCurrent(current);
 		}
 	};
 
