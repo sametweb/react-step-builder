@@ -9,9 +9,12 @@ checks:
   # Because this is more reasonable for JavaScript.
   method-lines:
     config:
-      threshold: 50
+      threshold: 150
 exclude_patterns:
   - "tests/"
+  - "src/dist"
+  - "src/lib-ts"
+  - "src/stepComponents"
   - "src/App.js"
   - "src/index.js"
   - "src/style.css"
@@ -21,3 +24,4 @@ exclude_patterns:
   - "**/*.spec.tsx"
   - "**/vendor/"
   - "**/node_modules/"
+  - "**/*.d.ts"

@@ -1,20 +1,21 @@
 import React from "react";
+import { StepComponentProps } from "../dist";
 
-export default (props) => {
+const Step1 = (props: StepComponentProps) => {
 	return (
 		<div className="step">
 			First Name:{" "}
 			<input
 				name="firstname"
 				data-testid="firstname"
-				value={props.getState("firstname")}
+				value={props.getState("firstname", "")}
 				onChange={props.handleChange}
 			/>
 			Last Name:{" "}
 			<input
 				name="lastname"
 				data-testid="lastname"
-				value={props.getState("lastname")}
+				value={props.getState("lastname", "")}
 				onChange={props.handleChange}
 			/>
 			Over 18?{" "}
@@ -22,7 +23,7 @@ export default (props) => {
 				type="checkbox"
 				name="over18"
 				data-testid="checkbox"
-				checked={props.getState("over18")}
+				checked={props.getState("over18", false)}
 				onChange={props.handleChange}
 			/>
 			<span>
@@ -40,11 +41,16 @@ export default (props) => {
 				</button>
 			</span>
 			{
-				<button disabled={props.step.isFirst()} onClick={props.prev}>
-					Previous
-				</button>
+				<>
+					<button disabled={props.isFirst()} onClick={props.prev}>
+						Previous
+					</button>
+					<button onClick={props.prev} data-testid="first-visible-prev">
+						Visible Prev
+					</button>
+				</>
 			}
-			{props.step.hasNext() && <button onClick={props.next}>Next</button>}
+			{props.hasNext() && <button onClick={props.next}>Next</button>}
 			<button data-testid="jump3" onClick={() => props.jump(3)}>
 				Jump to 3. Step
 			</button>
@@ -54,3 +60,5 @@ export default (props) => {
 		</div>
 	);
 };
+
+export default Step1;
