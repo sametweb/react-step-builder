@@ -1,5 +1,5 @@
 import React from "react";
-import { StepComponentProps } from "../dist";
+import { StepComponentProps } from "../lib-ts";
 const Step4 = (props: StepComponentProps) => {
 	return (
 		<div className="step">
@@ -32,7 +32,11 @@ const Step4 = (props: StepComponentProps) => {
 			{props.hasPrev() && <button onClick={props.prev}>Previous</button>}
 			{
 				<>
-					<button data-testid="last-next" onClick={props.next} disabled={props.isLast()}>
+					<button
+						data-testid="last-next"
+						onClick={props.next}
+						disabled={props.isLast()}
+					>
 						Next
 					</button>
 					<button data-testid="last-visible-next" onClick={props.next}>
@@ -43,7 +47,8 @@ const Step4 = (props: StepComponentProps) => {
 			<div>
 				{props.allSteps.map(({ order, title }) => (
 					<p key={order}>
-						<span data-testid={`order ${order}`}>{order}</span> <span data-testid={`title ${order}`}>{title}</span>
+						<span data-testid={`order ${order}`}>{order}</span>{" "}
+						<span data-testid={`title ${order}`}>{title}</span>
 					</p>
 				))}
 			</div>

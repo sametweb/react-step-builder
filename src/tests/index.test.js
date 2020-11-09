@@ -123,9 +123,8 @@ test("progress", () => {
 
 	act(() => props4.prev());
 	const props3 = testInstance.findByType(Step3).props;
-	expect(props3.progress).toBe(
-		(props3.order - 1) / (props3.allSteps.length - 1),
-	);
+	const newProgress = (props3.order - 1) / (props3.allSteps.length - 1);
+	expect(props3.progress).toBe(newProgress);
 
 	act(() => props3.jump(1));
 });
