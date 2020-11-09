@@ -1,6 +1,6 @@
 import React from "react";
 import { Steps, Step } from "./lib-ts/index";
-import Step1 from "./stepComponents/Step1.tsx";
+import Step1 from "./stepComponents/Step1";
 import Step2 from "./stepComponents/Step2";
 import Step3 from "./stepComponents/Step3";
 import Step4 from "./stepComponents/Step4";
