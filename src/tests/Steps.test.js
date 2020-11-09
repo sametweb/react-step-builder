@@ -1,7 +1,7 @@
 import React from "react";
 import { render, fireEvent, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { Step, Steps } from "../lib";
+import { Step, Steps } from "../lib-ts";
 import Step1 from "../stepComponents/Step1";
 import Step2 from "../stepComponents/Step2";
 import Step3 from "../stepComponents/Step3";

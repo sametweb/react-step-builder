@@ -1,7 +1,7 @@
 import React from "react";
 import TestRenderer, { act } from "react-test-renderer";
 
-import { Step, Steps } from "../lib";
+import { Step, Steps } from "../lib-ts";
 
 const mockFn = jest.fn();
 
