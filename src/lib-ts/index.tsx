@@ -1,4 +1,3 @@
-/* eslint-disable import/first */
 import React, {
 	ComponentType,
 	DetailedHTMLProps,
@@ -27,7 +26,7 @@ type StepsProps = {
 	children: ReactElement<StepProps> | ReactElement<StepProps>[];
 };
 
-type BeforeStepChange = (...data: any[]) => any;
+type BeforeStepChange = () => any;
 
 interface StepProps {
 	title?: string;
@@ -40,11 +39,14 @@ interface StepProps {
 type EventType = React.ChangeEvent<HTMLInputElement> &
 	React.ChangeEvent<HTMLTextAreaElement>;
 
-type AllSteps = { order: number; title?: string }[];
+type AllSteps = { order: number; title: string }[];
 type OrderCheckFn = () => boolean;
 type MoveFn = () => void;
 type JumpFn = (step: number) => void;
-type GetState = (key: keyof State, defaultValue: State[keyof State]) => any;
+type GetState = (
+	key: keyof State,
+	defaultValue: State[keyof State],
+) => InputValue | CheckboxValue;
 type SetState = (key: keyof State, value: State[keyof State]) => void;
 type HandleChange = (event: EventType) => void;
 
@@ -109,7 +111,7 @@ const StepsContext = React.createContext<StepsContext>({
 	state: {},
 	handleChange: (event) => {},
 	setState: (key, value) => {},
-	getState: (key, defaultValue) => {},
+	getState: (key, defaultValue) => "" || false || defaultValue,
 	next: () => {},
 	prev: () => {},
 	jump: (id) => {},
@@ -242,7 +244,7 @@ export function Step<T extends StepProps>(props: T) {
 	}, [current, order, beforeStepChange]);
 
 	if (order === current) {
-		const newProps: Partial<StepProps> = Object.assign({}, props);
+		const newProps: Partial<T> = Object.assign({}, props);
 		delete newProps.component;
 
 		const defaultTitle = "Step " + order;
