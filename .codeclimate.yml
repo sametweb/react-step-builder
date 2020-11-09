@@ -13,7 +13,7 @@ checks:
 exclude_patterns:
   - "tests/"
   - "src/dist"
-  - "src/lib-ts"
+  - "src/lib"
   - "src/stepComponents"
   - "src/App.js"
   - "src/index.js"

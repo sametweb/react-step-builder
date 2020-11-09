@@ -40,7 +40,7 @@
 		"!**/*.test.{js,jsx}",
 		"!**/coverage/**",
 		"!*/src/dist/**",
-		"!*/src/lib-ts/**",
+		"!*/src/lib/**",
 		"!*/src/stepComponents/**"
 	],
 	"scripts": {
