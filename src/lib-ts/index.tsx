@@ -43,10 +43,7 @@ type AllSteps = { order: number; title: string }[];
 type OrderCheckFn = () => boolean;
 type MoveFn = () => void;
 type JumpFn = (step: number) => void;
-type GetState = (
-	key: keyof State,
-	defaultValue: State[keyof State],
-) => InputValue | CheckboxValue;
+type GetState = (key: keyof State, defaultValue: State[keyof State]) => any;
 type SetState = (key: keyof State, value: State[keyof State]) => void;
 type HandleChange = (event: EventType) => void;
 
