@@ -41,6 +41,34 @@ Example:
 
 <br />
 
+# Config Object
+
+`Steps` component accepts an optional `config` object for configuring the common navigation component. The `Navigation` component provided in the config object will be rendered along with every step component. Here is an example:
+
+```javascript
+const Navigation = (props) => {
+    return (
+        <div>
+            <button onClick={props.prev}>Previous</button>
+            <button onClick={props.next}>Next</button>
+        </div>
+    );
+}
+
+const config = {
+	navigation: {
+		component: Navigation // a React component with special props provided automatically
+		location: "before" // or after
+	}
+}
+
+<Steps config={config}>
+	<Step title="My First Step" component={Step1} />
+	<Step title="My Second Step" component={Step2} />
+	<Step title="My Third Step" component={Step3} />
+</Steps>
+```
+
 # Documentation
 
 ## Wrapper Components
@@ -49,7 +77,7 @@ Example:
 
 | Component   | Description                                                                                                                                                                                                                                                                                |
 | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `<Steps />` | Wrapper component for Step components.                                                                                                                                                                                                                                                     |
+| `<Steps />` | Wrapper component for Step components. Accepts a `config` object for rendering a common navigation component.                                                                                                                                                                              |
 | `<Step />`  | `title`: takes a title for the step, which can be accessed in `props` object of the step component. <br />`component`: takes a React component that you would like to show in that step. <br />`beforeStepChange`: takes a callback function to run right before the current step changes. |
 
 <br />
@@ -72,6 +100,22 @@ The React component that is passed to each `Step` wrapper component will be inje
 | `props.isLast`       | `function`                    | Function to check if the step is the last            |
 | `props.hasPrev`      | `function`                    | Function to check if the step has any previous step  |
 | `props.hasNext`      | `function`                    | Function to check if the step has any next step      |
+| `props.allSteps`     | `Array<{order, title}>`       | Array of all available steps' title and order number |
+| `props.state`        | `object`                      | Combined state value of all steps                    |
+| `props.setState`     | `function<key, value>`        | Function to set/update state by key                  |
+| `props.getState`     | `function<key, defaultValue>` | Function to retrieve a state value by key            |
+| `props.handleChange` | `function<event>`             | `onChange` event handler for form elements           |
+
+## Navigation Component `props`
+
+| Property             | Type                          | Description                                          |
+| -------------------- | ----------------------------- | ---------------------------------------------------- |
+| `props.size`         | `number`                      | Total number of steps                                |
+| `props.current`      | `string`                      | Current step number                                  |
+| `props.progress`     | `number`                      | Progress of the current step, value between 0 and 1  |
+| `props.next`         | `function`                    | Function to move to the next step                    |
+| `props.prev`         | `function`                    | Function to move to the previous step                |
+| `props.jump`         | `function<step>`              | Function to jump to the given step                   |
 | `props.allSteps`     | `Array<{order, title}>`       | Array of all available steps' title and order number |
 | `props.state`        | `object`                      | Combined state value of all steps                    |
 | `props.setState`     | `function<key, value>`        | Function to set/update state by key                  |
@@ -112,4 +156,19 @@ const Step1 = (props: StepComponentProps) => {
 };
 
 export default Step1;
+```
+
+## Component Type of Example Navigation Component
+
+If you'd like to add a persistent navigation component to be shown on every step, you may utilize `NavigationComponentProps` type for your custom `Navigation` component. Here is an example:
+
+```javascript
+const Navigation = (props: NavigationComponentProps) => {
+	return (
+		<div>
+			<button onClick={props.prev}>Previous</button>
+			<button onClick={props.next}>Next</button>
+		</div>
+	);
+};
 ```

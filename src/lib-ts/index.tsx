@@ -24,6 +24,12 @@ interface State {
 
 type StepsProps = {
 	children: ReactElement<StepProps> | ReactElement<StepProps>[];
+	config?: {
+		navigation?: {
+			component: (props: any) => JSX.Element;
+			location?: "before" | "after";
+		};
+	};
 };
 
 type BeforeStepChange = () => any;
@@ -98,6 +104,10 @@ interface StepContext {
 	order: number;
 }
 
+export interface NavigationComponentProps extends StepsContext {
+	[name: string]: any;
+}
+
 const StepsContext = React.createContext<StepsContext>({
 	// Dummy values for satisfying the type checker
 	// Gets updated before being passed down
@@ -119,8 +129,17 @@ const StepContext = React.createContext<StepContext>({ order: 0 });
 /**
  * Wrapper component for `Step` components.
  */
-export function Steps({ children }: StepsProps) {
+export function Steps({ children, config }: StepsProps) {
 	const childSteps = React.Children.toArray(children);
+
+	const NavigationComponent = (context: NavigationComponentProps) => {
+		if (config?.navigation?.component) {
+			const NavComponent = config?.navigation?.component;
+			return <NavComponent {...context} />;
+		} else {
+			return null;
+		}
+	};
 
 	const allSteps: AllSteps = childSteps.map((child, order) => {
 		return {
@@ -210,11 +229,14 @@ export function Steps({ children }: StepsProps) {
 
 	return (
 		<StepsContext.Provider value={context}>
+			{config?.navigation?.location === "before" &&
+				NavigationComponent(context)}
 			{React.Children.map(children, (child, order) => (
 				<StepContext.Provider value={{ order: order + 1 }}>
 					{child}
 				</StepContext.Provider>
 			))}
+			{config?.navigation?.location === "after" && NavigationComponent(context)}
 		</StepsContext.Provider>
 	);
 }
