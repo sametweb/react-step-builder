@@ -106,6 +106,8 @@ The React component that is passed to each `Step` wrapper component will be inje
 | `props.getState`     | `function<key, defaultValue>` | Function to retrieve a state value by key            |
 | `props.handleChange` | `function<event>`             | `onChange` event handler for form elements           |
 
+<br />
+
 ## Navigation Component `props`
 
 | Property             | Type                          | Description                                          |
@@ -121,6 +123,17 @@ The React component that is passed to each `Step` wrapper component will be inje
 | `props.setState`     | `function<key, value>`        | Function to set/update state by key                  |
 | `props.getState`     | `function<key, defaultValue>` | Function to retrieve a state value by key            |
 | `props.handleChange` | `function<event>`             | `onChange` event handler for form elements           |
+
+<br />
+
+## Config Object
+
+### `navigation`
+
+| Property              | Type                    | Description                                                                                                                                                                       |
+| --------------------- | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `component`           | `() => JSX.Element`     | This component's `props` object is automatically populated with the `Steps` component's state (see: [NavigationComponentProps](#component-type-of-example-navigation-component)). |
+| `location` (optional) | "`before`" or "`after`" | Location of the navigation component.                                                                                                                                             |
 
 <br />
 <hr />
