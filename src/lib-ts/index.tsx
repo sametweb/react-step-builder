@@ -118,7 +118,7 @@ const StepsContext = React.createContext<StepsContext>({
 	state: {},
 	handleChange: (event) => {},
 	setState: (key, value) => {},
-	getState: (key, defaultValue) => "" || false || defaultValue,
+	getState: (key, defaultValue) => "",
 	next: () => {},
 	prev: () => {},
 	jump: (id) => {},
@@ -136,8 +136,6 @@ export function Steps({ children, config }: StepsProps) {
 		if (config?.navigation?.component) {
 			const NavComponent = config?.navigation?.component;
 			return <NavComponent {...context} />;
-		} else {
-			return null;
 		}
 	};
 

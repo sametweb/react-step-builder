@@ -5,12 +5,16 @@ import Step2 from "./stepComponents/Step2";
 import Step3 from "./stepComponents/Step3";
 import Step4 from "./stepComponents/Step4";
 
-const Navigation = (props: NavigationComponentProps) => {
+export const Navigation = (props: NavigationComponentProps) => {
 	console.log(props);
 	return (
 		<div>
-			<button onClick={props.prev}>Previous</button>
-			<button onClick={props.next}>Next</button>
+			<button data-testid="global-prev" onClick={props.prev}>
+				Global Previous
+			</button>
+			<button data-testid="global-next" onClick={props.next}>
+				Global Next
+			</button>
 		</div>
 	);
 };

@@ -9,9 +9,10 @@ const Step1 = () => <></>;
 const Step2 = () => <></>;
 const Step3 = () => <></>;
 const Step4 = () => <></>;
+const Navigation = () => <></>;
 
 const testRenderer = TestRenderer.create(
-	<Steps>
+	<Steps config={{ navigation: { component: Navigation, location: "before" } }}>
 		<Step component={Step1} title="My first step" beforeStepChange={mockFn} />
 		<Step component={Step2} />
 		<Step component={Step3} />
@@ -174,5 +175,28 @@ describe("state updates correctly", () => {
 
 		const newProps1 = testInstance.findByType(Step1).props;
 		expect(newProps1.getState("lastname", "")).toBe("Mutevelli");
+	});
+});
+
+describe("global navigation", () => {
+	it("takes parameters correctly", () => {
+		const navProps = testInstance.findByType(Navigation).props;
+		expect(navProps.size).toBe(4);
+		expect(navProps.current).toBe(1);
+		expect(navProps.progress).toBe(0);
+	});
+
+	it("buttons work correctly", () => {
+		const navProps = testInstance.findByType(Navigation).props;
+
+		act(() => navProps.next());
+
+		const newNavProps = testInstance.findByType(Navigation).props;
+
+		expect(newNavProps.current).toBe(2);
+		expect(newNavProps.size).toBe(4);
+		expect(newNavProps.progress).toBe(
+			(newNavProps.current - 1) / (newNavProps.size - 1),
+		);
 	});
 });
