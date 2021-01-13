@@ -57,7 +57,7 @@ const Navigation = (props) => {
 
 const config = {
 	navigation: {
-		component: Navigation // a React component with special props provided automatically
+		component: Navigation, // a React component with special props provided automatically
 		location: "before" // or after
 	}
 }
