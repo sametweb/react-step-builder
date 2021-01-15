@@ -6,7 +6,7 @@ import Step3 from "./stepComponents/Step3";
 import Step4 from "./stepComponents/Step4";
 
 export const Navigation = (props: NavigationComponentProps) => {
-	console.log(props);
+	console.log({ navProps: props });
 	return (
 		<div>
 			<button data-testid="global-prev" onClick={props.prev}>
@@ -22,7 +22,7 @@ export const Navigation = (props: NavigationComponentProps) => {
 const App = () => {
 	return (
 		<div className="steps_wrapper">
-			<h1>React Step Builder v1.1.0</h1>
+			<h1>React Step Builder v2.0.6</h1>
 			<Steps
 				config={{
 					navigation: {
