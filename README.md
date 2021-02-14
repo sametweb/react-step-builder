@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.com/sametweb/react-step-builder.svg?branch=master)](https://travis-ci.com/sametweb/react-step-builder) [![Coverage Status](https://coveralls.io/repos/github/sametweb/react-step-builder/badge.svg?branch=master)](https://coveralls.io/github/sametweb/react-step-builder?branch=master) [![Test Coverage](https://api.codeclimate.com/v1/badges/f0c62e4a8e4826eec6c9/test_coverage)](https://codeclimate.com/github/sametweb/react-step-builder/test_coverage) [![Maintainability](https://api.codeclimate.com/v1/badges/f0c62e4a8e4826eec6c9/maintainability)](https://codeclimate.com/github/sametweb/react-step-builder/maintainability) [![Total NPM Download](https://img.shields.io/npm/dt/react-step-builder.svg)](https://www.npmjs.com/package/react-step-builder)
 <br/><br/>
 
-## React Step Builder is a UI-agnostic multi step interface builder.
+## A headless, type-safe, UI
 
 <br/>
 
@@ -11,11 +11,10 @@
 
 React Step Builder provides;
 
-- React / TypeScript support and type definitions
-- A combined global state collected from- and persistent across each individual step component
-- UI-agnostic functionality for navigating between step components
-- Ready-to-use form handling methods for handling React form elements
-- Easy to use API
+- TypeScript support
+- A global state
+- Headless structure
+- Out-of-box form handler methods
 
 <br />
 
@@ -130,10 +129,10 @@ The React component that is passed to each `Step` wrapper component will be inje
 
 ### `navigation`
 
-| Property              | Type                    | Description                                                                                                                                                                       |
-| --------------------- | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `component`           | `() => JSX.Element`     | This component's `props` object is automatically populated with the `Steps` component's state (see: [NavigationComponentProps](#component-type-of-example-navigation-component)). |
-| `location` (optional) | "`before`" or "`after`" | Location of the navigation component.                                                                                                                                             |
+| Property              | Type                      | Description                                                                                                                                                                       |
+| --------------------- | ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `component`           | `() => JSX.Element`       | This component's `props` object is automatically populated with the `Steps` component's state (see: [NavigationComponentProps](#component-type-of-example-navigation-component)). |
+| `location` (optional) | "`before`" \|\| "`after`" | Location of the navigation component.                                                                                                                                             |
 
 <br />
 <hr />
@@ -141,7 +140,7 @@ The React component that is passed to each `Step` wrapper component will be inje
 
 ## Prop types of the step components for React / TypeScript
 
-When developing your step components, you can utilize `StepComponentProps` type definition for your step component props.
+When developing your step components, you can utilize `StepComponentProps` type for your step component props.
 
 <br/>
 
@@ -171,7 +170,7 @@ const Step1 = (props: StepComponentProps) => {
 export default Step1;
 ```
 
-## Component Type of Example Navigation Component
+## Example Navigation Component
 
 If you'd like to add a persistent navigation component to be shown on every step, you may utilize `NavigationComponentProps` type for your custom `Navigation` component. Here is an example:
 

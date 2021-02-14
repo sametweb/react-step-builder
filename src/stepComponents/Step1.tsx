@@ -2,6 +2,7 @@ import React from "react";
 import { StepComponentProps } from "../lib-ts";
 
 const Step1 = (props: StepComponentProps) => {
+	console.log({ props });
 	return (
 		<div className="step">
 			First Name:{" "}
