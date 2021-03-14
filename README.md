@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.com/sametweb/react-step-builder.svg?branch=master)](https://travis-ci.com/sametweb/react-step-builder) [![Coverage Status](https://coveralls.io/repos/github/sametweb/react-step-builder/badge.svg?branch=master)](https://coveralls.io/github/sametweb/react-step-builder?branch=master) [![Test Coverage](https://api.codeclimate.com/v1/badges/f0c62e4a8e4826eec6c9/test_coverage)](https://codeclimate.com/github/sametweb/react-step-builder/test_coverage) [![Maintainability](https://api.codeclimate.com/v1/badges/f0c62e4a8e4826eec6c9/maintainability)](https://codeclimate.com/github/sametweb/react-step-builder/maintainability) [![Total NPM Download](https://img.shields.io/npm/dt/react-step-builder.svg)](https://www.npmjs.com/package/react-step-builder)
 <br/><br/>
 
-## A headless, type-safe, UI
+## A headless, type-safe multi-step UI builder.
 
 <br/>
 
@@ -42,7 +42,7 @@ Example:
 
 # Config Object
 
-`Steps` component accepts an optional `config` object for configuring the common navigation component. The `Navigation` component provided in the config object will be rendered along with every step component. Here is an example:
+`Steps` component accepts an optional `config` object for configuring the common navigation component or components that you'd like render before or after the Step components. These components are rendered along with every step component. Here is an example:
 
 ```javascript
 const Navigation = (props) => {
@@ -54,7 +54,17 @@ const Navigation = (props) => {
     );
 }
 
+const Before = (props) => {
+	return <span>This component will be rendered before the Step components in every step</span>
+}
+
+const After = (props) => {
+	return <span>This component will be rendered after the Step components in every step</span>
+}
+
 const config = {
+	before: Before, // a React component with special props provided automatically
+	after: After, // a React component with special props provided automatically
 	navigation: {
 		component: Navigation, // a React component with special props provided automatically
 		location: "before" // or after
@@ -127,6 +137,14 @@ The React component that is passed to each `Step` wrapper component will be inje
 
 ## Config Object
 
+### `before`
+
+It accepts a function that returns some JSX.Element. This component's `props` object is automatically populated with the `Steps` component's state (see: [NavigationComponentProps](#component-type-of-example-navigation-component)).
+
+### `after`
+
+It accepts a function that returns some JSX.Element. This component's `props` object is automatically populated with the `Steps` component's state (see: [NavigationComponentProps](#component-type-of-example-navigation-component)).
+
 ### `navigation`
 
 | Property              | Type                      | Description                                                                                                                                                                       |
@@ -170,9 +188,9 @@ const Step1 = (props: StepComponentProps) => {
 export default Step1;
 ```
 
-## Example Navigation Component
+## Example Navigation, Before, and After Components
 
-If you'd like to add a persistent navigation component to be shown on every step, you may utilize `NavigationComponentProps` type for your custom `Navigation` component. Here is an example:
+If you'd like to add a persistent components to be shown on before or after every step, you may utilize `NavigationComponentProps` type for your custom `Navigation`, `Before`, or `After` components. Here is an example:
 
 ```javascript
 const Navigation = (props: NavigationComponentProps) => {
@@ -182,5 +200,15 @@ const Navigation = (props: NavigationComponentProps) => {
 			<button onClick={props.next}>Next</button>
 		</div>
 	);
+};
+
+const Before = (props: NavigationComponentProps) => {
+	return (
+		<span>This component will be rendered before the Step components</span>
+	);
+};
+
+const After = (props: NavigationComponentProps) => {
+	return <span>This component will be rendered after the Step components</span>;
 };
 ```

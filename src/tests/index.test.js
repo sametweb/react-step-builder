@@ -10,9 +10,17 @@ const Step2 = () => <></>;
 const Step3 = () => <></>;
 const Step4 = () => <></>;
 const Navigation = () => <></>;
+const Before = () => <></>;
+const After = () => <></>;
 
 const testRenderer = TestRenderer.create(
-	<Steps config={{ navigation: { component: Navigation, location: "before" } }}>
+	<Steps
+		config={{
+			before: Before,
+			after: After,
+			navigation: { component: Navigation, location: "before" },
+		}}
+	>
 		<Step component={Step1} title="My first step" beforeStepChange={mockFn} />
 		<Step component={Step2} />
 		<Step component={Step3} />
@@ -198,5 +206,55 @@ describe("global navigation", () => {
 		expect(newNavProps.progress).toBe(
 			(newNavProps.current - 1) / (newNavProps.size - 1),
 		);
+	});
+});
+
+describe("before and after components", () => {
+	it("renders components", () => {
+		const before = testInstance.findByType(Before).props;
+		const after = testInstance.findByType(After).props;
+		expect(before.size).toBe(4);
+		expect(before.current).toBe(2);
+		expect(Number(before.progress.toFixed(2))).toBe(0.33);
+		expect(after.size).toBe(4);
+		expect(after.current).toBe(2);
+		expect(Number(after.progress.toFixed(2))).toBe(0.33);
+	});
+
+	it("prev/next works in before/after components correctly", () => {
+		let before = testInstance.findByType(Before).props;
+		let after = testInstance.findByType(After).props;
+
+		act(() => before.next());
+
+		before = testInstance.findByType(Before).props;
+		after = testInstance.findByType(After).props;
+
+		expect(before.current).toBe(3);
+		expect(after.current).toBe(3);
+
+		act(() => after.next());
+
+		before = testInstance.findByType(Before).props;
+		after = testInstance.findByType(After).props;
+
+		expect(before.current).toBe(4);
+		expect(after.current).toBe(4);
+
+		act(() => before.prev());
+
+		before = testInstance.findByType(Before).props;
+		after = testInstance.findByType(After).props;
+
+		expect(before.current).toBe(3);
+		expect(after.current).toBe(3);
+
+		act(() => after.prev());
+
+		before = testInstance.findByType(Before).props;
+		after = testInstance.findByType(After).props;
+
+		expect(before.current).toBe(2);
+		expect(after.current).toBe(2);
 	});
 });

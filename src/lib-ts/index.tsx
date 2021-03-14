@@ -22,14 +22,18 @@ interface State {
 	[key: string]: InputValue | CheckboxValue;
 }
 
+export type StepsConfig = {
+	before?: (props: any) => JSX.Element;
+	after?: (props: any) => JSX.Element;
+	navigation?: {
+		component: (props: any) => JSX.Element;
+		location?: "before" | "after";
+	};
+};
+
 type StepsProps = {
 	children: ReactElement<StepProps> | ReactElement<StepProps>[];
-	config?: {
-		navigation?: {
-			component: (props: any) => JSX.Element;
-			location?: "before" | "after";
-		};
-	};
+	config?: StepsConfig;
 };
 
 type BeforeStepChange = () => any;
@@ -139,6 +143,20 @@ export function Steps({ children, config }: StepsProps) {
 		}
 	};
 
+	const BeforeComponent = (context: NavigationComponentProps) => {
+		if (config?.before) {
+			const Before = config.before;
+			return <Before {...context} />;
+		}
+	};
+
+	const AfterComponent = (context: NavigationComponentProps) => {
+		if (config?.after) {
+			const After = config.after;
+			return <After {...context} />;
+		}
+	};
+
 	const allSteps: AllSteps = childSteps.map((child, order) => {
 		return {
 			title:
@@ -227,6 +245,7 @@ export function Steps({ children, config }: StepsProps) {
 
 	return (
 		<StepsContext.Provider value={context}>
+			{config?.before && BeforeComponent(context)}
 			{config?.navigation?.location === "before" &&
 				NavigationComponent(context)}
 			{React.Children.map(children, (child, order) => (
@@ -235,6 +254,7 @@ export function Steps({ children, config }: StepsProps) {
 				</StepContext.Provider>
 			))}
 			{config?.navigation?.location === "after" && NavigationComponent(context)}
+			{config?.after && AfterComponent(context)}
 		</StepsContext.Provider>
 	);
 }
