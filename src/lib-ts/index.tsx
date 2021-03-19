@@ -182,7 +182,7 @@ export function Steps({ children, config }: StepsProps) {
 	useEffect(() => {
 		if (current === 1) setProgress(0);
 		else if (current === size) setProgress(1);
-		else setProgress((current - 1) / (size - 1));
+		else setProgress(Number(((current - 1) / (size - 1)).toFixed(2)));
 	}, [current, setProgress, size]);
 
 	const next: MoveFn = () => {

@@ -2,7 +2,7 @@
 	"name": "react-step-builder",
 	"description": "Unopinionated multi step interface builder.",
 	"author": "Samet Mutevelli <mutevellisamet@gmail.com> (https://sametmutevelli.com)",
-	"version": "2.0.7",
+	"version": "2.0.8",
 	"private": false,
 	"main": "src/dist/index",
 	"types": "src/dist/index.d.ts",
