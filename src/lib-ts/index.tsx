@@ -46,7 +46,7 @@ interface StepProps {
 	beforeStepChange?: BeforeStepChange;
 }
 
-type EventType = React.ChangeEvent<HTMLInputElement> &
+type EventType = React.ChangeEvent<HTMLInputElement> |
 	React.ChangeEvent<HTMLTextAreaElement>;
 
 type AllSteps = { order: number; title: string }[];
