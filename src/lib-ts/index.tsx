@@ -46,8 +46,9 @@ interface StepProps {
 	beforeStepChange?: BeforeStepChange;
 }
 
-type EventType = React.ChangeEvent<HTMLInputElement> |
-	React.ChangeEvent<HTMLTextAreaElement>;
+type EventType =
+	| React.ChangeEvent<HTMLInputElement>
+	| React.ChangeEvent<HTMLTextAreaElement>;
 
 type AllSteps = { order: number; title: string }[];
 type OrderCheckFn = () => boolean;
@@ -221,7 +222,7 @@ export function Steps({ children, config }: StepsProps) {
 		const inputType = event.currentTarget.type;
 		const value =
 			inputType === "checkbox"
-				? event.currentTarget.checked
+				? (event.currentTarget as HTMLInputElement).checked
 				: event.currentTarget.value;
 
 		const newState = Object.assign({}, stepState);
