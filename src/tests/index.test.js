@@ -3,7 +3,9 @@ import TestRenderer, { act } from "react-test-renderer";
 
 import { Step, Steps } from "../lib-ts";
 
-const mockFn = jest.fn();
+let mockFn;
+let testInstance;
+let props1;
 
 const Step1 = () => <></>;
 const Step2 = () => <></>;
@@ -13,32 +15,34 @@ const Navigation = () => <></>;
 const Before = () => <></>;
 const After = () => <></>;
 
-const testRenderer = TestRenderer.create(
-	<Steps
-		config={{
-			before: Before,
-			after: After,
-			navigation: { component: Navigation, location: "before" },
-		}}
-	>
-		<Step component={Step1} title="My first step" beforeStepChange={mockFn} />
-		<Step component={Step2} />
-		<Step component={Step3} />
-		<Step component={Step4} />
-	</Steps>,
-);
+beforeEach(() => {
+	mockFn = jest.fn();
 
-const testInstance = testRenderer.root;
+	const testRenderer = TestRenderer.create(
+		<Steps
+			config={{
+				before: Before,
+				after: After,
+				navigation: { component: Navigation, location: "before" },
+			}}
+		>
+			<Step component={Step1} title="My first step" beforeStepChange={mockFn} />
+			<Step component={Step2} />
+			<Step component={Step3} />
+			<Step component={Step4} />
+		</Steps>,
+	);
 
-const props1 = testInstance.findByType(Step1).props;
+	testInstance = testRenderer.root;
+
+	props1 = testInstance.findByType(Step1).props;
+});
 
 describe("beforeStepChange", () => {
 	it("is called before step changes", () => {
 		act(() => props1.next());
 
 		expect(mockFn).toHaveBeenCalled();
-
-		mockFn.mockClear();
 	});
 });
 
@@ -145,8 +149,6 @@ describe("Initial values are correct", () => {
 		const props3 = testInstance.findByType(Step3).props;
 		const newProgress = (props3.order - 1) / (props3.allSteps.length - 1);
 		expect(props3.progress).toBe(newProgress);
-
-		act(() => props3.jump(1));
 	});
 });
 
@@ -210,9 +212,15 @@ describe("global navigation", () => {
 });
 
 describe("before and after components", () => {
+	beforeEach(() => {
+		const navProps = testInstance.findByType(Navigation).props;
+		act(() => navProps.next());
+	});
+
 	it("renders components", () => {
 		const before = testInstance.findByType(Before).props;
 		const after = testInstance.findByType(After).props;
+
 		expect(before.size).toBe(4);
 		expect(before.current).toBe(2);
 		expect(Number(before.progress.toFixed(2))).toBe(0.33);
