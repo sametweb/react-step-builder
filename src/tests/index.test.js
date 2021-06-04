@@ -143,8 +143,9 @@ describe("Initial values are correct", () => {
 
 		act(() => props4.prev());
 		const props3 = testInstance.findByType(Step3).props;
-		const newProgress = (props3.order - 1) / (props3.allSteps.length - 1);
-		expect(props3.progress).toBe(newProgress);
+		expect(props3.order).toBe(3)
+		expect(props3.allSteps).toHaveLength(4)
+		expect(props3.progress).toBe(0.67);
 
 		act(() => props3.jump(1));
 	});
@@ -203,9 +204,7 @@ describe("global navigation", () => {
 
 		expect(newNavProps.current).toBe(2);
 		expect(newNavProps.size).toBe(4);
-		expect(newNavProps.progress).toBe(
-			(newNavProps.current - 1) / (newNavProps.size - 1),
-		);
+		expect(newNavProps.progress).toBe(0.33);
 	});
 });
 
@@ -215,10 +214,10 @@ describe("before and after components", () => {
 		const after = testInstance.findByType(After).props;
 		expect(before.size).toBe(4);
 		expect(before.current).toBe(2);
-		expect(Number(before.progress.toFixed(2))).toBe(0.33);
+		expect(before.progress).toBe(0.33);
 		expect(after.size).toBe(4);
 		expect(after.current).toBe(2);
-		expect(Number(after.progress.toFixed(2))).toBe(0.33);
+		expect(after.progress).toBe(0.33);
 	});
 
 	it("prev/next works in before/after components correctly", () => {
