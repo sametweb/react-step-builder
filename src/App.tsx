@@ -1,14 +1,10 @@
 import React from "react";
-import {
-	Steps,
-	Step,
-	NavigationComponentProps,
-	StepsConfig,
-} from "./lib-ts/index";
+import { NavigationComponentProps, StepsConfig } from "./lib-ts/index";
 import Step1 from "./stepComponents/Step1";
 import Step2 from "./stepComponents/Step2";
 import Step3 from "./stepComponents/Step3";
 import Step4 from "./stepComponents/Step4";
+import { Steps, Step } from "./dist";
 
 export const Navigation = (props: NavigationComponentProps) => {
 	console.log({ navProps: props });

@@ -3,10 +3,9 @@ import React, {
 	DetailedHTMLProps,
 	InputHTMLAttributes,
 	ReactElement,
-	useContext,
-	useEffect,
-	useState,
 } from "react";
+
+const { useContext, useEffect, useState, createContext } = React;
 
 type InputValue = DetailedHTMLProps<
 	InputHTMLAttributes<HTMLInputElement>,
@@ -113,7 +112,7 @@ export interface NavigationComponentProps extends StepsContext {
 	[name: string]: any;
 }
 
-const StepsContext = React.createContext<StepsContext>({
+const StepsContext = createContext<StepsContext>({
 	// Dummy values for satisfying the type checker
 	// Gets updated before being passed down
 	size: 0,
@@ -129,12 +128,12 @@ const StepsContext = React.createContext<StepsContext>({
 	jump: (id) => {},
 });
 
-const StepContext = React.createContext<StepContext>({ order: 0 });
+const StepContext = createContext<StepContext>({ order: 0 });
 
 /**
  * Wrapper component for `Step` components.
  */
-export function Steps({ children, config }: StepsProps) {
+function Steps({ children, config }: StepsProps) {
 	const childSteps = React.Children.toArray(children);
 
 	const NavigationComponent = (context: NavigationComponentProps) => {
@@ -263,7 +262,7 @@ export function Steps({ children, config }: StepsProps) {
 /**
  * Wrapper component for each individual step.
  */
-export function Step<T extends StepProps>(props: T) {
+function Step<T extends StepProps>(props: T) {
 	const { order }: StepContext = useContext(StepContext);
 	const { title, component: Component, beforeStepChange } = props;
 	const stepsContextValue: StepsContext = useContext(StepsContext);
@@ -303,3 +302,5 @@ export function Step<T extends StepProps>(props: T) {
 
 	return null;
 }
+
+module.exports = { Steps, Step };
