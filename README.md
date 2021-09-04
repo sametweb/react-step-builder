@@ -3,13 +3,13 @@
 [![Build Status](https://travis-ci.com/sametweb/react-step-builder.svg?branch=master)](https://travis-ci.com/sametweb/react-step-builder) [![Coverage Status](https://coveralls.io/repos/github/sametweb/react-step-builder/badge.svg?branch=master)](https://coveralls.io/github/sametweb/react-step-builder?branch=master) [![Test Coverage](https://api.codeclimate.com/v1/badges/f0c62e4a8e4826eec6c9/test_coverage)](https://codeclimate.com/github/sametweb/react-step-builder/test_coverage) [![Maintainability](https://api.codeclimate.com/v1/badges/f0c62e4a8e4826eec6c9/maintainability)](https://codeclimate.com/github/sametweb/react-step-builder/maintainability) [![Total NPM Download](https://img.shields.io/npm/dt/react-step-builder.svg)](https://www.npmjs.com/package/react-step-builder)
 <br/><br/>
 
-## A headless & type-safe multi-step UI builder.
+> 💡 **Call For Action:** I would like to re-write the library with an easier API to work with. If you'd like to contribute to the discussion, please visit https://github.com/sametweb/react-step-builder/discussions/44
 
-<br/>
+<br />
 
 # Overview
 
-React Step Builder provides;
+React Step Builder provides
 
 - TypeScript support
 - A global state
@@ -46,36 +46,44 @@ Example:
 
 ```javascript
 const Navigation = (props) => {
-    return (
-        <div>
-            <button onClick={props.prev}>Previous</button>
-            <button onClick={props.next}>Next</button>
-        </div>
-    );
-}
+	return (
+		<div>
+			<button onClick={props.prev}>Previous</button>
+			<button onClick={props.next}>Next</button>
+		</div>
+	);
+};
 
 const Before = (props) => {
-	return <span>This component will be rendered before the Step components in every step</span>
-}
+	return (
+		<span>
+			This component will be rendered before the Step components in every step
+		</span>
+	);
+};
 
 const After = (props) => {
-	return <span>This component will be rendered after the Step components in every step</span>
-}
+	return (
+		<span>
+			This component will be rendered after the Step components in every step
+		</span>
+	);
+};
 
 const config = {
 	before: Before, // a React component with special props provided automatically
 	after: After, // a React component with special props provided automatically
 	navigation: {
 		component: Navigation, // a React component with special props provided automatically
-		location: "before" // or after
-	}
-}
+		location: "before", // or after
+	},
+};
 
 <Steps config={config}>
 	<Step title="My First Step" component={Step1} />
 	<Step title="My Second Step" component={Step2} />
 	<Step title="My Third Step" component={Step3} />
-</Steps>
+</Steps>;
 ```
 
 # Documentation
