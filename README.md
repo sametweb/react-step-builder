@@ -72,10 +72,10 @@ A component whose each direct sibling is treated as a step. **Do not add anythin
 
 ```jsx
 <Steps>
-  <Step1></NextButton>
-  <Step2>
-    <NotAStep />
-  </Step2>
+	<Step1 />
+	<Step2>
+		<NotAStep />
+	</Step2>
 </Steps>
 ```
 
