@@ -1,43 +1,42 @@
 import React from "react";
-import { NavigationComponentProps, StepsConfig } from "./lib-ts/index";
-import Step1 from "./stepComponents/Step1";
-import Step2 from "./stepComponents/Step2";
-import Step3 from "./stepComponents/Step3";
-import Step4 from "./stepComponents/Step4";
-import { Steps, Step } from "./dist";
-
-export const Navigation = (props: NavigationComponentProps) => {
-	console.log({ navProps: props });
-	return (
-		<div>
-			<button data-testid="global-prev" onClick={props.prev}>
-				Global Previous
-			</button>
-			<button data-testid="global-next" onClick={props.next}>
-				Global Next
-			</button>
-		</div>
-	);
-};
+import { Steps, useSteps } from "./dist";
 
 const App = () => {
-	const config: StepsConfig = {
-		before: (props) => <Navigation {...props} test="test" />,
-		after: Navigation,
-		navigation: {
-			component: Navigation,
-			location: "before",
-		},
-	};
+	const { prev, next, progress, jump, total, current } = useSteps();
+
 	return (
 		<div className="steps_wrapper">
 			<h1>React Step Builder v2.0.7</h1>
-			<Steps config={config}>
-				<Step title="Hello" component={Step1} deneme={"deneme"} />
-				<Step component={Step2} />
-				<Step title="Contact Info" component={Step3} />
-				<Step title="Overview" component={Step4} />
+			<Steps>
+				<div data-testid="step1">
+					<h1>Step 1</h1>
+					<p>This is Step 1.</p>
+				</div>
+				<div data-testid="step2">
+					<h1>Step 2</h1>
+					<p>This is Step 2.</p>
+				</div>
+				<div data-testid="step3">
+					<h1>Step 3</h1>
+					<p>This is Step 3.</p>
+				</div>
+				<div data-testid="step4">
+					<h1>Step 4</h1>
+					<p>This is Step 4.</p>
+				</div>
 			</Steps>
+			<button data-testid="prev" onClick={prev}>
+				Prev
+			</button>
+			<button data-testid="next" onClick={next}>
+				Next
+			</button>
+			<button data-testid="jump" onClick={() => jump(3)}>
+				Jump to Step 3
+			</button>
+			<div data-testid="total">Total: {total}</div>
+			<div data-testid="current">Current: {current}</div>
+			<div data-testid="progress">Progress: {progress * 100}%</div>
 		</div>
 	);
 };
