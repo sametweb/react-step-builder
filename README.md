@@ -12,7 +12,7 @@ React Step Builder is a headless, multi-step interface builder.
 
 Using [npm](https://www.npmjs.com/):
 
-    $ npm install react-step-builder
+      $ npm install react-step-builder
 
 <br />
 
