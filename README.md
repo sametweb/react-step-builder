@@ -60,17 +60,17 @@ A component whose each direct sibling is treated as a step. **Do not add anythin
 
 ❌ Incorrect:
 
-```
+```jsx
 <Steps>
-  <Step1 />
-  <Step2 />
-  <NotAStep />
+	<Step1 />
+	<Step2 />
+	<NotAStep />
 </Steps>
 ```
 
 ✅ Correct:
 
-```
+```jsx
 <Steps>
   <Step1></NextButton>
   <Step2>
