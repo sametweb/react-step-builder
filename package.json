@@ -1,8 +1,8 @@
 {
 	"name": "react-step-builder",
-	"description": "Unopinionated multi step interface builder.",
+	"description": "Headless, unopinionated, multi-step interface builder.",
 	"author": "Samet Mutevelli <mutevellisamet@gmail.com> (https://sametmutevelli.com)",
-	"version": "3.0.0",
+	"version": "3.0.1",
 	"private": false,
 	"main": "src/dist/index",
 	"types": "src/dist/index.d.ts",

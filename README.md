@@ -1,6 +1,6 @@
 # React Step Builder ![npm (tag)](https://img.shields.io/npm/v/react-step-builder/latest?label=latest) [![Total NPM Download](https://img.shields.io/npm/dt/react-step-builder.svg)](https://www.npmjs.com/package/react-step-builder)
 
-React Step Builder is a headless, multi-step interface builder.
+React Step Builder is a headless, unopinionated, multi-step interface builder.
 
 > Version 3 introduces some breaking changes. If you are upgrading from earlier versions, please read the documentation carefully.
 
