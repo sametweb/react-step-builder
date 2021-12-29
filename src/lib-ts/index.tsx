@@ -73,14 +73,27 @@ export const StepsProvider: React.ComponentType = ({ children }) => {
 	);
 };
 
-export const Steps: React.FC = (props) => {
+export interface StepsProps {
+	onStepChange: () => void;
+}
+
+export const Steps: React.FC<StepsProps> = (props) => {
 	const stepsContext = React.useContext(StepsContext);
 	const { current, setSize } = stepsContext;
+	const [isInitialRender, setIsInitialRender] = React.useState(true);
+
+	React.useEffect(() => {
+		setIsInitialRender(false);
+	}, []);
 
 	React.useEffect(() => {
 		const size = React.Children.count(props.children);
 		setSize(size);
 	}, [props.children]);
+
+	React.useEffect(() => {
+		!isInitialRender && props.onStepChange();
+	}, [current]);
 
 	const steps = React.Children.map(props.children, (child, index) => {
 		const step = index + 1;

@@ -2,12 +2,28 @@ import React from "react";
 import { Steps, useSteps } from "./dist";
 
 const App = () => {
-	const { prev, next, progress, jump, total, current } = useSteps();
+	const onStepChange = () => {
+		console.log("Step Changed");
+	};
 
 	return (
 		<div className="steps_wrapper">
 			<h1>React Step Builder v2.0.7</h1>
-			<Steps>
+			<StepsComponent onStepChange={onStepChange} />
+		</div>
+	);
+};
+
+interface StepsComponentProps {
+	onStepChange: () => void;
+}
+
+export const StepsComponent: React.FC<StepsComponentProps> = (props) => {
+	const { prev, next, progress, jump, total, current } = useSteps();
+
+	return (
+		<>
+			<Steps onStepChange={props.onStepChange}>
 				<div data-testid="step1">
 					<h1>Step 1</h1>
 					<p>This is Step 1.</p>
@@ -37,7 +53,7 @@ const App = () => {
 			<div data-testid="total">Total: {total}</div>
 			<div data-testid="current">Current: {current}</div>
 			<div data-testid="progress">Progress: {progress * 100}%</div>
-		</div>
+		</>
 	);
 };
 

@@ -26,29 +26,29 @@ Example:
 import { Steps, StepsProvider, useSteps } from "react-step-builder";
 
 const App = () => {
-  return (
-    <StepsProvider>
-      <MySteps />
-    </StepsProvider>
-  );
+	return (
+		<StepsProvider>
+			<MySteps />
+		</StepsProvider>
+	);
 };
 
 const MySteps = () => {
-  const { next, prev } = useSteps();
+	const { next, prev } = useSteps();
 
-  return (
-    <Steps>
-      <div>
-        <h1>Step 1</h1>
-      </div>
-      <div>
-        <h1>Step 2</h1>
-      </div>
-      <div>
-        <h1>Step 3</h1>
-      </div>
-    </Steps>
-  );
+	return (
+		<Steps>
+			<div>
+				<h1>Step 1</h1>
+			</div>
+			<div>
+				<h1>Step 2</h1>
+			</div>
+			<div>
+				<h1>Step 3</h1>
+			</div>
+		</Steps>
+	);
 };
 
 export default App;
@@ -64,9 +64,9 @@ A component whose each direct sibling is treated as a step. **Do not add anythin
 
 ```jsx
 <Steps>
-  <Step1 />
-  <Step2 />
-  <NotAStep />
+	<Step1 />
+	<Step2 />
+	<NotAStep />
 </Steps>
 ```
 
@@ -74,16 +74,22 @@ A component whose each direct sibling is treated as a step. **Do not add anythin
 
 ```jsx
 <Steps>
-  <Step1 />
-  <Step2>
-    <NotAStep />
-  </Step2>
+	<Step1 />
+	<Step2>
+		<NotAStep />
+	</Step2>
 </Steps>
 ```
 
 This reason for this method is due to React's _composition over inheritance_ principle. It also allows you to manage your state easily in the parent component.
 
+| Property       | Type         | Description                                                |
+| -------------- | ------------ | ---------------------------------------------------------- |
+| `onStepChange` | `() => void` | Runs on every step change. Does not run on initial render. |
+
 <br/>
+<hr />
+<br />
 
 ### **`useSteps`**
 
@@ -93,20 +99,22 @@ A special hook that accesses the state of `<Steps />` component and exposes meth
 
 These are the properties inside `stepsState` object.
 
-| Property   | Type             | Description                                         |
-| ---------- | ---------------- | --------------------------------------------------- |
-| `total`    | `number`         | Total number of steps                               |
-| `current`  | `number`         | Current step number                                 |
-| `progress` | `number`         | Progress of the current step, value between 0 and 1 |
-| `next`     | `function`       | Function to move to the next step                   |
-| `prev`     | `function`       | Function to move to the previous step               |
-| `jump`     | `function<step>` | Function to jump to the given step                  |
-| `isFirst`  | `boolean`        | If the step is the first                            |
-| `isLast`   | `boolean`        | If the step is the last                             |
-| `hasPrev`  | `boolean`        | If the step has any previous step                   |
-| `hasNext`  | `boolean`        | If the step has any next step                       |
+| Property   | Type                     | Description                                         |
+| ---------- | ------------------------ | --------------------------------------------------- |
+| `total`    | `number`                 | Total number of steps                               |
+| `current`  | `number`                 | Current step number                                 |
+| `progress` | `number`                 | Progress of the current step, value between 0 and 1 |
+| `next`     | `() => void`             | Function to move to the next step                   |
+| `prev`     | `() => void`             | Function to move to the previous step               |
+| `jump`     | `(step: number) => void` | Function to jump to the given step                  |
+| `isFirst`  | `boolean`                | If the step is the first                            |
+| `isLast`   | `boolean`                | If the step is the last                             |
+| `hasPrev`  | `boolean`                | If the step has any previous step                   |
+| `hasNext`  | `boolean`                | If the step has any next step                       |
 
 <br/>
+<hr />
+<br />
 
 ### `<StepsProvider />`
 
