@@ -26,29 +26,29 @@ Example:
 import { Steps, StepsProvider, useSteps } from "react-step-builder";
 
 const App = () => {
-	return (
-		<StepsProvider>
-			<MySteps />
-		</StepsProvider>
-	);
+  return (
+    <StepsProvider>
+      <MySteps />
+    </StepsProvider>
+  );
 };
 
 const MySteps = () => {
-	const { next, prev } = useSteps();
+  const { next, prev } = useSteps();
 
-	return (
-		<Steps>
-			<div>
-				<h1>Step 1</h1>
-			</div>
-			<div>
-				<h1>Step 2</h1>
-			</div>
-			<div>
-				<h1>Step 3</h1>
-			</div>
-		</Steps>
-	);
+  return (
+    <Steps>
+      <div>
+        <h1>Step 1</h1>
+      </div>
+      <div>
+        <h1>Step 2</h1>
+      </div>
+      <div>
+        <h1>Step 3</h1>
+      </div>
+    </Steps>
+  );
 };
 
 export default App;
@@ -64,9 +64,9 @@ A component whose each direct sibling is treated as a step. **Do not add anythin
 
 ```jsx
 <Steps>
-	<Step1 />
-	<Step2 />
-	<NotAStep />
+  <Step1 />
+  <Step2 />
+  <NotAStep />
 </Steps>
 ```
 
@@ -74,10 +74,10 @@ A component whose each direct sibling is treated as a step. **Do not add anythin
 
 ```jsx
 <Steps>
-	<Step1 />
-	<Step2>
-		<NotAStep />
-	</Step2>
+  <Step1 />
+  <Step2>
+    <NotAStep />
+  </Step2>
 </Steps>
 ```
 
