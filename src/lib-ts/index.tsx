@@ -2,7 +2,9 @@ import * as React from "react";
 
 interface IStepsContext {
 	current: number;
+	setCurrent: React.Dispatch<React.SetStateAction<number>>;
 	size: number;
+	setSize: React.Dispatch<React.SetStateAction<number>>;
 	isLast: boolean;
 	isFirst: boolean;
 	hasPrev: boolean;
@@ -11,12 +13,13 @@ interface IStepsContext {
 	next: () => void;
 	prev: () => void;
 	jump: (step: number) => void;
-	setSize: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const StepsContext = React.createContext<IStepsContext>({
 	current: 1,
+	setCurrent: () => {},
 	size: 0,
+	setSize: () => {},
 	isLast: false,
 	isFirst: false,
 	hasPrev: false,
@@ -25,7 +28,6 @@ const StepsContext = React.createContext<IStepsContext>({
 	next: () => {},
 	prev: () => {},
 	jump: () => {},
-	setSize: () => {},
 });
 
 export const StepsProvider: React.ComponentType = ({ children }) => {
@@ -54,6 +56,7 @@ export const StepsProvider: React.ComponentType = ({ children }) => {
 
 	const contextValue = {
 		current,
+		setCurrent,
 		size,
 		setSize,
 		isLast,
@@ -74,16 +77,27 @@ export const StepsProvider: React.ComponentType = ({ children }) => {
 };
 
 export interface StepsProps {
-	onStepChange: () => void;
+	onStepChange?: () => void;
+	startsFrom?: number;
 }
 
-export const Steps: React.FC<StepsProps> = (props) => {
+export const Steps: React.ComponentType<StepsProps> = (props) => {
 	const stepsContext = React.useContext(StepsContext);
-	const { current, setSize } = stepsContext;
+	const { current, setCurrent, setSize } = stepsContext;
 	const [isInitialRender, setIsInitialRender] = React.useState(true);
 
 	React.useEffect(() => {
 		setIsInitialRender(false);
+		const { startsFrom = 1 } = props;
+		const size = React.Children.count(props.children);
+		if (startsFrom > size) {
+			setCurrent(1);
+			console.warn(
+				"React Step Builder: startsFrom is greater than the number of steps. First step will be rendered by default.",
+			);
+		} else {
+			setCurrent(startsFrom);
+		}
 	}, []);
 
 	React.useEffect(() => {
@@ -92,7 +106,7 @@ export const Steps: React.FC<StepsProps> = (props) => {
 	}, [props.children]);
 
 	React.useEffect(() => {
-		!isInitialRender && props.onStepChange();
+		!isInitialRender && props.onStepChange?.();
 	}, [current]);
 
 	const steps = React.Children.map(props.children, (child, index) => {

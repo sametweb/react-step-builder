@@ -73,11 +73,33 @@ describe("Testing", () => {
 	});
 });
 
-describe("Methods through props", () => {
+describe("StepsProvider props", () => {
+	it("Steps start from provided number", () => {
+		render(
+			<StepsProvider>
+				<StepsComponent startsFrom={2} onStepChange={onStepChange} />
+			</StepsProvider>,
+		);
+		const step2 = screen.getByTestId("step2");
+		expect(step2).toBeVisible();
+	});
+
+	it("If startsFrom is out of range, first step is rendered by default", () => {
+		render(
+			<StepsProvider>
+				<StepsComponent startsFrom={10} onStepChange={onStepChange} />
+			</StepsProvider>,
+		);
+		const step1 = screen.getByTestId("step1");
+		expect(step1).toBeVisible();
+	});
+});
+
+describe("Steps props", () => {
 	beforeEach(() => {
 		render(
 			<StepsProvider>
-				<StepsComponent onStepChange={onStepChange} />
+				<StepsComponent startsFrom={1} onStepChange={onStepChange} />
 			</StepsProvider>,
 		);
 	});

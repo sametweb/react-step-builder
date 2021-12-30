@@ -9,13 +9,14 @@ const App = () => {
 	return (
 		<div className="steps_wrapper">
 			<h1>React Step Builder v2.0.7</h1>
-			<StepsComponent onStepChange={onStepChange} />
+			<StepsComponent onStepChange={onStepChange} startsFrom={1} />
 		</div>
 	);
 };
 
 interface StepsComponentProps {
 	onStepChange: () => void;
+	startsFrom: number;
 }
 
 export const StepsComponent: React.FC<StepsComponentProps> = (props) => {
@@ -23,7 +24,7 @@ export const StepsComponent: React.FC<StepsComponentProps> = (props) => {
 
 	return (
 		<>
-			<Steps onStepChange={props.onStepChange}>
+			<Steps onStepChange={props.onStepChange} startsFrom={props.startsFrom}>
 				<div data-testid="step1">
 					<h1>Step 1</h1>
 					<p>This is Step 1.</p>

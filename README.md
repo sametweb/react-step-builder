@@ -120,4 +120,13 @@ These are the properties inside `stepsState` object.
 
 The component that renders `<Steps />` should be wrapped with `StepsProvider` component. `useSteps` can only be called in a component that is rendered in the DOM tree under `StepsProvider`.
 
+| Property       | Type         | Description                             |
+| -------------- | ------------ | --------------------------------------- |
+| `startsFrom`   | `number`     | The default step number to be rendered. |
+
+> Step numbers start from 1 and goes up to the count of direct siblings given to the `Steps` component. If the number is out of range, first step is rendered by default.
+
+<br />
+<hr />
+<br />
 Example project: https://codesandbox.io/s/react-step-builder-v3-5625v?file=/src/App.tsx
