@@ -138,7 +138,6 @@ export const Steps: React.ComponentType<StepsProps> = (props) => {
 export const useSteps = () => {
 	const stepsContext = React.useContext(StepsContext);
 	if (!stepsContext) throw new Error("step context is not available");
-
 	const {
 		prev,
 		next,
