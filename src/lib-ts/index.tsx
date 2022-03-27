@@ -34,19 +34,22 @@ export const StepsProvider: React.ComponentType = ({ children }) => {
 	const [current, setCurrent] = React.useState(1);
 	const [size, setSize] = React.useState(0);
 
-	const next = () => {
+	const next = React.useCallback(() => {
 		const nextStep = current + 1;
 		nextStep <= size && setCurrent(nextStep);
-	};
+	}, [current, size]);
 
-	const prev = () => {
+	const prev = React.useCallback(() => {
 		const prevStep = current - 1;
 		prevStep >= 1 && setCurrent(prevStep);
-	};
+	}, [current]);
 
-	const jump = (step: number) => {
-		step >= 1 && step <= size && setCurrent(step);
-	};
+	const jump = React.useCallback(
+		(step: number) => {
+			step >= 1 && step <= size && setCurrent(step);
+		},
+		[size],
+	);
 
 	const isLast = current === size;
 	const isFirst = current === 1;
@@ -54,20 +57,34 @@ export const StepsProvider: React.ComponentType = ({ children }) => {
 	const hasNext = current < size;
 	const progress = Number(((current - 1) / (size - 1)).toFixed(2));
 
-	const contextValue = {
-		current,
-		setCurrent,
-		size,
-		setSize,
-		isLast,
-		isFirst,
-		hasPrev,
-		progress,
-		next,
-		prev,
-		jump,
-		hasNext,
-	};
+	const contextValue = React.useMemo(
+		() => ({
+			current,
+			setCurrent,
+			size,
+			setSize,
+			isLast,
+			isFirst,
+			hasPrev,
+			progress,
+			next,
+			prev,
+			jump,
+			hasNext,
+		}),
+		[
+			current,
+			hasNext,
+			hasPrev,
+			isFirst,
+			isLast,
+			jump,
+			next,
+			prev,
+			progress,
+			size,
+		],
+	);
 
 	return (
 		<StepsContext.Provider value={contextValue}>
@@ -98,16 +115,16 @@ export const Steps: React.ComponentType<StepsProps> = (props) => {
 		} else {
 			setCurrent(startsFrom);
 		}
-	}, []);
+	}, [props, setCurrent]);
 
 	React.useEffect(() => {
 		const size = React.Children.count(props.children);
 		setSize(size);
-	}, [props.children]);
+	}, [props.children, setSize]);
 
 	React.useEffect(() => {
 		!isInitialRender && props.onStepChange?.();
-	}, [current]);
+	}, [current, isInitialRender, props]);
 
 	const steps = React.Children.map(props.children, (child, index) => {
 		const step = index + 1;
@@ -120,7 +137,7 @@ export const Steps: React.ComponentType<StepsProps> = (props) => {
 
 export const useSteps = () => {
 	const stepsContext = React.useContext(StepsContext);
-
+	if (!stepsContext) throw new Error("step context is not available");
 	const {
 		prev,
 		next,
