@@ -26,29 +26,29 @@ Example:
 import { Steps, StepsProvider, useSteps } from "react-step-builder";
 
 const App = () => {
-  return (
-    <StepsProvider>
-      <MySteps />
-    </StepsProvider>
-  );
+	return (
+		<StepsProvider>
+			<MySteps />
+		</StepsProvider>
+	);
 };
 
 const MySteps = () => {
-  const { next, prev } = useSteps();
+	const { next, prev } = useSteps();
 
-  return (
-    <Steps>
-      <div>
-        <h1>Step 1</h1>
-      </div>
-      <div>
-        <h1>Step 2</h1>
-      </div>
-      <div>
-        <h1>Step 3</h1>
-      </div>
-    </Steps>
-  );
+	return (
+		<Steps>
+			<div>
+				<h1>Step 1</h1>
+			</div>
+			<div>
+				<h1>Step 2</h1>
+			</div>
+			<div>
+				<h1>Step 3</h1>
+			</div>
+		</Steps>
+	);
 };
 
 export default App;
@@ -64,9 +64,9 @@ A component whose each direct sibling is treated as a step. **Do not add anythin
 
 ```jsx
 <Steps>
-  <Step1 />
-  <Step2 />
-  <NotAStep />
+	<Step1 />
+	<Step2 />
+	<NotAStep />
 </Steps>
 ```
 
@@ -74,18 +74,19 @@ A component whose each direct sibling is treated as a step. **Do not add anythin
 
 ```jsx
 <Steps>
-  <Step1 />
-  <Step2>
-    <NotAStep />
-  </Step2>
+	<Step1 />
+	<Step2>
+		<NotAStep />
+	</Step2>
 </Steps>
 ```
 
 This reason for this method is due to React's _composition over inheritance_ principle. It also allows you to manage your state easily in the parent component.
 
-| Property       | Type         | Description                                                |
-| -------------- | ------------ | ---------------------------------------------------------- |
-| `onStepChange` | `() => void` | Runs on every step change. Does not run on initial render. |
+| Property       | Type                                               | Description                                                                                                            |
+| -------------- | -------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `onStepChange` | `(context?: { from: number; to: number }) => void` | Runs on every step change. Receives the previous and next step numbers. Does not run on initial render.                |
+| `beforeNext`   | `() => boolean \| Promise<boolean>`                | A guard function called before moving to the next step. Return `false` to block navigation. Supports async validation. |
 
 <br/>
 <hr />
@@ -99,18 +100,19 @@ A special hook that accesses the state of `<Steps />` component and exposes meth
 
 These are the properties inside `stepsState` object.
 
-| Property   | Type                     | Description                                         |
-| ---------- | ------------------------ | --------------------------------------------------- |
-| `total`    | `number`                 | Total number of steps                               |
-| `current`  | `number`                 | Current step number                                 |
-| `progress` | `number`                 | Progress of the current step, value between 0 and 1 |
-| `next`     | `() => void`             | Function to move to the next step                   |
-| `prev`     | `() => void`             | Function to move to the previous step               |
-| `jump`     | `(step: number) => void` | Function to jump to the given step                  |
-| `isFirst`  | `boolean`                | If the step is the first                            |
-| `isLast`   | `boolean`                | If the step is the last                             |
-| `hasPrev`  | `boolean`                | If the step has any previous step                   |
-| `hasNext`  | `boolean`                | If the step has any next step                       |
+| Property   | Type                     | Description                                                                                        |
+| ---------- | ------------------------ | -------------------------------------------------------------------------------------------------- |
+| `total`    | `number`                 | Total number of steps                                                                              |
+| `current`  | `number`                 | Current step number                                                                                |
+| `progress` | `number`                 | Progress of the current step, value between 0 and 1                                                |
+| `next`     | `() => Promise<boolean>` | Move to the next step. Returns `true` if navigation succeeded, `false` if blocked by `beforeNext`. |
+| `prev`     | `() => void`             | Move to the previous step                                                                          |
+| `jump`     | `(step: number) => void` | Jump to the given step                                                                             |
+| `reset`    | `() => void`             | Reset to the first step                                                                            |
+| `isFirst`  | `boolean`                | If the step is the first                                                                           |
+| `isLast`   | `boolean`                | If the step is the last                                                                            |
+| `hasPrev`  | `boolean`                | If the step has any previous step                                                                  |
+| `hasNext`  | `boolean`                | If the step has any next step                                                                      |
 
 <br/>
 <hr />
@@ -120,13 +122,88 @@ These are the properties inside `stepsState` object.
 
 The component that renders `<Steps />` should be wrapped with `StepsProvider` component. `useSteps` can only be called in a component that is rendered in the DOM tree under `StepsProvider`.
 
-| Property       | Type         | Description                             |
-| -------------- | ------------ | --------------------------------------- |
-| `startsFrom`   | `number`     | The default step number to be rendered. |
+| Property     | Type     | Description                             |
+| ------------ | -------- | --------------------------------------- |
+| `startsFrom` | `number` | The default step number to be rendered. |
 
 > Step numbers start from 1 and goes up to the count of direct siblings given to the `Steps` component. If the number is out of range, first step is rendered by default.
 
 <br />
 <hr />
 <br />
-Example project: https://codesandbox.io/s/react-step-builder-v3-5625v?file=/src/App.tsx
+
+### Step Change Callback
+
+`onStepChange` runs on every step change and optionally receives a context object with `from` and `to` step numbers.
+
+```jsx
+const MySteps = () => {
+	const { next, prev } = useSteps();
+
+	const handleStepChange = (context) => {
+		console.log(`Moved from step ${context.from} to step ${context.to}`);
+	};
+
+	return (
+		<Steps onStepChange={handleStepChange}>
+			<div>Step 1</div>
+			<div>Step 2</div>
+		</Steps>
+	);
+};
+```
+
+<br />
+<hr />
+<br />
+
+### Step Validation
+
+Use `beforeNext` to validate before allowing navigation to the next step. The function can be synchronous or asynchronous.
+
+```jsx
+const MySteps = () => {
+	const { next } = useSteps();
+
+	// Sync validation
+	return (
+		<Steps beforeNext={() => formIsValid()}>
+			<div>Step 1</div>
+			<div>Step 2</div>
+		</Steps>
+	);
+};
+```
+
+```jsx
+// Async validation
+<Steps beforeNext={async () => {
+  const isValid = await validateOnServer();
+  return isValid;
+}}>
+```
+
+`next()` returns a `Promise<boolean>` indicating whether navigation was allowed:
+
+```jsx
+const handleNext = async () => {
+	const moved = await next();
+	if (!moved) {
+		showValidationErrors();
+	}
+};
+```
+
+<br />
+<hr />
+<br />
+
+### Reset
+
+Use `reset()` to return to the first step:
+
+```jsx
+const { reset } = useSteps();
+
+<button onClick={reset}>Start Over</button>;
+```

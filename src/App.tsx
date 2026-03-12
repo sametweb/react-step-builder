@@ -8,7 +8,7 @@ const App = () => {
 
 	return (
 		<div className="steps_wrapper">
-			<h1>React Step Builder v3.0.3</h1>
+			<h1>React Step Builder v3.1.0</h1>
 			<StepsComponent onStepChange={onStepChange} startsFrom={1} />
 		</div>
 	);
