@@ -1,7 +1,6 @@
-import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
-import { StepsProvider } from "./dist";
+import { StepsProvider } from "./lib-ts";
 import "./style.css";
 ReactDOM.render(
 	<StepsProvider>

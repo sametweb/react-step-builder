@@ -1,5 +1,5 @@
 import React from "react";
-import { Steps, useSteps } from "./dist";
+import { Steps, useSteps } from "./lib-ts";
 
 const App = () => {
 	const onStepChange = () => {
@@ -8,7 +8,7 @@ const App = () => {
 
 	return (
 		<div className="steps_wrapper">
-			<h1>React Step Builder v2.0.7</h1>
+			<h1>React Step Builder v3.0.3</h1>
 			<StepsComponent onStepChange={onStepChange} startsFrom={1} />
 		</div>
 	);

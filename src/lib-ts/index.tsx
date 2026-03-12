@@ -30,7 +30,9 @@ const StepsContext = React.createContext<IStepsContext>({
 	jump: () => {},
 });
 
-export const StepsProvider: React.ComponentType = ({ children }) => {
+export const StepsProvider: React.FC<React.PropsWithChildren> = ({
+	children,
+}) => {
 	const [current, setCurrent] = React.useState(1);
 	const [size, setSize] = React.useState(0);
 
@@ -52,7 +54,8 @@ export const StepsProvider: React.ComponentType = ({ children }) => {
 	const isFirst = current === 1;
 	const hasPrev = current > 1;
 	const hasNext = current < size;
-	const progress = Number(((current - 1) / (size - 1)).toFixed(2));
+	const progress =
+		size <= 1 ? 0 : Number(((current - 1) / (size - 1)).toFixed(2));
 
 	const contextValue = {
 		current,
@@ -77,11 +80,12 @@ export const StepsProvider: React.ComponentType = ({ children }) => {
 };
 
 export interface StepsProps {
+	children: React.ReactNode;
 	onStepChange?: () => void;
 	startsFrom?: number;
 }
 
-export const Steps: React.ComponentType<StepsProps> = (props) => {
+export const Steps: React.FC<StepsProps> = (props) => {
 	const stepsContext = React.useContext(StepsContext);
 	const { current, setCurrent, setSize } = stepsContext;
 	const [isInitialRender, setIsInitialRender] = React.useState(true);
