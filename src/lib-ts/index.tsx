@@ -13,6 +13,7 @@ interface IStepsContext {
 	next: () => void;
 	prev: () => void;
 	jump: (step: number) => void;
+	reset: () => void;
 }
 
 const StepsContext = React.createContext<IStepsContext>({
@@ -28,6 +29,7 @@ const StepsContext = React.createContext<IStepsContext>({
 	next: () => {},
 	prev: () => {},
 	jump: () => {},
+	reset: () => {},
 });
 
 export const StepsProvider: React.FC<React.PropsWithChildren> = ({
@@ -50,6 +52,10 @@ export const StepsProvider: React.FC<React.PropsWithChildren> = ({
 		step >= 1 && step <= size && setCurrent(step);
 	};
 
+	const reset = () => {
+		setCurrent(1);
+	};
+
 	const isLast = current === size;
 	const isFirst = current === 1;
 	const hasPrev = current > 1;
@@ -69,6 +75,7 @@ export const StepsProvider: React.FC<React.PropsWithChildren> = ({
 		next,
 		prev,
 		jump,
+		reset,
 		hasNext,
 	};
 
@@ -129,6 +136,7 @@ export const useSteps = () => {
 		prev,
 		next,
 		jump,
+		reset,
 		isFirst,
 		isLast,
 		hasPrev,
@@ -141,6 +149,7 @@ export const useSteps = () => {
 		prev,
 		next,
 		jump,
+		reset,
 		isFirst,
 		isLast,
 		hasPrev,
