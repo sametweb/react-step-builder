@@ -86,9 +86,14 @@ export const StepsProvider: React.FC<React.PropsWithChildren> = ({
 	);
 };
 
+export interface StepChangeContext {
+	from: number;
+	to: number;
+}
+
 export interface StepsProps {
 	children: React.ReactNode;
-	onStepChange?: () => void;
+	onStepChange?: (context?: StepChangeContext) => void;
 	startsFrom?: number;
 }
 
@@ -96,6 +101,7 @@ export const Steps: React.FC<StepsProps> = (props) => {
 	const stepsContext = React.useContext(StepsContext);
 	const { current, setCurrent, setSize } = stepsContext;
 	const [isInitialRender, setIsInitialRender] = React.useState(true);
+	const prevStepRef = React.useRef(current);
 
 	React.useEffect(() => {
 		setIsInitialRender(false);
@@ -109,6 +115,7 @@ export const Steps: React.FC<StepsProps> = (props) => {
 		} else {
 			setCurrent(startsFrom);
 		}
+		prevStepRef.current = startsFrom;
 	}, []);
 
 	React.useEffect(() => {
@@ -117,7 +124,10 @@ export const Steps: React.FC<StepsProps> = (props) => {
 	}, [props.children]);
 
 	React.useEffect(() => {
-		!isInitialRender && props.onStepChange?.();
+		if (!isInitialRender) {
+			props.onStepChange?.({ from: prevStepRef.current, to: current });
+		}
+		prevStepRef.current = current;
 	}, [current]);
 
 	const steps = React.Children.map(props.children, (child, index) => {
