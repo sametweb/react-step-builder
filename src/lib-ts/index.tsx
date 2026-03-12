@@ -1,35 +1,44 @@
 import * as React from "react";
 
+type BeforeNextGuard = () => boolean | Promise<boolean>;
+
 interface IStepsContext {
 	current: number;
 	setCurrent: React.Dispatch<React.SetStateAction<number>>;
 	size: number;
 	setSize: React.Dispatch<React.SetStateAction<number>>;
+	beforeNextRef: React.MutableRefObject<BeforeNextGuard | undefined>;
 	isLast: boolean;
 	isFirst: boolean;
 	hasPrev: boolean;
 	hasNext: boolean;
 	progress: number;
-	next: () => void;
+	next: () => Promise<boolean>;
 	prev: () => void;
 	jump: (step: number) => void;
 	reset: () => void;
 }
 
+const noop = () => {};
+const noopRef = { current: undefined } as React.MutableRefObject<
+	BeforeNextGuard | undefined
+>;
+
 const StepsContext = React.createContext<IStepsContext>({
 	current: 1,
-	setCurrent: () => {},
+	setCurrent: noop,
 	size: 0,
-	setSize: () => {},
+	setSize: noop,
+	beforeNextRef: noopRef,
 	isLast: false,
 	isFirst: false,
 	hasPrev: false,
 	hasNext: false,
 	progress: 0,
-	next: () => {},
-	prev: () => {},
-	jump: () => {},
-	reset: () => {},
+	next: () => Promise.resolve(false),
+	prev: noop,
+	jump: noop,
+	reset: noop,
 });
 
 export const StepsProvider: React.FC<React.PropsWithChildren> = ({
@@ -37,10 +46,20 @@ export const StepsProvider: React.FC<React.PropsWithChildren> = ({
 }) => {
 	const [current, setCurrent] = React.useState(1);
 	const [size, setSize] = React.useState(0);
+	const beforeNextRef = React.useRef<BeforeNextGuard | undefined>(undefined);
 
-	const next = () => {
+	const next = async () => {
+		const guard = beforeNextRef.current;
+		if (guard) {
+			const allowed = await guard();
+			if (!allowed) return false;
+		}
 		const nextStep = current + 1;
-		nextStep <= size && setCurrent(nextStep);
+		if (nextStep <= size) {
+			setCurrent(nextStep);
+			return true;
+		}
+		return false;
 	};
 
 	const prev = () => {
@@ -68,6 +87,7 @@ export const StepsProvider: React.FC<React.PropsWithChildren> = ({
 		setCurrent,
 		size,
 		setSize,
+		beforeNextRef,
 		isLast,
 		isFirst,
 		hasPrev,
@@ -94,14 +114,20 @@ export interface StepChangeContext {
 export interface StepsProps {
 	children: React.ReactNode;
 	onStepChange?: (context?: StepChangeContext) => void;
+	beforeNext?: BeforeNextGuard;
 	startsFrom?: number;
 }
 
 export const Steps: React.FC<StepsProps> = (props) => {
 	const stepsContext = React.useContext(StepsContext);
-	const { current, setCurrent, setSize } = stepsContext;
+	const { current, setCurrent, setSize, beforeNextRef } = stepsContext;
 	const [isInitialRender, setIsInitialRender] = React.useState(true);
 	const prevStepRef = React.useRef(current);
+
+	// Register the beforeNext guard into context
+	React.useEffect(() => {
+		beforeNextRef.current = props.beforeNext;
+	}, [props.beforeNext]);
 
 	React.useEffect(() => {
 		setIsInitialRender(false);
